@@ -1,11 +1,10 @@
 {
-  "name": "electron",
+  "name": "wmd-ui",
   "version": "1.0.0",
-  "description": "test",
-  "main": "main.js",
+  "description": "ui",
+  "main": "src/main.js",
   "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "cd src/renderer && npm run build && cd ../.. && electron ."
   },
   "author": "李泽枫",
   "license": "ISC",

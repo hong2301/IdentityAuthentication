@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, contextBridge } = require('electron');
+const { app, BrowserWindow } = require('electron');
 const path = require('path');
 
 const createWindow = () => {
@@ -15,6 +15,7 @@ const createWindow = () => {
 
   win.loadFile('src/renderer/dist/index.html');
 };
+
 
 app.whenReady().then(() => {
   createWindow();
