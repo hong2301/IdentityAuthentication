@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { echo } from '../api/test.ts'
 const router = useRouter()
 
 const goToRoot = () => {
@@ -13,8 +14,12 @@ const no = ref('')
 const getNo = () => {
   no.value = '10000000'
 }
+
 onMounted(() => {
   getNo()
+  echo({ value: '你好' }).then((res) => {
+    console.log(res)
+  })
 })
 </script>
 
