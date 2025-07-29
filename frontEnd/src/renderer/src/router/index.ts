@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import BackHomeView from '../views/backHome.vue'
 import HomeView from '../views/home.vue'
 
 const router = createRouter({
@@ -8,6 +9,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
+    },
+    {
+      path: '/back',
+      name: 'backHsome',
+      component: BackHomeView
     },
     // {
     //   path: '/user',
