@@ -1,9 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>123</div>
-  
-  <router-view></router-view>
+  <div>首页</div>
 </template>
 
 <style scoped></style>
