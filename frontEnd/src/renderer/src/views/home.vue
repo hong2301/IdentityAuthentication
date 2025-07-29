@@ -15,10 +15,12 @@ onMounted(() => {
 <template>
   <div class="overture">
     <div class="head">
-      <img class="log" src="../assets/log.png" mode="scaleToFill" />
-      <div class="title-box">
-        <div class="title">车驾管自助体检机<span class="title-end"> -- 后台设置</span></div>
-        <div id="no" class="number">设备编号:{{ no }}</div>
+      <div class="left">
+        <img class="log" src="../assets/log.png" mode="scaleToFill" />
+        <div class="title-box">
+          <div class="title">车驾管自助体检机<span class="title-end"> -- 后台设置</span></div>
+          <div id="no" class="number">设备编号:{{ no }}</div>
+        </div>
       </div>
       <el-button>退出</el-button>
     </div>
@@ -44,6 +46,13 @@ onMounted(() => {
   padding-inline: 2%;
   box-sizing: border-box;
   border-bottom: 1px solid rgb(136, 167, 220);
+  justify-content: space-between;
+}
+.left {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  align-items: center;
 }
 .log {
   height: 60%;
