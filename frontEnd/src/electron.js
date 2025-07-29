@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+import { app, BrowserWindow } from 'electron';
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -10,7 +10,7 @@ const createWindow = () => {
     }
   });
 
-  win.loadFile('src/renderer/dist/index.html');
+  win.loadFile('dist/index.html');
 };
 
 
