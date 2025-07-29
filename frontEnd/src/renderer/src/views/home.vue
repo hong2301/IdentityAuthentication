@@ -20,6 +20,7 @@ onMounted(() => {
         <div class="title">车驾管自助体检机<span class="title-end"> -- 后台设置</span></div>
         <div id="no" class="number">设备编号:{{ no }}</div>
       </div>
+      <el-button>退出</el-button>
     </div>
     <div class="content-box"></div>
   </div>
