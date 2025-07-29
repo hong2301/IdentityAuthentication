@@ -2,17 +2,11 @@
 
 <template>
   <div class="overture">
-    <router-link to="/back">后台</router-link>
+    <router-link to="/layout/back">后台</router-link>
   </div>
 </template>
 
 <style scoped>
 .overture {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
 }
 </style>
