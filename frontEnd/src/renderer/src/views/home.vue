@@ -1,12 +1,24 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+
+const no = ref('')
+
+// 获取编号
+const getNo = () => {
+  no.value = '10000000'
+}
+onMounted(() => {
+  getNo()
+})
+</script>
 
 <template>
   <div class="overture">
     <div class="head">
-      <image class="log" src="public/log.png" mode="scaleToFill" />
+      <img class="log" src="../assets/log.png" mode="scaleToFill" />
       <div class="title-box">
         <div class="title">车驾管自助体检机<span class="title-end"> -- 后台设置</span></div>
-        <div id="no" class="number">设备编号:</div>
+        <div id="no" class="number">设备编号:{{ no }}</div>
       </div>
     </div>
     <div class="content-box"></div>
