@@ -57,7 +57,7 @@ watch(
       </el-button>
     </div>
     <div class="content-box">
-      <router-view class="router-view-box" />
+      <router-view />
     </div>
   </div>
 </template>
@@ -115,7 +115,7 @@ watch(
 }
 .content-box {
   width: 100%;
-  flex: 1;
+  height: 90vh;
   /* 政务蓝背景 + 中心高光渐变 */
   background: radial-gradient(
     circle at center,
@@ -124,9 +124,5 @@ watch(
   );
   /* 政务蓝底色（备用，如果浏览器不支持渐变时显示） */
   background-color: rgba(85, 140, 202, 1);
-}
-.router-view-box {
-  width: 100%;
-  height: 90vh;
 }
 </style>

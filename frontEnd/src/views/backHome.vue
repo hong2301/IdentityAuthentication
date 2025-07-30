@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCmdStore } from '@/stores/cmd'
 import { onMounted } from 'vue'
+import pushButton from '@/components/pushButton.vue'
 
 const cmdStore = useCmdStore()
 onMounted(() => {
@@ -9,10 +10,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="overture">后台设置</div>
+  <div class="content">1</div>
 </template>
 
 <style scoped>
-.overture {
+.content {
 }
 </style>

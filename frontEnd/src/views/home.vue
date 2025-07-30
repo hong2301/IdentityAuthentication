@@ -9,12 +9,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="overture">
+  <div class="content">
     <router-link to="/layout/back">后台</router-link>
   </div>
 </template>
 
 <style scoped>
-.overture {
+.content {
 }
 </style>
