@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { echo } from '../api/test.ts'
+import { useCmdStore } from '@/stores/cmd'
+import { onMounted, ref, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+
 const router = useRouter()
+const route = useRoute()
+const cmdStore = useCmdStore()
 
 const goToRoot = () => {
-  router.push('/') // 跳转到根路径
+  router.go(-1)
 }
 
 const no = ref('')
@@ -16,11 +19,17 @@ const getNo = () => {
 }
 
 onMounted(() => {
+  console.log('layout')
   getNo()
-  echo({ value: '你好' }).then((res) => {
-    console.log(res)
-  })
 })
+
+// 监控路由变化
+watch(
+  () => route.path,
+  (newPath, oldPath) => {
+    console.log('路由从', oldPath, '跳转到', newPath)
+  },
+)
 </script>
 
 <template>
@@ -33,7 +42,7 @@ onMounted(() => {
           <div id="no" class="number">设备编号:{{ no }}</div>
         </div>
       </div>
-      <el-button type="primary" @click="goToRoot">退出</el-button>
+      <el-button v-if="cmdStore.backBtn" type="primary" @click="goToRoot">返回</el-button>
     </div>
     <div class="content-box">
       <router-view class="router-view-box" />
