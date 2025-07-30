@@ -36,11 +36,10 @@ onMounted(() => {
 
 // 获取副标题
 const getTitleEnd = () => {
-  console.log(route.matched)
   const [, ...subRoutes] = route.matched
   titleEnd.value = []
   subRoutes.forEach((item) => {
-    titleEnd.value.push(item.name)
+    titleEnd.value.push(item.name as string)
   })
 }
 
