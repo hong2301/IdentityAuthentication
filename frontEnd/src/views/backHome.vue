@@ -11,59 +11,72 @@ const btns = ref([
   {
     title: '体检设置',
     icon: '12',
-    path: 'phyexam',
+    path: 'back/phyexam',
   },
   {
     title: '业务记录',
     icon: '',
+    path: 'back/business',
   },
   {
     title: '修改密码',
     icon: '',
+    path: 'back/password',
   },
   {
     title: '打印机设置',
     icon: '',
+    path: 'back/printer',
   },
   {
     title: '摄像头设置',
     icon: '',
+    path: 'back/camera',
   },
   {
     title: '操作时间',
     icon: '',
+    path: 'back/operatingTime',
   },
   {
     title: '操作流程',
     icon: '',
+    path: 'back/operationProcess',
   },
   {
     title: '硬件测试',
     icon: '',
+    path: 'back/hardware',
   },
   {
     title: '拖鞋设置',
     icon: '',
+    path: 'back/shoes',
   },
   {
     title: '证件设置',
     icon: '',
+    path: 'back/certificate',
   },
   {
     title: '相机设置',
     icon: '',
+    path: 'back/photographn',
   },
   {
     title: '网络支付',
     icon: '',
+    path: 'back/network',
   },
   {
     title: '拍照设置',
     icon: '',
+    path: 'back/snapv',
   },
   {
     title: '准驾车型设置',
     icon: '',
+    path: 'back/carType',
   },
 ])
 

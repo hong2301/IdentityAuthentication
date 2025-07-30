@@ -12,7 +12,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="content">体检设置</div>
+  <div class="content">打印设置</div>
 </template>
 
 <style scoped>

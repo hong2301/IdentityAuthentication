@@ -12,7 +12,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="content">体检设置</div>
+  <div class="content">准驾车型设置</div>
 </template>
 
 <style scoped>
