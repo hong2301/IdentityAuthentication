@@ -9,11 +9,11 @@ const props = defineProps({
     default: () => ({ title: '默认标题', icon: '默认图标' }),
   },
   width: {
-    type: [String, Number],
+    type: Number,
     default: '100%',
   },
   height: {
-    type: [String, Number],
+    type: Number,
     default: 'auto',
   },
 })
@@ -37,7 +37,7 @@ onMounted(() => {
         height: typeof height === 'number' ? `${height}px` : height,
       }"
     ></div>
-    <div class="title">{{ data.title }}</div>
+    <div class="title" :style="{ fontSize: `${width / 6}px` }">{{ data.title }}</div>
   </div>
 </template>
 
