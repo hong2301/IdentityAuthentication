@@ -10,10 +10,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="content">1</div>
+  <div class="content">
+    <div class="btn-box"></div>
+  </div>
 </template>
 
 <style scoped>
 .content {
+  width: 100%;
+  height: 100%;
+}
+.btn-box{
+  
 }
 </style>
