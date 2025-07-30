@@ -2,6 +2,7 @@
 import { useCmdStore } from '@/stores/cmd'
 import { onMounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { Back } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -51,7 +52,9 @@ watch(
           <div id="no" class="number">设备编号:{{ no }}</div>
         </div>
       </div>
-      <el-button v-if="cmdStore.backBtn" type="primary" @click="goToRoot">返回</el-button>
+      <el-button v-if="cmdStore.backBtn" type="primary" @click="goToRoot" :icon="Back">
+        返回
+      </el-button>
     </div>
     <div class="content-box">
       <router-view class="router-view-box" />
