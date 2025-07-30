@@ -18,9 +18,7 @@ const props = defineProps({
   },
 })
 
-onMounted(() => {
-  console.log('按钮', props.data.title, props.data.icon)
-})
+onMounted(() => {})
 </script>
 
 <template>

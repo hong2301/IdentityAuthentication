@@ -30,7 +30,6 @@ const getNo = () => {
 }
 
 onMounted(() => {
-  console.log('layout')
   getNo()
 })
 

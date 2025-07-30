@@ -2,12 +2,16 @@
 import { useCmdStore } from '@/stores/cmd'
 import { onMounted, ref } from 'vue'
 import pushButton from '@/components/pushButton.vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const cmdStore = useCmdStore()
+
 const btns = ref([
   {
     title: '体检设置',
     icon: '12',
+    path: 'phyexam',
   },
   {
     title: '业务记录',
@@ -63,6 +67,12 @@ const btns = ref([
   },
 ])
 
+const clickBtn = (bItem: { title: string; icon: string; path: string }) => {
+  if (bItem.path) {
+    router.push(bItem.path) // 跳转到指定路径
+  }
+}
+
 onMounted(() => {
   cmdStore.backBtn = 1
   cmdStore.closeBtn = 1
@@ -73,7 +83,7 @@ onMounted(() => {
 <template>
   <div class="content">
     <div class="btn-box">
-      <div v-for="(bItem, bIndex) in btns" :key="bIndex" class="btn-item">
+      <div v-for="(bItem, bIndex) in btns" :key="bIndex" class="btn-item" @click="clickBtn(bItem)">
         <pushButton :data="bItem" :width="120" :height="120" />
       </div>
     </div>

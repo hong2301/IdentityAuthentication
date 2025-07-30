@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import BackHomeView from '../views/backHome.vue'
 import HomeView from '../views/home.vue'
 import Layout from '../components/layout.vue'
+import PhyexamView from '../views/phyexam.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -19,8 +20,13 @@ const router = createRouter({
         {
           path: 'back',
           name: 'backHome',
-          component: BackHomeView
-        }
+          component: BackHomeView,
+        },
+        {
+          path: 'phyexam',
+          name: 'phyexam',
+          component: PhyexamView
+        },
       ]
     },
     {
