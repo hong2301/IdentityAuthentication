@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 // 定义 props
 const props = defineProps({
@@ -10,11 +10,11 @@ const props = defineProps({
   },
   width: {
     type: Number,
-    default: '100%',
+    default: 100,
   },
   height: {
     type: Number,
-    default: 'auto',
+    default: 100,
   },
 })
 
@@ -44,11 +44,18 @@ onMounted(() => {
 <style scoped>
 .overture {
   cursor: pointer;
+  transition: transform 0.3s ease;
 }
 .icon {
   background-color: aqua;
   border-radius: 20%;
   cursor: pointer;
+}
+.overture:hover {
+  transform: scale(1.1); /* 悬停时放大1.2倍 */
+}
+.overture:active {
+  transform: scale(1.2); /* 悬停时放大1.2倍 */
 }
 .title {
   width: 100%;
