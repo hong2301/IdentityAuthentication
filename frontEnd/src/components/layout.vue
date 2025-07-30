@@ -6,6 +6,7 @@ import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 const cmdStore = useCmdStore()
+const titleEnd = ref('')
 
 const goToRoot = () => {
   router.go(-1)
@@ -28,6 +29,12 @@ watch(
   () => route.path,
   (newPath, oldPath) => {
     console.log('路由从', oldPath, '跳转到', newPath)
+
+    // 副标题
+    titleEnd.value = ''
+    if (newPath.includes('back')) {
+      titleEnd.value = ' -- 后台设置'
+    }
   },
 )
 </script>
@@ -38,7 +45,9 @@ watch(
       <div class="left">
         <img class="log" src="../assets/log.png" mode="scaleToFill" />
         <div class="title-box">
-          <div class="title">车驾管自助体检机<span class="title-end"> -- 后台设置</span></div>
+          <div class="title">
+            车驾管自助体检机<span class="title-end">{{ titleEnd }}</span>
+          </div>
           <div id="no" class="number">设备编号:{{ no }}</div>
         </div>
       </div>
