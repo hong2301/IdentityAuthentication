@@ -6,6 +6,8 @@ import pushButton from '@/components/pushButton.vue'
 const cmdStore = useCmdStore()
 onMounted(() => {
   cmdStore.backBtn = 1
+  cmdStore.closeBtn = 1
+  cmdStore.resetBtn = 1
 })
 </script>
 
@@ -20,7 +22,6 @@ onMounted(() => {
   width: 100%;
   height: 100%;
 }
-.btn-box{
-  
+.btn-box {
 }
 </style>

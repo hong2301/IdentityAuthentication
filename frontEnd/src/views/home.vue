@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import { useCmdStore } from '@/stores/cmd'
 import { onMounted } from 'vue'
 
-const cmdStore = useCmdStore()
-onMounted(() => {
-  cmdStore.backBtn = 0
-})
+onMounted(() => {})
 </script>
 
 <template>

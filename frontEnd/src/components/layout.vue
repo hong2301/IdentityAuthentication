@@ -2,15 +2,24 @@
 import { useCmdStore } from '@/stores/cmd'
 import { onMounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { Back } from '@element-plus/icons-vue'
+import { Back, Refresh, SwitchButton } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()
 const cmdStore = useCmdStore()
 const titleEnd = ref('')
 
+// 返回
 const goToRoot = () => {
   router.go(-1)
+}
+// 关机
+const close = () => {
+  console.log('关机')
+}
+// 重启
+const reset = () => {
+  console.log('重启')
 }
 
 const no = ref('')
@@ -30,6 +39,9 @@ watch(
   () => route.path,
   (newPath, oldPath) => {
     console.log('路由从', oldPath, '跳转到', newPath)
+
+    // 关闭所有cmd
+    cmdStore.close()
 
     // 副标题
     titleEnd.value = ''
@@ -52,6 +64,13 @@ watch(
           <div id="no" class="number">设备编号:{{ no }}</div>
         </div>
       </div>
+      <div class="cmd-box"></div>
+      <el-button v-if="cmdStore.resetBtn" type="warning" @click="reset" :icon="Refresh">
+        重启
+      </el-button>
+      <el-button v-if="cmdStore.closeBtn" type="danger" @click="close" :icon="SwitchButton">
+        关机
+      </el-button>
       <el-button v-if="cmdStore.backBtn" type="primary" @click="goToRoot" :icon="Back">
         返回
       </el-button>
@@ -87,6 +106,12 @@ watch(
   width: 50%;
   display: flex;
   align-items: center;
+}
+.cmd-box {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
 }
 .log {
   height: 60%;
