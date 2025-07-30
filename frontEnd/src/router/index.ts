@@ -27,82 +27,82 @@ const router = createRouter({
       children: [
         {
           path: '',
-          name: 'home',
+          name: '首页',
           component: HomeView
         },
         {
           path: 'back',
-          name: 'backHome',
+          name: '后台设置',
           component: BackHomeView,
         },
         {
           path: 'back/phyexam',
-          name: 'phyexam',
+          name: '体检设置',
           component: PhyexamView
         },
         {
           path: 'back/business',
-          name: 'business',
+          name: '业务记录',
           component: BusinessView
         },
         {
           path: 'back/password',
-          name: 'password',
+          name: '修改密码',
           component: PasswordView
         },
         {
           path: 'back/printer',
-          name: 'printer',
+          name: '打印机设置',
           component: PrinterView
         },
         {
           path: 'back/camera',
-          name: 'camera',
+          name: '摄像头设置',
           component: CameraView
         },
         {
           path: 'back/operatingTime',
-          name: 'operatingTime',
+          name: '操作时间',
           component: OperatingTimeView
         },
         {
           path: 'back/operationProcess',
-          name: 'operationProcess',
+          name: '操作流程',
           component: OperationProcessView
         },
         {
           path: 'back/hardware',
-          name: 'hardware',
+          name: '硬件测试',
           component: HardwareView
         },
         {
           path: 'back/shoes',
-          name: 'shoes',
+          name: '脱鞋设置',
           component: ShoesView
         },
         {
           path: 'back/certificate',
-          name: 'certificate',
+          name: '证件设置',
           component: CertificateView
         },
         {
           path: 'back/photographn',
-          name: 'photographn',
+          name: '相机设置',
           component: PhotographnView
         },
         {
           path: 'back/network',
-          name: 'network',
+          name: '网络支付',
           component: NetworkView
         },
         {
           path: 'back/snapv',
-          name: 'snapv',
+          name: '拍照设置',
           component: SnapvView
         },
         {
           path: 'back/carType',
-          name: 'carType',
+          name: '准驾车型设置',
           component: CarTypeView
         },
       ]

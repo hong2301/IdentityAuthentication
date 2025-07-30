@@ -7,7 +7,7 @@ import { Back, Refresh, SwitchButton } from '@element-plus/icons-vue'
 const router = useRouter()
 const route = useRoute()
 const cmdStore = useCmdStore()
-const titleEnd = ref('')
+const titleEnd = ref<string[]>([])
 
 // 返回
 const goToRoot = () => {
@@ -31,7 +31,18 @@ const getNo = () => {
 
 onMounted(() => {
   getNo()
+  getTitleEnd()
 })
+
+// 获取副标题
+const getTitleEnd = () => {
+  console.log(route.matched)
+  const [, ...subRoutes] = route.matched
+  titleEnd.value = []
+  subRoutes.forEach((item) => {
+    titleEnd.value.push(item.name)
+  })
+}
 
 // 监控路由变化
 watch(
@@ -43,10 +54,7 @@ watch(
     cmdStore.close()
 
     // 副标题
-    titleEnd.value = ''
-    if (newPath.includes('back')) {
-      titleEnd.value = ' -- 后台设置'
-    }
+    getTitleEnd()
   },
 )
 </script>
@@ -58,7 +66,10 @@ watch(
         <img class="log" src="../assets/log.png" mode="scaleToFill" />
         <div class="title-box">
           <div class="title">
-            车驾管自助体检机<span class="title-end">{{ titleEnd }}</span>
+            车驾管自助体检机
+            <span v-for="(tItem, tIndex) in titleEnd" :key="tIndex" class="title-end">
+              / {{ tItem }}</span
+            >
           </div>
           <div id="no" class="number">设备编号:{{ no }}</div>
         </div>
