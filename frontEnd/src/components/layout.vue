@@ -11,6 +11,8 @@ const cmdStore = useCmdStore()
 const titleEnd = ref<string[]>([])
 const inBackBtn = ref(false)
 const backPassWord = ref('')
+const subtitle = ref('Self testing for driving condition') //副标题
+const no = ref('')
 
 // 返回
 const goToRoot = () => {
@@ -24,8 +26,6 @@ const close = () => {
 const reset = () => {
   console.log('重启')
 }
-
-const no = ref('')
 
 // 获取编号
 const getNo = () => {
@@ -101,6 +101,12 @@ watch(
   (newPath, oldPath) => {
     console.log('路由从', oldPath, '跳转到', newPath)
 
+    if (newPath.includes('back')) {
+      subtitle.value = `设备编号: ${no.value}`
+    } else {
+      subtitle.value = 'Self testing for driving condition'
+    }
+
     // 关闭所有cmd
     cmdStore.close()
 
@@ -122,7 +128,7 @@ watch(
               / {{ tItem }}</span
             >
           </div>
-          <div id="no" class="number">设备编号:{{ no }}</div>
+          <div id="no" class="number">{{ subtitle }}</div>
         </div>
       </div>
       <div class="cmd-box"></div>
@@ -234,10 +240,11 @@ watch(
 }
 .number {
   line-height: 2vh;
-  font-size: 1.5vh;
-  font-weight: 200;
+  font-size: 2vh;
+  font-weight: 800;
   color: white;
   display: flex;
+  align-items: end;
 }
 .content-box {
   width: 100%;
