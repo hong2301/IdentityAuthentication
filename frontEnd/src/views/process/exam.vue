@@ -1,27 +1,12 @@
 <script setup lang="ts">
 import { useCmdStore } from '@/stores/cmd'
-import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
+import overtime from '@/components/overtime.vue'
 
 const cmdStore = useCmdStore()
-const router = useRouter()
-
-const timeStep = ref(30)
-
-const runTime = () => {
-  timeStep.value = 30
-  const setIntervalData = setInterval(() => {
-    timeStep.value--
-    if (timeStep.value <= 0) {
-      clearInterval(setIntervalData)
-      router.push('overtime')
-    }
-  }, 1000)
-}
 
 onMounted(() => {
   cmdStore.backBtn = 1
-  runTime()
 })
 </script>
 
@@ -32,6 +17,7 @@ onMounted(() => {
       <div class="card"></div>
       <div class="card"></div>
     </div>
+    <overtime class="overtime" />
   </div>
 </template>
 
@@ -54,5 +40,10 @@ onMounted(() => {
   width: 30%;
   height: 50%;
   background-color: red;
+}
+.overtime {
+  position: fixed;
+  top: 10vh;
+  left: 0;
 }
 </style>
