@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { useCmdStore } from '@/stores/cmd'
+import { onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
 
-onMounted(() => {})
+const cmdStore = useCmdStore()
+
+onMounted(() => {
+  cmdStore.backBtn = 0
+})
 </script>
 
 <template>

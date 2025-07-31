@@ -39,7 +39,8 @@ onMounted(() => {
 .card {
   width: 30%;
   height: 50%;
-  background-color: red;
+  background: linear-gradient(145deg, #1a56b4, #0d47a1);
+  border-radius: 2%;
 }
 .overtime {
   position: fixed;
