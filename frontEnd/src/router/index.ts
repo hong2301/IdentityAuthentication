@@ -18,6 +18,7 @@ import SnapvView from '../views/snapv.vue'
 import CarTypeView from '../views/carType.vue'
 import ExamView from '../views/process/exam.vue'
 import SnapView from '../views/process/snap.vue'
+import OvertimeView from '../views/overtime.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -116,6 +117,11 @@ const router = createRouter({
           path: 'snap',
           name: '拍照',
           component: SnapView
+        },
+        {
+          path: 'overtime',
+          name: '超时',
+          component: OvertimeView
         }
       ]
     },

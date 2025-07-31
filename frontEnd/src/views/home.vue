@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
+import { Monitor } from '@element-plus/icons-vue'
 
 const router = useRouter()
 
