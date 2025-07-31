@@ -14,7 +14,7 @@ onMounted(() => {
   <div class="content">
     <div class="title">请选择下一步要进行的操作</div>
     <div class="card-box">
-      <div class="card"></div>
+      <div class="card" @class="click"></div>
       <div class="card"></div>
       <div class="card"></div>
     </div>

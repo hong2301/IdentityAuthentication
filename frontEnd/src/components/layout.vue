@@ -230,6 +230,14 @@ watch(
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  /* 政务蓝背景 + 中心高光渐变 */
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(85, 140, 202, 1) 70%
+  );
+  /* 政务蓝底色（备用，如果浏览器不支持渐变时显示） */
+  background-color: rgba(85, 140, 202, 1);
 }
 .head {
   width: 100%;
@@ -285,14 +293,6 @@ watch(
 .content-box {
   width: 100%;
   height: 80vh;
-  /* 政务蓝背景 + 中心高光渐变 */
-  background: radial-gradient(
-    circle at center,
-    rgba(255, 255, 255, 0.3) 0%,
-    rgba(85, 140, 202, 1) 70%
-  );
-  /* 政务蓝底色（备用，如果浏览器不支持渐变时显示） */
-  background-color: rgba(85, 140, 202, 1);
 }
 .number-keyboard {
   margin-top: 15px;
@@ -337,7 +337,7 @@ watch(
 .bottom {
   width: 100%;
   height: 10vh;
-  background-color: rgb(58, 106, 187);
+
   display: flex;
   align-items: center;
   padding-inline: 1vh;
