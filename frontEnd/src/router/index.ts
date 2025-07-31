@@ -16,9 +16,10 @@ import PhotographnView from '../views/back/photographn.vue'
 import NetworkView from '../views/back/network.vue'
 import SnapvView from '../views/back/snapv.vue'
 import CarTypeView from '../views/back/carType.vue'
-import ExamView from '../views/process/exam.vue'
-import SnapView from '../views/process/snap.vue'
+import ExamView from '../views/exam.vue'
+import SnapView from '../views/snap.vue'
 import OvertimeView from '../views/overtime.vue'
+import GetId from '@/views/process/getId.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -122,7 +123,13 @@ const router = createRouter({
           path: 'overtime',
           name: '超时',
           component: OvertimeView
+        },
+        {
+          path: 'getId',
+          name: '身份证信息获取',
+          component: GetId
         }
+
       ]
     },
     {
