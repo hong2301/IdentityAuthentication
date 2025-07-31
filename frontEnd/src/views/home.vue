@@ -1,5 +1,16 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+
+const clickExam = () => {
+  router.push('layout/exam')
+}
+
+const clickSnap = () => {
+  router.push('layout/snap')
+}
 
 onMounted(() => {})
 </script>
@@ -7,14 +18,20 @@ onMounted(() => {})
 <template>
   <div class="content">
     <div class="btn-box">
-      <div class="btn" @click="handleClick">
+      <div class="btn" @click="clickExam">
         <div class="btn-content">
           <el-icon class="btn-icon"><Monitor /></el-icon>
           <span class="btn-text">体检</span>
         </div>
         <div class="pulse-ring"></div>
       </div>
-      <div class="btn"></div>
+      <div class="btn" @click="clickSnap">
+        <div class="btn-content">
+          <el-icon class="btn-icon"><Monitor /></el-icon>
+          <span class="btn-text">拍照</span>
+        </div>
+        <div class="pulse-ring"></div>
+      </div>
     </div>
   </div>
 </template>

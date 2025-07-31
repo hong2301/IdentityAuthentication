@@ -10,7 +10,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="content">体检</div>
+  <div class="content">拍照</div>
 </template>
 
 <style scoped>

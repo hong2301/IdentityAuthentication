@@ -17,6 +17,7 @@ import NetworkView from '../views/network.vue'
 import SnapvView from '../views/snapv.vue'
 import CarTypeView from '../views/carType.vue'
 import ExamView from '../views/process/exam.vue'
+import SnapView from '../views/process/snap.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -111,6 +112,11 @@ const router = createRouter({
           name: '体检',
           component: ExamView
         },
+        {
+          path: 'snap',
+          name: '拍照',
+          component: SnapView
+        }
       ]
     },
     {
