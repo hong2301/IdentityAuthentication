@@ -16,6 +16,7 @@ import PhotographnView from '../views/photographn.vue'
 import NetworkView from '../views/network.vue'
 import SnapvView from '../views/snapv.vue'
 import CarTypeView from '../views/carType.vue'
+import ExamView from '../views/process/exam.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -104,6 +105,11 @@ const router = createRouter({
           path: 'back/carType',
           name: '准驾车型设置',
           component: CarTypeView
+        },
+        {
+          path: 'exam',
+          name: '体检',
+          component: ExamView
         },
       ]
     },
