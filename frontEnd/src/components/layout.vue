@@ -91,7 +91,7 @@ const inBackGo = () => {
     ElMessage.error('密码错误!')
   } else {
     inBackBtn.value = false
-    router.push('layout/back')
+    router.push('/layout/back')
   }
 }
 
@@ -132,13 +132,37 @@ watch(
         </div>
       </div>
       <div class="cmd-box"></div>
-      <el-button v-if="cmdStore.resetBtn" type="warning" @click="reset" :icon="Refresh">
+      <el-button
+        v-if="cmdStore.resetBtn"
+        type="primary"
+        color="rgb(58, 106, 187)"
+        @click="reset"
+        :icon="Refresh"
+        text
+        class="btn"
+      >
         重启
       </el-button>
-      <el-button v-if="cmdStore.closeBtn" type="danger" @click="close" :icon="SwitchButton">
+      <el-button
+        v-if="cmdStore.closeBtn"
+        type="primary"
+        color="rgb(58, 106, 187)"
+        @click="close"
+        :icon="SwitchButton"
+        text
+        class="btn"
+      >
         关机
       </el-button>
-      <el-button v-if="cmdStore.backBtn" type="primary" @click="goToRoot" :icon="Back">
+      <el-button
+        v-if="cmdStore.backBtn"
+        type="primary"
+        color="rgb(58, 106, 187)"
+        @click="goToRoot"
+        :icon="Back"
+        text
+        class="btn"
+      >
         返回
       </el-button>
     </div>
@@ -208,7 +232,7 @@ watch(
 }
 .left {
   height: 100%;
-  width: 50%;
+  width: 60%;
   display: flex;
   align-items: center;
 }
@@ -292,5 +316,10 @@ watch(
 
 .keyboard-btn:active {
   background-color: #ebeef5;
+}
+.btn {
+  transform: scale(1.7); /* 宽高都放大一倍 */
+  transform-origin: center;
+  margin-inline: 2%;
 }
 </style>
