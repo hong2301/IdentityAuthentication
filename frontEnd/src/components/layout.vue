@@ -70,7 +70,9 @@ const getTitleEnd = () => {
 }
 
 const appendNumber = (num: number) => {
-  backPassWord.value += num.toString()
+  if (backPassWord.value.length < 6) {
+    backPassWord.value += num.toString()
+  }
 }
 const deleteNumber = () => {
   backPassWord.value = backPassWord.value.slice(0, -1)
@@ -141,6 +143,7 @@ watch(
       <el-input
         v-model="backPassWord"
         type="password"
+        show-password
         placeholder="请输入密码"
         size="large"
       ></el-input>
