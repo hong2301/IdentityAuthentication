@@ -10,10 +10,36 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="content">获取身份证</div>
+  <div class="content">
+    <div class="title">请刷二代身份证</div>
+    <div class="card"></div>
+  </div>
 </template>
 
 <style scoped>
 .content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.title {
+  margin-bottom: 1%;
+  font-size: 3rem;
+  color: white;
+  font-weight: 800;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card {
+  width: 80%;
+  height: 80%;
+  background-color: blue;
+  border-radius: 4vh;
+  border: 1vh solid white;
 }
 </style>
