@@ -2,9 +2,10 @@
 import { useCmdStore } from '@/stores/cmd'
 import { onMounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { Back, Refresh, SwitchButton } from '@element-plus/icons-vue'
+import { Back, Refresh, SwitchButton, Right } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 
+const emit = defineEmits(['continue'])
 const router = useRouter()
 const route = useRoute()
 const cmdStore = useCmdStore()
@@ -95,6 +96,11 @@ const inBackGo = () => {
   }
 }
 
+// 继续
+const continueFn = () => {
+  emit('continue')
+}
+
 // 监控路由变化
 watch(
   () => route.path,
@@ -132,42 +138,48 @@ watch(
         </div>
       </div>
       <div class="cmd-box"></div>
-      <el-button
-        v-if="cmdStore.resetBtn"
-        type="primary"
-        color="rgb(58, 106, 187)"
-        @click="reset"
-        :icon="Refresh"
-        text
-        class="btn"
-      >
-        重启
-      </el-button>
-      <el-button
-        v-if="cmdStore.closeBtn"
-        type="primary"
-        color="rgb(58, 106, 187)"
-        @click="close"
-        :icon="SwitchButton"
-        text
-        class="btn"
-      >
-        关机
-      </el-button>
-      <el-button
-        v-if="cmdStore.backBtn"
-        type="primary"
-        color="rgb(58, 106, 187)"
-        @click="goToRoot"
-        :icon="Back"
-        text
-        class="btn"
-      >
-        返回
-      </el-button>
     </div>
     <div class="content-box">
       <router-view />
+    </div>
+    <div class="bottom">
+      <div class="cmd-box-left">
+        <el-button
+          v-if="cmdStore.resetBtn"
+          type="warning"
+          @click="reset"
+          :icon="Refresh"
+          class="btn"
+          round
+        >
+          重启
+        </el-button>
+        <el-button
+          v-if="cmdStore.closeBtn"
+          type="danger"
+          @click="close"
+          :icon="SwitchButton"
+          class="btn"
+          round
+        >
+          关机
+        </el-button>
+        <el-button
+          v-if="cmdStore.backBtn"
+          type="primary"
+          @click="goToRoot"
+          :icon="Back"
+          class="btn"
+          round
+        >
+          返回
+        </el-button>
+      </div>
+      <div class="cmd-box-right">
+        <el-button v-if="cmdStore.continueBtn" type="success" @click="continueFn" class="btn" round>
+          继续<el-icon class="el-icon--right"><Right /></el-icon>
+        </el-button>
+      </div>
     </div>
     <el-dialog v-model="inBackBtn" title="进入后台设置" width="500">
       <el-input
@@ -272,7 +284,7 @@ watch(
 }
 .content-box {
   width: 100%;
-  height: 90vh;
+  height: 80vh;
   /* 政务蓝背景 + 中心高光渐变 */
   background: radial-gradient(
     circle at center,
@@ -320,6 +332,27 @@ watch(
 .btn {
   transform: scale(1.7); /* 宽高都放大一倍 */
   transform-origin: center;
-  margin-inline: 2%;
+  margin-inline: 5%;
+}
+.bottom {
+  width: 100%;
+  height: 10vh;
+  background-color: rgb(58, 106, 187);
+  display: flex;
+  align-items: center;
+  padding-inline: 1vh;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgb(136, 167, 220);
+  justify-content: space-between;
+}
+.cmd-box-left {
+  width: 50%;
+  display: flex;
+  justify-content: flex-start;
+}
+.cmd-box-right {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
