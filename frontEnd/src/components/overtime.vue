@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useCmdStore } from '@/stores/cmd'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, type PropType } from 'vue'
 import { useRouter } from 'vue-router'
 
 // 定义 props
@@ -17,6 +17,13 @@ const props = defineProps({
     type: Number,
     default: 30,
   },
+  type: {
+    type: String as PropType<'normal' | 'danger'>, // 枚举类型
+    default: 'danger', // 默认普通类型
+    validator: (value: string) => {
+      return ['normal', 'danger'].includes(value) // 验证器确保只接受这两个值
+    },
+  },
 })
 
 const cmdStore = useCmdStore()
@@ -26,7 +33,7 @@ const timeStep = ref(props.timeNum)
 let setIntervalData: number | undefined
 
 const runTime = () => {
-  timeStep.value = 30
+  timeStep.value = props.timeNum
   setIntervalData = setInterval(() => {
     timeStep.value--
     if (timeStep.value <= 0) {
@@ -56,13 +63,12 @@ onUnmounted(() => {
 <template>
   <div class="com">
     <span class="label">{{ label }} </span>
-    <span class="second">{{ timeStep }}</span>
+    <span :style="{ color: `${type === 'danger' ? 'brown' : 'white'}` }">{{ timeStep }}秒</span>
   </div>
 </template>
 
 <style scoped>
 .com {
-  width: 23%;
   position: relative;
   font-weight: 800;
   font-size: 1.4rem;
@@ -84,9 +90,5 @@ onUnmounted(() => {
 }
 .label {
   color: white;
-}
-.second {
-  color: brown;
-  text-shadow: 0 0 5px brown;
 }
 </style>
