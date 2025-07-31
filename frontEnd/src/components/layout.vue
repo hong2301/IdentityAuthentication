@@ -39,7 +39,7 @@ const getTitleEnd = () => {
   const [, ...subRoutes] = route.matched
   titleEnd.value = []
   subRoutes.forEach((item) => {
-    titleEnd.value.push(item.name as string)
+    if (item.name !== '首页') titleEnd.value.push(item.name as string)
   })
 }
 
@@ -65,7 +65,7 @@ watch(
         <img class="log" src="../assets/log.png" mode="scaleToFill" />
         <div class="title-box">
           <div class="title">
-            车驾管自助体检机
+            驾驶人身体条件自助检测
             <span v-for="(tItem, tIndex) in titleEnd" :key="tIndex" class="title-end">
               / {{ tItem }}</span
             >
@@ -135,6 +135,7 @@ watch(
 }
 .title {
   font-size: 3vh;
+  line-height: 4vh;
   font-weight: 800;
   color: white;
 }
@@ -142,6 +143,7 @@ watch(
   font-size: 2.5vh;
 }
 .number {
+  line-height: 2vh;
   font-size: 1.5vh;
   font-weight: 200;
   color: white;
