@@ -110,7 +110,7 @@ onMounted(() => {
 }
 .card-box {
   width: 80%;
-  height: 50%;
+  height: 60%;
   display: flex;
   justify-content: space-between;
   align-items: center;
