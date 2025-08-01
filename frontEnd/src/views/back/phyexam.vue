@@ -35,11 +35,7 @@ const handleOpen = (value: string) => {
   activeTag.value = value
 }
 
-onMounted(() => {
-  cmdStore.backBtn = 1
-  cmdStore.closeBtn = 1
-  cmdStore.resetBtn = 1
-})
+onMounted(() => {})
 </script>
 
 <template>

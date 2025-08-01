@@ -67,7 +67,6 @@ const getProject = () => {
 }
 
 onMounted(() => {
-  cmdStore.backBtn = 1
   getProject()
 })
 </script>

@@ -12,18 +12,9 @@ const routerStore = useRouterStore()
 
 const query = route.query
 
-const isContinue = () => {
-  if (query?.continue) {
-    cmdStore.continueBtn = 1
-  }
-  if (query?.over) {
-    cmdStore.overBtn = 1
-  }
-}
 
 onMounted(() => {
-  isContinue()
-  cmdStore.backBtn = 0
+
 })
 </script>
 

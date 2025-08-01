@@ -5,7 +5,7 @@ import { onMounted, ref } from 'vue'
 const cmdStore = useCmdStore()
 
 onMounted(() => {
-  cmdStore.backBtn = 1
+
 })
 </script>
 

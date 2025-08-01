@@ -16,9 +16,7 @@ const nextPageData = ref({
 })
 
 onMounted(() => {
-  cmdStore.backBtn = 1
   cmdStore.overBtn = 1
-  cmdStore.continueBtn = 1
 })
 </script>
 

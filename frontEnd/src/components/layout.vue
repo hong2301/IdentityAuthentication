@@ -19,18 +19,6 @@ const backPassWord = ref('')
 const subtitle = ref('Self testing for driving condition') //副标题
 const no = ref('')
 
-// 返回
-const goToRoot = () => {
-  router.go(-1)
-}
-// 关机
-const close = () => {
-  console.log('关机')
-}
-// 重启
-const reset = () => {
-  console.log('重启')
-}
 // 结束
 const over = () => {
   console.log('结束')
@@ -105,12 +93,6 @@ const inBackGo = () => {
   }
 }
 
-// 继续
-const continueFn = () => {
-  cmdStore.triggerLayoutButton()
-  projectStore.nextStep()
-}
-
 // 监控路由变化
 watch(
   () => route.path,
@@ -170,45 +152,6 @@ watch(
     <div class="content-box">
       <router-view />
     </div>
-    <div class="bottom">
-      <div class="cmd-box-left">
-        <el-button
-          v-if="cmdStore.resetBtn"
-          type="warning"
-          @click="reset"
-          :icon="Refresh"
-          class="btn"
-          round
-        >
-          重启
-        </el-button>
-        <el-button
-          v-if="cmdStore.closeBtn"
-          type="danger"
-          @click="close"
-          :icon="SwitchButton"
-          class="btn"
-          round
-        >
-          关机
-        </el-button>
-        <el-button
-          v-if="cmdStore.backBtn"
-          type="primary"
-          @click="goToRoot"
-          :icon="Back"
-          class="btn"
-          round
-        >
-          返回
-        </el-button>
-      </div>
-      <div class="cmd-box-right">
-        <el-button v-if="cmdStore.continueBtn" type="success" @click="continueFn" class="btn" round>
-          继续<el-icon class="el-icon--right"><Right /></el-icon>
-        </el-button>
-      </div>
-    </div>
     <el-dialog v-model="inBackBtn" title="进入后台设置" width="500">
       <el-input
         v-model="backPassWord"
@@ -255,7 +198,7 @@ watch(
   width: 100vw;
   height: 100vh;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
   /* 政务蓝背景 + 中心高光渐变 */

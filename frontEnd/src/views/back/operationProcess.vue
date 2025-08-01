@@ -4,11 +4,7 @@ import { onMounted, ref } from 'vue'
 
 const cmdStore = useCmdStore()
 
-onMounted(() => {
-  cmdStore.backBtn = 1
-  cmdStore.closeBtn = 1
-  cmdStore.resetBtn = 1
-})
+onMounted(() => {})
 </script>
 
 <template>

@@ -38,14 +38,6 @@ const props = defineProps({
   },
 })
 
-const isContinue = () => {
-  if (props?.continue) {
-    cmdStore.continueBtn = 1
-  }
-  if (props?.over) {
-    cmdStore.overBtn = 1
-  }
-}
 
 const timeStep = ref(props.seconds)
 let setIntervalData: number | undefined
@@ -62,8 +54,6 @@ const runTime = () => {
 }
 
 onMounted(() => {
-  isContinue()
-  cmdStore.backBtn = 0
   runTime()
 })
 </script>

@@ -62,7 +62,6 @@ const clearTimer = () => {
 }
 
 onMounted(() => {
-  cmdStore.backBtn = 1
   runTime()
 })
 
@@ -70,20 +69,6 @@ onMounted(() => {
 onUnmounted(() => {
   clearTimer()
 })
-
-watch(
-  () => cmdStore.layoutContinueClicked,
-  (clicked) => {
-    if (clicked) {
-      if (timeoutBtn.value) {
-        timeoutBtn.value = 0
-        cmdStore.backBtn = 1
-        clearTimer()
-        runTime()
-      }
-    }
-  },
-)
 </script>
 
 <template>
