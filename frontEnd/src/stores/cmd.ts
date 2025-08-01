@@ -7,6 +7,15 @@ export const useCmdStore = defineStore('cmd', () => {
   const resetBtn = ref(0)
   const continueBtn = ref(0)
   const overBtn = ref(0)
+  // 
+  const layoutContinueClicked = ref(false)
+
+  // 操作方法
+  const triggerLayoutButton = () => {
+    layoutContinueClicked.value = true
+    setTimeout(() => layoutContinueClicked.value = false, 100)
+  }
+
 
   const close = () => {
     backBtn.value = 0
@@ -16,5 +25,5 @@ export const useCmdStore = defineStore('cmd', () => {
     overBtn.value = 0
   }
 
-  return { backBtn, closeBtn, resetBtn, continueBtn, overBtn, close }
+  return { backBtn, closeBtn, resetBtn, continueBtn, overBtn, triggerLayoutButton, close }
 })
