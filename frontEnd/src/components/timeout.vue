@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { useCmdStore } from '@/stores/cmd'
 import { onMounted, ref } from 'vue'
-import overtime from '@/components/overtime.vue'
-import { useRoute } from 'vue-router'
 import { Timer } from '@element-plus/icons-vue'
 import router from '@/router'
 
