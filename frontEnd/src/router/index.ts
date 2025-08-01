@@ -20,6 +20,7 @@ import ExamView from '../views/exam.vue'
 import SnapView from '../views/snap.vue'
 import OvertimeView from '../views/overtime.vue'
 import GetId from '@/views/process/getId.vue'
+import GetIphoneView from '@/views/process/getIphone.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -128,7 +129,13 @@ const router = createRouter({
           path: 'getId',
           name: '身份证信息获取',
           component: GetId
+        },
+        {
+          path: 'getIphone',
+          name: '手机号码获取',
+          component: GetIphoneView
         }
+
 
       ]
     },
