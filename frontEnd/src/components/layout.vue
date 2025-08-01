@@ -4,7 +4,7 @@ import { useRouterStore } from '@/stores/router'
 import { useProjectStore } from '@/stores/project'
 import { onMounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { Back, Refresh, SwitchButton, Right } from '@element-plus/icons-vue'
+import { Back, Refresh, SwitchButton, Right, Close } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 
 const emit = defineEmits(['continue'])
@@ -30,6 +30,10 @@ const close = () => {
 // 重启
 const reset = () => {
   console.log('重启')
+}
+// 结束
+const over = () => {
+  console.log('结束')
 }
 
 // 获取编号
@@ -142,7 +146,18 @@ watch(
           <div id="no" class="number">{{ subtitle }}</div>
         </div>
       </div>
-      <div class="cmd-box"></div>
+      <div class="cmd-box">
+        <el-button
+          v-if="cmdStore.overBtn"
+          type="danger"
+          @click="over"
+          :icon="Close"
+          class="btn"
+          round
+        >
+          结束进程
+        </el-button>
+      </div>
     </div>
     <div class="content-box">
       <router-view />
@@ -266,6 +281,7 @@ watch(
   width: 50%;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }
 .log {
   height: 60%;

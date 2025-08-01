@@ -6,6 +6,7 @@ const cmdStore = useCmdStore()
 
 onMounted(() => {
   cmdStore.backBtn = 1
+  cmdStore.overBtn = 1
 })
 </script>
 

@@ -6,13 +6,15 @@ export const useCmdStore = defineStore('cmd', () => {
   const closeBtn = ref(0)
   const resetBtn = ref(0)
   const continueBtn = ref(0)
+  const overBtn = ref(0)
 
   const close = () => {
     backBtn.value = 0
     closeBtn.value = 0
     resetBtn.value = 0
     continueBtn.value = 0
+    overBtn.value = 0
   }
 
-  return { backBtn, closeBtn, resetBtn, continueBtn, close }
+  return { backBtn, closeBtn, resetBtn, continueBtn, overBtn, close }
 })
