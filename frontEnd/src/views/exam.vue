@@ -10,6 +10,17 @@ const cmdStore = useCmdStore()
 
 const project = ref<projectType[]>([])
 
+const nextPageData = ref({
+  path: '/layout',
+  seconds: 3,
+  secondsLabel: '则即将前往首页: ',
+  label: '操作超时',
+  icon: 'Timer',
+  type: 0,
+  continue: 0,
+  over: 0,
+})
+
 // 开始进程
 const clickProject = (data: projectType) => {
   projectStore.mountProject(data)
@@ -74,10 +85,7 @@ onMounted(() => {
         {{ pItem.name }}
       </div>
     </div>
-    <overtime
-      path="/layout/overtime?seconds=3&secondsLabel=即将前往首页:&label=操作超时&icon=Timer&type=0"
-      class="overtime"
-    />
+    <overtime :time-num="3" :nextPageData="nextPageData" class="overtime" />
   </div>
 </template>
 

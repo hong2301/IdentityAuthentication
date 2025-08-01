@@ -4,6 +4,7 @@ import { onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
 import { useRoute } from 'vue-router'
 import { Timer } from '@element-plus/icons-vue'
+import router from '@/router'
 
 const cmdStore = useCmdStore()
 
@@ -48,9 +49,24 @@ const isContinue = () => {
   }
 }
 
+const timeStep = ref(props.seconds)
+let setIntervalData: number | undefined
+
+const runTime = () => {
+  timeStep.value = props.seconds
+  setIntervalData = setInterval(() => {
+    timeStep.value--
+    if (timeStep.value <= 0) {
+      clearInterval(setIntervalData)
+      router.push('/layout')
+    }
+  }, 1000)
+}
+
 onMounted(() => {
   isContinue()
   cmdStore.backBtn = 0
+  runTime()
 })
 </script>
 
@@ -73,13 +89,10 @@ onMounted(() => {
         <div class="label">{{ label }}</div>
       </div>
     </div>
-    <overtime
-      path="/layout"
-      :label="String(secondsLabel)"
-      :time-num="Number(seconds)"
-      type="normal"
-      class="overtime"
-    />
+    <div class="overtime">
+      <span class="overtime-label">{{ secondsLabel }} </span>
+      <span :style="{ color: 'white' }">{{ timeStep }}秒</span>
+    </div>
   </div>
 </template>
 
@@ -137,5 +150,14 @@ onMounted(() => {
 }
 .overtime {
   z-index: 1000;
+  font-weight: 800;
+  font-size: 1.4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1%;
+}
+.overtime-label {
+  color: white;
 }
 </style>

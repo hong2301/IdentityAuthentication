@@ -3,7 +3,7 @@ import { useCmdStore } from '@/stores/cmd'
 import { onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
 const cmdStore = useCmdStore()
-///layout/overtime?seconds=30&secondsLabel=点击继续可重试，否则即将前往首页:&label=身份证信息获取超时&icon=Timer&type=0&continue=1&over=1
+
 const nextPageData = ref({
   path: '/layout/overtime',
   seconds: 30000,
