@@ -50,7 +50,7 @@ const rightBtns = computed(() => props.btns.filter((btn) => btn.position === 'ri
         @click="bItem.onClick"
       >
         {{ bItem.label }}
-        <el-icon class="el-icon--right">{{ bItem.icon }}</el-icon>
+        <el-icon class="el-icon--right"> <component :is="bItem.icon" /></el-icon>
       </el-button>
     </div>
   </div>
@@ -61,6 +61,7 @@ const rightBtns = computed(() => props.btns.filter((btn) => btn.position === 'ri
   position: fixed;
   width: 100%;
   bottom: 0;
+  display: flex;
 }
 .cmd-box-left {
   width: 50%;
