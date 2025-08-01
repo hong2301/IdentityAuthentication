@@ -107,7 +107,6 @@ const inBackGo = () => {
 
 // 继续
 const continueFn = () => {
-  emit('continue')
   projectStore.nextStep()
 }
 

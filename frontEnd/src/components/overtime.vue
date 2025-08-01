@@ -1,13 +1,25 @@
 <script setup lang="ts">
 import { useCmdStore } from '@/stores/cmd'
-import { onMounted, onUnmounted, ref, type PropType } from 'vue'
+import { onMounted, onUnmounted, ref, watch, type PropType } from 'vue'
 import { useRouter } from 'vue-router'
+import timeout from '@/components/timeout.vue'
+
+interface NextPageData {
+  path: string
+  seconds: number
+  secondsLabel: string
+  label: string
+  icon: string
+  type: number
+  continue: number
+  over: number
+}
 
 // 定义 props
 const props = defineProps({
-  path: {
-    type: String,
-    default: 'overtime',
+  nextPageData: {
+    type: Object as PropType<NextPageData>, // 类型注解
+    default: () => ({}),
   },
   label: {
     type: String,
@@ -26,8 +38,8 @@ const props = defineProps({
   },
 })
 
+const timeoutBtn = ref(0)
 const cmdStore = useCmdStore()
-const router = useRouter()
 
 const timeStep = ref(props.timeNum)
 let setIntervalData: number | undefined
@@ -38,7 +50,7 @@ const runTime = () => {
     timeStep.value--
     if (timeStep.value <= 0) {
       clearInterval(setIntervalData)
-      router.push(props.path)
+      timeoutBtn.value = 1
     }
   }, 1000)
 }
@@ -64,6 +76,16 @@ onUnmounted(() => {
   <div class="com">
     <span class="label">{{ label }} </span>
     <span :style="{ color: `${type === 'danger' ? 'brown' : 'white'}` }">{{ timeStep }}秒</span>
+    <timeout
+      v-if="timeoutBtn"
+      :seconds="nextPageData.seconds"
+      :secondsLabel="nextPageData.secondsLabel"
+      :label="nextPageData.label"
+      :icon="nextPageData.icon"
+      :type="nextPageData.type"
+      :continue="nextPageData.continue"
+      :over="nextPageData.over"
+    />
   </div>
 </template>
 

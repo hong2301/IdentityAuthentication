@@ -1,8 +1,19 @@
 <script setup lang="ts">
 import { useCmdStore } from '@/stores/cmd'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
 const cmdStore = useCmdStore()
+///layout/overtime?seconds=30&secondsLabel=点击继续可重试，否则即将前往首页:&label=身份证信息获取超时&icon=Timer&type=0&continue=1&over=1
+const nextPageData = ref({
+  path: '/layout/overtime',
+  seconds: 30000,
+  secondsLabel: '点击继续可重试，否则即将前往首页:',
+  label: '身份证信息获取超时',
+  icon: 'Timer',
+  type: 0,
+  continue: 1,
+  over: 1,
+})
 
 onMounted(() => {
   cmdStore.backBtn = 1
@@ -14,11 +25,7 @@ onMounted(() => {
   <div class="content">
     <div class="title">请刷二代身份证</div>
     <div class="card"></div>
-    <overtime
-      :time-num="3"
-      path="/layout/overtime?seconds=30&secondsLabel=点击继续可重试，否则即将前往首页:&label=身份证信息获取超时&icon=Timer&type=0&continue=1&over=1"
-      class="overtime"
-    />
+    <overtime :time-num="3" :nextPageData="nextPageData" class="overtime" />
   </div>
 </template>
 

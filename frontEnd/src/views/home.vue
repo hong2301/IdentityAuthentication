@@ -3,6 +3,7 @@ import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Monitor } from '@element-plus/icons-vue'
 
+
 const router = useRouter()
 
 const clickExam = () => {
@@ -12,7 +13,7 @@ const clickExam = () => {
 const clickSnap = () => {
   router.push('layout/snap')
 }
-
+// /layout/overtime?seconds=30&secondsLabel=点击继续可重试，否则即将前往首页:&label=身份证信息获取超时&icon=Timer&type=0&continue=1&over=1
 onMounted(() => {})
 </script>
 
