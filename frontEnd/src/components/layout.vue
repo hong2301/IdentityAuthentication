@@ -4,7 +4,7 @@ import { useRouterStore } from '@/stores/router'
 import { useProjectStore } from '@/stores/project'
 import { onMounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { Back, Refresh, SwitchButton, Right, Close } from '@element-plus/icons-vue'
+import { Close } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 
 const emit = defineEmits(['continue'])

@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { useCmdStore } from '@/stores/cmd'
 import { onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
 import type { projectType } from '@/types/project'
 import { useProjectStore } from '@/stores/project'
+import btnBox from '@/components/btnBox.vue'
+import type { btnType } from '@/types/components'
+import { Back } from '@element-plus/icons-vue'
+import router from '@/router'
 
 const projectStore = useProjectStore()
-const cmdStore = useCmdStore()
 
 const project = ref<projectType[]>([])
 
@@ -20,6 +22,24 @@ const nextPageData = ref({
   continue: 0,
   over: 0,
 })
+
+const btns = ref<btnType[]>([
+  {
+    label: '返回',
+    key: 'back',
+    type: 'primary',
+    icon: Back,
+    position: 'left',
+    onClick: () => {
+      backHandleBack()
+    },
+    index: 0,
+  },
+])
+
+const backHandleBack = () => {
+  router.go(-1)
+}
 
 // 开始进程
 const clickProject = (data: projectType) => {
@@ -69,6 +89,10 @@ const getProject = () => {
 onMounted(() => {
   getProject()
 })
+
+function handleBack() {
+  throw new Error('Function not implemented.')
+}
 </script>
 
 <template>
@@ -85,6 +109,7 @@ onMounted(() => {
       </div>
     </div>
     <overtime :time-num="300" :nextPageData="nextPageData" class="overtime" />
+    <btnBox :btns="btns" />
   </div>
 </template>
 
