@@ -12,9 +12,15 @@ const routerStore = useRouterStore()
 
 const query = route.query
 
+const isContinue = () => {
+  if (query?.continue) {
+    cmdStore.continueBtn = 1
+  }
+}
+
 onMounted(() => {
+  isContinue()
   cmdStore.backBtn = 0
-  console.log(routerStore.preUrl)
 })
 </script>
 

@@ -335,6 +335,7 @@ watch(
   transform: scale(1.7); /* 宽高都放大一倍 */
   transform-origin: center;
   margin-inline: 5%;
+  z-index: 1000;
 }
 .bottom {
   width: 100%;
