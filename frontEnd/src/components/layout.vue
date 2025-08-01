@@ -107,6 +107,7 @@ const inBackGo = () => {
 
 // 继续
 const continueFn = () => {
+  cmdStore.triggerLayoutButton()
   projectStore.nextStep()
 }
 
