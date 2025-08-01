@@ -14,11 +14,14 @@ onMounted(() => {
   <div class="content">
     <div class="title">请选择下一步要进行的操作</div>
     <div class="card-box">
-      <div class="card" @class="click"></div>
+      <div class="card" @class=""></div>
       <div class="card"></div>
       <div class="card"></div>
     </div>
-    <overtime class="overtime" />
+    <overtime
+      path="/layout/overtime?seconds=3&secondsLabel=即将前往首页:&label=操作超时&icon=Timer&type=0"
+      class="overtime"
+    />
   </div>
 </template>
 

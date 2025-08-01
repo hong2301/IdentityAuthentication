@@ -2,8 +2,13 @@
 import { useCmdStore } from '@/stores/cmd'
 import { onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
+import { useRoute } from 'vue-router'
+import { Timer } from '@element-plus/icons-vue'
 
+const route = useRoute()
 const cmdStore = useCmdStore()
+
+const query = route.query
 
 onMounted(() => {
   cmdStore.backBtn = 0
@@ -13,10 +18,29 @@ onMounted(() => {
 <template>
   <div class="content">
     <div class="mask"></div>
-    <div class="card">
-      <div class="border"></div>
+    <div
+      class="card"
+      :style="{
+        color: `${Number(query.type) === 0 ? 'brown' : 'rgba(85, 140, 202, 1)'}`,
+      }"
+    >
+      <div
+        class="border"
+        :style="{
+          border: `4px solid ${Number(query.type) === 0 ? 'brown' : 'rgba(85, 140, 202, 1)'}`,
+        }"
+      >
+        <el-icon v-if="query.icon === 'Timer'" class="icon"><Timer /></el-icon>
+        <div class="label">{{ query.label }}</div>
+      </div>
     </div>
-    <overtime path="/layout" label="即将返回首页: " :time-num="3" type="normal" class="overtime" />
+    <overtime
+      path="/layout"
+      :label="String(query.secondsLabel)"
+      :time-num="Number(query.seconds)"
+      type="normal"
+      class="overtime"
+    />
   </div>
 </template>
 
@@ -48,12 +72,26 @@ onMounted(() => {
   padding: 2%;
   z-index: 1000;
 }
-
 .border {
   width: 100%;
   height: 100%;
   background-color: white;
-  border: 2px solid rgb(58, 106, 187);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+}
+.label {
+  position: absolute;
+  bottom: 2vh;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.icon {
+  transform-origin: center;
+  transform: translateY(-2vh) scale(17);
 }
 .overtime {
   z-index: 1000;

@@ -13,7 +13,10 @@ onMounted(() => {
   <div class="content">
     <div class="title">请刷二代身份证</div>
     <div class="card"></div>
-    <overtime class="overtime" />
+    <overtime
+      path="/layout/overtime?seconds=30&secondsLabel=点击继续可重试，否则即将前往首页:&label=身份证信息获取超时&icon=Timer&type=0"
+      class="overtime"
+    />
   </div>
 </template>
 
