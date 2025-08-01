@@ -16,6 +16,9 @@ const isContinue = () => {
   if (query?.continue) {
     cmdStore.continueBtn = 1
   }
+  if (query?.over) {
+    cmdStore.overBtn = 1
+  }
 }
 
 onMounted(() => {

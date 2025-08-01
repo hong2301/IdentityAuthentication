@@ -16,7 +16,7 @@ onMounted(() => {
     <div class="card"></div>
     <overtime
       :time-num="3"
-      path="/layout/overtime?seconds=30&secondsLabel=点击继续可重试，否则即将前往首页:&label=身份证信息获取超时&icon=Timer&type=0&continue=1"
+      path="/layout/overtime?seconds=30&secondsLabel=点击继续可重试，否则即将前往首页:&label=身份证信息获取超时&icon=Timer&type=0&continue=1&over=1"
       class="overtime"
     />
   </div>

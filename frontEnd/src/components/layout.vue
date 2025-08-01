@@ -147,16 +147,23 @@ watch(
         </div>
       </div>
       <div class="cmd-box">
-        <el-button
-          v-if="cmdStore.overBtn"
-          type="danger"
-          @click="over"
-          :icon="Close"
-          class="btn"
-          round
+        <el-popconfirm
+          class="popconfirm"
+          title="是否终止进程"
+          placement="bottom-end"
+          confirm-button-text="是"
+          cancel-button-text="否"
+          confirm-button-type="danger"
+          cancel-button-type="primary"
+          @confirm="over"
+          width="400"
         >
-          结束进程
-        </el-button>
+          <template #reference>
+            <el-button v-if="cmdStore.overBtn" type="danger" @click="over" class="btn" round>
+              结束进程<el-icon class="el-icon--right"><Close /></el-icon>
+            </el-button>
+          </template>
+        </el-popconfirm>
       </div>
     </div>
     <div class="content-box">
@@ -282,6 +289,12 @@ watch(
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+.popconfirm {
+  font-size: 2rem !important;
+}
+.popconfirm * {
+  font-size: inherit !important; /* 强制所有子元素继承 */
 }
 .log {
   height: 60%;
