@@ -73,7 +73,7 @@ onUnmounted(() => {
 
 <template>
   <div class="com">
-    <div class="content">
+    <div class="content1">
       <span class="label">{{ label }} </span>
       <span :style="{ color: `${type === 'danger' ? 'brown' : 'white'}` }">{{ timeStep }}秒</span>
     </div>
@@ -94,7 +94,7 @@ onUnmounted(() => {
 <style scoped>
 .com {
 }
-.content {
+.content1 {
   font-weight: 800;
   font-size: 1.4rem;
   padding: 3%;

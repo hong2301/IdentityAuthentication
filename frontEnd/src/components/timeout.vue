@@ -38,7 +38,6 @@ const props = defineProps({
   },
 })
 
-
 const timeStep = ref(props.seconds)
 let setIntervalData: number | undefined
 

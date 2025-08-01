@@ -58,7 +58,8 @@ onMounted(() => {
 
 <template>
   <div class="content">
-    车
+    <div class="title">请点击选择准架车型(再次点击可取消选择，可多选进行组合)</div>
+    <div class="car-box"></div>
     <overtime :time-num="300" :nextPageData="nextPageData" class="overtime" />
     <BtnBox :btns="btns" />
   </div>
@@ -72,6 +73,21 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+.title {
+  margin-bottom: 1%;
+  font-size: 3rem;
+  color: white;
+  font-weight: 800;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.car-box {
+  width: 90%;
+  height: 90%;
+  background-color: red;
 }
 .overtime {
   position: fixed;
