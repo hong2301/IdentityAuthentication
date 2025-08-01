@@ -23,7 +23,7 @@ const props = defineProps({
   },
   label: {
     type: String,
-    default: '请在倒计时结束前进行操作: ',
+    default: '请在倒计时结束前进行操作:  ',
   },
   timeNum: {
     type: Number,
@@ -103,9 +103,15 @@ onUnmounted(() => {
   display: flex;
   justify-content: flex-start;
   flex-wrap: nowrap;
+  white-space: nowrap;
+  width: 25vw;
+  display: flex;
+  justify-content: center;
 }
 
 .label {
   color: white;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 </style>

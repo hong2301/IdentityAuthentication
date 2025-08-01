@@ -144,7 +144,7 @@ onMounted(() => {
 .overtime {
   position: fixed;
   top: 0;
-  right: 30vw;
+  right: 2vw;
   height: 10vh;
   display: flex;
   align-items: center;
