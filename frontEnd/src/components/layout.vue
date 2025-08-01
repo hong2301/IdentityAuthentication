@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCmdStore } from '@/stores/cmd'
 import { useRouterStore } from '@/stores/router'
+import { useProjectStore } from '@/stores/project'
 import { onMounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { Back, Refresh, SwitchButton, Right } from '@element-plus/icons-vue'
@@ -10,6 +11,7 @@ const emit = defineEmits(['continue'])
 const router = useRouter()
 const routerStore = useRouterStore()
 const route = useRoute()
+const projectStore = useProjectStore()
 const cmdStore = useCmdStore()
 const titleEnd = ref<string[]>([])
 const inBackBtn = ref(false)
@@ -101,6 +103,7 @@ const inBackGo = () => {
 // 继续
 const continueFn = () => {
   emit('continue')
+  projectStore.nextStep()
 }
 
 // 监控路由变化

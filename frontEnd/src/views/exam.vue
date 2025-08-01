@@ -2,18 +2,18 @@
 import { useCmdStore } from '@/stores/cmd'
 import { onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
-import { useRouter } from 'vue-router'
 import type { projectType } from '@/types/project'
+import { useProjectStore } from '@/stores/project'
 
-const router = useRouter()
+const projectStore = useProjectStore()
 const cmdStore = useCmdStore()
 
 const project = ref<projectType[]>([])
 
 // 开始进程
 const clickProject = (data: projectType) => {
-  // router.push('/layout/getId')
-  console.log('进程', data)
+  projectStore.mountProject(data)
+  projectStore.nextStep()
 }
 
 // 获取进程组
