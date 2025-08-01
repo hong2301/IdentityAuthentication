@@ -21,7 +21,7 @@ const no = ref('')
 
 // 返回
 const goToRoot = () => {
-  router.push(routerStore.preUrl.pop())
+  router.go(-1)
 }
 // 关机
 const close = () => {
@@ -116,9 +116,6 @@ watch(
   () => route.path,
   (newPath, oldPath) => {
     console.log('路由从', oldPath, '跳转到', newPath)
-    if (!oldPath.includes('overtime')) {
-      routerStore.preUrl.push(oldPath)
-    }
     if (newPath.includes('back')) {
       subtitle.value = `设备编号: ${no.value}`
     } else {
@@ -159,7 +156,7 @@ watch(
           confirm-button-type="danger"
           cancel-button-type="primary"
           @confirm="over"
-          hide-after="10"
+          :hide-after="10"
           width="400"
         >
           <template #reference>

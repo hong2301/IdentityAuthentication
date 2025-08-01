@@ -5,7 +5,11 @@ import { useRouter } from 'vue-router'
 import { useCmdStore } from './cmd'
 
 export const useProjectStore = defineStore('preject', () => {
-    const nowProject = ref<projectType>({})
+    const nowProject = ref<projectType>({
+        name: '',
+        process: [],
+        step: 0
+    })
     const router = useRouter()
     const cmdStore = useCmdStore()
 
