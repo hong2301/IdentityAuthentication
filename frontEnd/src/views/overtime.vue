@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useCmdStore } from '@/stores/cmd'
+import { useRouterStore } from '@/stores/router'
 import { onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
 import { useRoute } from 'vue-router'
@@ -7,11 +8,13 @@ import { Timer } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const cmdStore = useCmdStore()
+const routerStore = useRouterStore()
 
 const query = route.query
 
 onMounted(() => {
   cmdStore.backBtn = 0
+  console.log(routerStore.preUrl)
 })
 </script>
 
