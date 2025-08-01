@@ -104,10 +104,8 @@ onUnmounted(() => {
   right: 0;
   bottom: 0;
   z-index: -1;
-  /* 梯形效果 - 上边比下边窄 */
-  clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 0% 100%);
-  /* 半透明蓝色渐变背景 */
-  /* background: rgba(51, 169, 254); */
+  border: 0.3vh solid brown;
+  border-radius: 100000px;
 }
 .label {
   color: white;
