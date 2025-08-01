@@ -33,7 +33,6 @@ const btns = ref<btnType[]>([
     onClick: () => {
       backHandleBack()
     },
-    index: 0,
   },
 ])
 

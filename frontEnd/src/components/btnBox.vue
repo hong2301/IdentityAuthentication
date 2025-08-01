@@ -14,7 +14,7 @@ const props = defineProps({
   },
   bg: {
     type: String,
-    default: 'red',
+    default: '',
   },
 })
 
@@ -66,7 +66,6 @@ const rightBtns = computed(() => props.btns.filter((btn) => btn.position === 'ri
   width: 50%;
   height: 100%;
   display: flex;
-  background-color: aquamarine;
   justify-content: flex-start;
   align-items: center;
 }
@@ -75,13 +74,12 @@ const rightBtns = computed(() => props.btns.filter((btn) => btn.position === 'ri
   height: 100%;
   display: flex;
   justify-content: flex-end;
-  background-color: aqua;
   align-items: center;
 }
 .btn {
   transform: scale(1.7); /* 宽高都放大一倍 */
   transform-origin: center;
-  margin-inline: 5%;
+  margin-inline: 6%;
   z-index: 1000;
 }
 </style>

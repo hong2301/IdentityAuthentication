@@ -4,6 +4,5 @@ export interface btnType {
     type: 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'text',
     icon: DefineComponent,
     position: 'left' | 'right'
-    onClick: () => void,
-    index: number
+    onClick: () => void
 }
