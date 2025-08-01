@@ -25,7 +25,7 @@ onMounted(() => {
   <div class="content">
     <div class="title">请刷二代身份证</div>
     <div class="card"></div>
-    <overtime :time-num="3" :nextPageData="nextPageData" class="overtime" />
+    <overtime :time-num="300" :nextPageData="nextPageData" class="overtime" />
   </div>
 </template>
 

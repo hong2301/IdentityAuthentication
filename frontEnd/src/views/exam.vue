@@ -85,7 +85,7 @@ onMounted(() => {
         {{ pItem.name }}
       </div>
     </div>
-    <overtime :time-num="3" :nextPageData="nextPageData" class="overtime" />
+    <overtime :time-num="300" :nextPageData="nextPageData" class="overtime" />
   </div>
 </template>
 
