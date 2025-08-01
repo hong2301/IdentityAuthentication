@@ -1,0 +1,12 @@
+.el-checkbox__inner {
+  height: 1.7rem !important;
+  width: 1.7rem !important;
+}
+.el-form-item__content {
+  display: flex;
+  justify-content: flex-end;
+}
+.el-radio__inner {
+  height: 1.7rem !important;
+  width: 1.7rem !important;
+}
