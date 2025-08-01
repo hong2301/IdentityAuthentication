@@ -34,6 +34,7 @@ const reset = () => {
 // 结束
 const over = () => {
   console.log('结束')
+  router.push('/layout')
 }
 
 // 获取编号
@@ -156,10 +157,11 @@ watch(
           confirm-button-type="danger"
           cancel-button-type="primary"
           @confirm="over"
+          hide-after="10"
           width="400"
         >
           <template #reference>
-            <el-button v-if="cmdStore.overBtn" type="danger" @click="over" class="btn" round>
+            <el-button v-if="cmdStore.overBtn" type="danger" class="btn" round>
               结束进程<el-icon class="el-icon--right"><Close /></el-icon>
             </el-button>
           </template>
