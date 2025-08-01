@@ -88,10 +88,6 @@ const getProject = () => {
 onMounted(() => {
   getProject()
 })
-
-function handleBack() {
-  throw new Error('Function not implemented.')
-}
 </script>
 
 <template>
@@ -147,7 +143,10 @@ function handleBack() {
 }
 .overtime {
   position: fixed;
-  top: 10vh;
-  left: 0;
+  top: 0;
+  right: 30vw;
+  height: 10vh;
+  display: flex;
+  align-items: center;
 }
 </style>

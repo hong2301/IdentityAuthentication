@@ -73,8 +73,11 @@ onUnmounted(() => {
 
 <template>
   <div class="com">
-    <span class="label">{{ label }} </span>
-    <span :style="{ color: `${type === 'danger' ? 'brown' : 'white'}` }">{{ timeStep }}秒</span>
+    <div class="content">
+      <span class="label">{{ label }} </span>
+      <span :style="{ color: `${type === 'danger' ? 'brown' : 'white'}` }">{{ timeStep }}秒</span>
+    </div>
+
     <timeout
       v-if="timeoutBtn"
       :seconds="nextPageData.seconds"
@@ -90,23 +93,18 @@ onUnmounted(() => {
 
 <style scoped>
 .com {
-  position: relative;
+}
+.content {
   font-weight: 800;
   font-size: 1.4rem;
-  padding: 1%;
-}
-
-.com::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
+  padding: 3%;
   border: 0.3vh solid brown;
   border-radius: 100000px;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
 }
+
 .label {
   color: white;
 }
