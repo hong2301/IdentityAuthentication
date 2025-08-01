@@ -49,7 +49,7 @@ const backHandleBack = () => {
 
 const backHandleCon = () => {
   console.log('继续')
-  // router.push('/layout/getIphone')
+  router.push('/layout/vehicleModel')
 }
 
 onMounted(() => {
