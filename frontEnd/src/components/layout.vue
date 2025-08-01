@@ -373,7 +373,6 @@ watch(
 .bottom {
   width: 100%;
   height: 10vh;
-
   display: flex;
   align-items: center;
   padding-inline: 1vh;
