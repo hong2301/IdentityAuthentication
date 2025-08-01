@@ -1,12 +1,63 @@
 <script setup lang="ts">
 import { useCmdStore } from '@/stores/cmd'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
+import { useRouter } from 'vue-router'
+import type { projectType } from '@/types/project'
 
+const router = useRouter()
 const cmdStore = useCmdStore()
+
+const project = ref<projectType[]>([])
+
+// 开始进程
+const clickProject = (data: projectType) => {
+  // router.push('/layout/getId')
+  console.log('进程', data)
+}
+
+// 获取进程组
+const getProject = () => {
+  project.value = [
+    {
+      name: '初次领证',
+      process: [
+        {
+          name: '身份证获取',
+          path: '/layout/getId',
+          state: 0,
+        },
+      ],
+      step: 0,
+    },
+    {
+      name: '申领增驾',
+      process: [
+        {
+          name: '手指检测',
+          path: '/layout/fingerCheck',
+          state: 0,
+        },
+      ],
+      step: 0,
+    },
+    {
+      name: '年审体检',
+      process: [
+        {
+          name: '身份证获取',
+          path: '/layout/getId',
+          state: 0,
+        },
+      ],
+      step: 0,
+    },
+  ]
+}
 
 onMounted(() => {
   cmdStore.backBtn = 1
+  getProject()
 })
 </script>
 
@@ -14,9 +65,14 @@ onMounted(() => {
   <div class="content">
     <div class="title">请选择下一步要进行的操作</div>
     <div class="card-box">
-      <div class="card" @class=""></div>
-      <div class="card"></div>
-      <div class="card"></div>
+      <div
+        v-for="(pItem, pIndex) in project"
+        :key="pIndex"
+        class="card"
+        @click="clickProject(pItem)"
+      >
+        {{ pItem.name }}
+      </div>
     </div>
     <overtime
       path="/layout/overtime?seconds=3&secondsLabel=即将前往首页:&label=操作超时&icon=Timer&type=0"
