@@ -8,6 +8,7 @@ import router from '@/router'
 const cmdStore = useCmdStore()
 import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
+import tabel from '@/components/tabel.vue'
 
 const nextPageData = ref({
   path: '/layout/overtime',
@@ -47,6 +48,7 @@ const overtimeBtns = ref<btnType[]>([
     },
   },
 ])
+const data = ref<any[]>([])
 
 const btns = ref<btnType[]>([
   {
@@ -69,15 +71,44 @@ const btns = ref<btnType[]>([
   },
 ])
 
+const getData = () => {
+  data.value.push({
+    key: '办理业务类型',
+    value: projectStore.examData.projectName,
+  })
+  data.value.push({
+    key: '姓名',
+    value: projectStore.examData.identity.name,
+  })
+  data.value.push({
+    key: '性别',
+    value: projectStore.examData.identity.gender,
+  })
+  data.value.push({
+    key: '手机号码',
+    value: projectStore.examData.phone,
+  })
+  data.value.push({
+    key: '身份证',
+    value: projectStore.examData.identity.id,
+  })
+  data.value.push({
+    key: '准驾车型',
+    value: projectStore.examData.carType.replace(/,\s*/g, ''),
+  })
+}
+
 onMounted(() => {
   cmdStore.overBtn = 1
-  console.log(projectStore.examData)
+  getData()
 })
 </script>
 
 <template>
   <div class="content">
-    <div class="body"></div>
+    <div class="body">
+      <tabel :row="data" />
+    </div>
     <BtnBox :btns="btns" />
     <overtime
       ref="overtimeRef"
@@ -108,5 +139,7 @@ onMounted(() => {
   align-items: center;
 }
 .body {
+  width: 70%;
+  height: 90%;
 }
 </style>
