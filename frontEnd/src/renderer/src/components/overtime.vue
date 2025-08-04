@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useCmdStore } from '@/stores/cmd'
 import { onMounted, onUnmounted, ref, watch, type PropType } from 'vue'
-import { useRouter } from 'vue-router'
 import timeout from '@/components/timeout.vue'
+import type { btnType } from '@/types/components'
 
 interface NextPageData {
+  back: number | undefined
   path: string
   seconds: number
   secondsLabel: string
@@ -35,6 +35,10 @@ const props = defineProps({
     validator: (value: string) => {
       return ['normal', 'danger'].includes(value) // 验证器确保只接受这两个值
     },
+  },
+  btns: {
+    type: Array as () => btnType[],
+    default: () => ({}),
   },
 })
 
@@ -84,8 +88,7 @@ onUnmounted(() => {
       :label="nextPageData.label"
       :icon="nextPageData.icon"
       :type="nextPageData.type"
-      :continue="nextPageData.continue"
-      :over="nextPageData.over"
+      :btns="btns"
     />
   </div>
 </template>

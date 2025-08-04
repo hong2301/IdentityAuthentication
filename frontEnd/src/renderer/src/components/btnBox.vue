@@ -62,6 +62,7 @@ const rightBtns = computed(() => props.btns.filter((btn) => btn.position === 'ri
   width: 100%;
   bottom: 0;
   display: flex;
+  z-index: 0;
 }
 .cmd-box-left {
   width: 50%;
@@ -81,6 +82,5 @@ const rightBtns = computed(() => props.btns.filter((btn) => btn.position === 'ri
   transform: scale(1.7); /* 宽高都放大一倍 */
   transform-origin: center;
   margin-inline: 6%;
-  z-index: 1000;
 }
 </style>

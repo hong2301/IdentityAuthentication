@@ -18,7 +18,7 @@ const nextPageData = ref({
   icon: 'Timer',
   type: 0,
   continue: 1,
-  back:0,
+  back:1,
   over: 1,
 })
 
@@ -41,6 +41,29 @@ const btns = ref<btnType[]>([
     position: 'right',
     onClick: () => {
       backHandleCon()
+    },
+  },
+])
+
+const overtimeBtns = ref<btnType[]>([
+  {
+    label: '返回',
+    key: 'back',
+    type: 'primary',
+    icon: markRaw(Back),
+    position: 'left',
+    onClick: () => {
+      console.log("返回1")
+    },
+  },
+  {
+    label: '继续',
+    key: 'continue',
+    type: 'success',
+    icon: markRaw(Right),
+    position: 'right',
+    onClick: () => {
+      console.log("继续1")
     },
   },
 ])
@@ -210,7 +233,6 @@ const backHandleBack = () => {
 const backHandleCon = () => {
   console.log('继续')
   showCard.value = true
-  // router.push('/layout/vehicleModel')
 }
 
 onMounted(() => {
@@ -276,7 +298,6 @@ onMounted(() => {
       </div>
     </div>
     <div class="title1">您选择的车型有: {{ selectCar }}</div>
-    <overtime :time-num="3" :nextPageData="nextPageData" class="overtime" />
     <BtnBox :btns="btns" />
     <el-dialog v-model="showCard"  width="800">
       <template #header>
@@ -303,6 +324,7 @@ onMounted(() => {
         </div>
       </template>
     </el-dialog>
+     <overtime :btns="overtimeBtns" :time-num="3" :nextPageData="nextPageData" class="overtime" />
   </div>
 </template>
 

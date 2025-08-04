@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { useCmdStore } from '@/stores/cmd'
 import { onMounted, ref } from 'vue'
 import { Timer } from '@element-plus/icons-vue'
 import router from '@/router'
+import btnBox from './btnBox.vue'
+import type { btnType } from '@/types/components'
 
-const cmdStore = useCmdStore()
+const emit = defineEmits(['continue', 'back'])
 
 // 定义 props
 const props = defineProps({
@@ -28,13 +29,9 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
-  continue: {
-    type: Number,
-    default: 0,
-  },
-  over: {
-    type: Number,
-    default: 0,
+  btns: {
+    type: Array as () => btnType[],
+    default: () => ({}),
   },
 })
 
@@ -80,6 +77,7 @@ onMounted(() => {
       <span class="overtime-label">{{ secondsLabel }} </span>
       <span :style="{ color: 'white' }">{{ timeStep }}秒</span>
     </div>
+    <btnBox style="z-index: 10001" :btns="btns" />
   </div>
 </template>
 
@@ -100,7 +98,7 @@ onMounted(() => {
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.6);
-  z-index: 999;
+  z-index: 1000;
   top: 0;
   left: 0;
 }
