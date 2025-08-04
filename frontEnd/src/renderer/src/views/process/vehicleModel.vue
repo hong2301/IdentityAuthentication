@@ -299,7 +299,7 @@ onMounted(() => {
         />
       </div>
     </div>
-    <div class="title1">您选择的车型有: {{ selectCar }}</div>
+    <div class="title1">您选择的车型有: {{ selectCar.slice(0, -2) }}</div>
     <BtnBox :btns="btns" />
     <el-dialog v-model="showCard"  width="800">
       <template #header>
@@ -313,7 +313,7 @@ onMounted(() => {
           <img class="img"></img>
           <img class="img"></img>
         </div>
-        <div>当前准架车型有: <span style="color: brown;">{{ selectCar }}</span></div>
+        <div>当前准架车型有: <span style="color: brown;">{{ selectCar.slice(0, -2) }}</span></div>
       </div>
       <template #footer>
         <div class="dialog-footer">
