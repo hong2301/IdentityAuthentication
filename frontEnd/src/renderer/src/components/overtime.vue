@@ -39,7 +39,6 @@ const props = defineProps({
 })
 
 const timeoutBtn = ref(0)
-const cmdStore = useCmdStore()
 
 const timeStep = ref(props.timeNum)
 let setIntervalData: number | undefined

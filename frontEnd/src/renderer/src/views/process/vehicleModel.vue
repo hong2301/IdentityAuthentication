@@ -14,10 +14,11 @@ const nextPageData = ref({
   path: '/layout/overtime',
   seconds: 30000,
   secondsLabel: '点击继续可重试，否则即将前往首页:',
-  label: '身份证信息获取超时',
+  label: '车型选择超时',
   icon: 'Timer',
   type: 0,
   continue: 1,
+  back:0,
   over: 1,
 })
 
@@ -275,11 +276,11 @@ onMounted(() => {
       </div>
     </div>
     <div class="title1">您选择的车型有: {{ selectCar }}</div>
-    <overtime :time-num="300" :nextPageData="nextPageData" class="overtime" />
+    <overtime :time-num="3" :nextPageData="nextPageData" class="overtime" />
     <BtnBox :btns="btns" />
     <el-dialog v-model="showCard"  width="800">
       <template #header>
-        确认消息
+        信息确认
       </template>
       <div class="body">
         <div style="width: 100%; display: flex; justify-content: center">
