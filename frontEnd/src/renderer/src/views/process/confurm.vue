@@ -67,7 +67,9 @@ const btns = ref<btnType[]>([
     type: 'success',
     icon: markRaw(Right),
     position: 'right',
-    onClick: () => {},
+    onClick: () => {
+      router.push('/layout/snapPro')
+    },
   },
 ])
 

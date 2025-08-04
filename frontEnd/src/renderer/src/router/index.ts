@@ -23,6 +23,7 @@ import GetId from '@/views/process/getId.vue'
 import GetIphoneView from '@/views/process/getIphone.vue'
 import VehicleModelView from '@/views/process/vehicleModel.vue'
 import ConfurmView from '@/views/process/confurm.vue'
+import SnapProView from '@/views/process/snap.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -146,6 +147,11 @@ const router = createRouter({
           path: 'confurm',
           name: '信息确认',
           component: ConfurmView
+        },
+        {
+          path: 'snapPro',
+          name: '拍照',
+          component: SnapProView
         }
 
       ]
