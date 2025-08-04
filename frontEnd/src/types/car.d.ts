@@ -1,7 +1,7 @@
 export interface carType {
     text: string,
     fontSize: number,
-    active: boolean
+    active: number
     number: string
     img: string
 

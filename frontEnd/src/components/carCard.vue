@@ -18,8 +18,8 @@ const props = defineProps({
     default: 1.2,
   },
   active: {
-    type: Boolean,
-    default: false,
+    type: Number,
+    default: 2,
   },
   img: {
     type: String,
@@ -29,21 +29,33 @@ const props = defineProps({
 
 const activeMaster = ref(props.active)
 const click = () => {
-  activeMaster.value = !activeMaster.value
-  emit('update:active', activeMaster.value) // 切换状态
-  emit('clickCard')
+  if (activeMaster.value !== 2) {
+    activeMaster.value = activeMaster.value === 1 ? 0 : 1
+    emit('update:active', activeMaster.value) // 切换状态
+    emit('clickCard')
+  }
 }
 
 onMounted(() => {})
 </script>
 
 <template>
-  <div class="overture" :class="{ 'active-overture': activeMaster }" @click="click()">
+  <div
+    class="overture"
+    :class="[
+      `${activeMaster === 1 && 'active-overture'} `,
+      `${activeMaster === 2 && 'no-active-overture'} `,
+    ]"
+    @click="click()"
+  >
     <div class="left">
       <div
         class="number"
         :style="{ fontSize: `${fontSize}rem` }"
-        :class="{ 'active-number': activeMaster }"
+        :class="[
+          `${activeMaster === 1 && 'active-overture'} `,
+          `${activeMaster === 2 && 'no-active-overture'} `,
+        ]"
       >
         {{ number }}
       </div>
@@ -119,6 +131,17 @@ onMounted(() => {})
 .active-number {
   border: 1px solid rgb(255, 255, 255); /* 边框变橙色 */
   background: orange !important; /* 纯橙色背景 */
+  color: white; /* 文字颜色保持白色 */
+}
+/* 新增 active 状态样式 */
+.no-active-overture {
+  border: 2px solid rgb(255, 255, 255); /* 边框变橙色 */
+  background: linear-gradient(to top, #434343, #aeaeae); /* 橙色到浅橙渐变 */
+}
+
+.no-active-number {
+  border: 1px solid rgb(255, 255, 255); /* 边框变橙色 */
+  background: 434343 !important; /* 纯橙色背景 */
   color: white; /* 文字颜色保持白色 */
 }
 </style>
