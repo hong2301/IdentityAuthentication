@@ -31,7 +31,7 @@ const props = defineProps({
   },
   btns: {
     type: Array as () => btnType[],
-    default: () => ({}),
+    default: () => [],
   },
 })
 

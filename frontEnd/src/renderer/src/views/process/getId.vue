@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useCmdStore } from '@/stores/cmd'
-import { onMounted, ref } from 'vue'
+import { markRaw, onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
 import type { btnType } from '@/types/components'
 import { Back, Right } from '@element-plus/icons-vue'
 import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
+import { useProjectStore } from '@/stores/project'
 const cmdStore = useCmdStore()
 
 const nextPageData = ref({
@@ -24,7 +25,7 @@ const btns = ref<btnType[]>([
     label: '返回',
     key: 'back',
     type: 'primary',
-    icon: Back,
+    icon: markRaw(Back),
     position: 'left',
     onClick: () => {
       backHandleBack()
@@ -34,7 +35,7 @@ const btns = ref<btnType[]>([
     label: '继续',
     key: 'continue',
     type: 'success',
-    icon: Right,
+    icon: markRaw(Right),
     position: 'right',
     onClick: () => {
       backHandleCon()
@@ -47,7 +48,12 @@ const backHandleBack = () => {
 }
 
 const backHandleCon = () => {
-  console.log('继续')
+  const projectStore = useProjectStore()
+  projectStore.examData.identity = {
+    id: '441521200301929952',
+    name: '来做客',
+    gender: '男',
+  }
   router.push('/layout/getIphone')
 }
 

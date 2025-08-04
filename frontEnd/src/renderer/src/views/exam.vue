@@ -40,6 +40,7 @@ const backHandleBack = () => {
 
 // 开始进程
 const clickProject = (data: projectType) => {
+  projectStore.examData.projectName = data.name
   projectStore.mountProject(data)
   projectStore.nextStep()
 }

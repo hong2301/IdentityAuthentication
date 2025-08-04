@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { projectType } from '@/types/project'
+import type { examDataType, projectType } from '@/types/project'
 import { useRouter } from 'vue-router'
 import { useCmdStore } from './cmd'
 
@@ -10,7 +10,17 @@ export const useProjectStore = defineStore('preject', () => {
         process: [],
         step: 0
     })
-    const carType = ''
+
+    const examData = ref<examDataType>({
+        projectName: '',
+        identity: {
+            id: '',
+            name: '',
+            gender: '',
+        },
+        phone: '',
+        carType: ''
+    })
 
     const router = useRouter()
     const cmdStore = useCmdStore()
@@ -24,5 +34,5 @@ export const useProjectStore = defineStore('preject', () => {
         router.push(nowProject.value.process[nowProject.value.step].path)
     }
 
-    return { mountProject, nextStep, carType }
+    return { mountProject, nextStep, examData }
 })

@@ -2,18 +2,31 @@
 import { onMounted, ref } from 'vue'
 import { DeleteFilled, CaretLeft } from '@element-plus/icons-vue'
 
-const backPassWord = ref('')
+const emit = defineEmits(['update:password'])
+
+// 定义 props
+const props = defineProps({
+  password: {
+    type: String,
+    default: '',
+  },
+})
+
+const backPassWord = ref(props.password)
 
 const appendNumber = (num: number) => {
   if (backPassWord.value.length < 11) {
     backPassWord.value += num.toString()
+    emit('update:password', backPassWord.value)
   }
 }
 const deleteNumber = () => {
   backPassWord.value = backPassWord.value.slice(0, -1)
+  emit('update:password', backPassWord.value)
 }
 const clearNumber = () => {
   backPassWord.value = ''
+  emit('update:password', backPassWord.value)
 }
 
 onMounted(() => {})

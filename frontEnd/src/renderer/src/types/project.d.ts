@@ -9,3 +9,16 @@ export interface processType {
     path: string,
     state: 0 | 1;
 }
+
+export interface examDataType {
+    projectName: string,
+    carType: string,
+    identity: identityType,
+    phone: string
+}
+export interface identityType {
+    id: string
+    name: string,
+    gender: string
+}
+

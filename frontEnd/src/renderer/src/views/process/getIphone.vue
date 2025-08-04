@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useCmdStore } from '@/stores/cmd'
-import { onMounted, ref } from 'vue'
+import { markRaw, onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
 import type { btnType } from '@/types/components'
 import { Back, Right } from '@element-plus/icons-vue'
@@ -8,6 +8,7 @@ import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
 const cmdStore = useCmdStore()
 import numberKey from '@/components/numberKey.vue'
+import { useProjectStore } from '@/stores/project'
 
 const nextPageData = ref({
   path: '/layout/overtime',
@@ -19,13 +20,14 @@ const nextPageData = ref({
   continue: 1,
   over: 1,
 })
+const password = ref('')
 
 const btns = ref<btnType[]>([
   {
     label: '返回',
     key: 'back',
     type: 'primary',
-    icon: Back,
+    icon: markRaw(Back),
     position: 'left',
     onClick: () => {
       backHandleBack()
@@ -35,7 +37,7 @@ const btns = ref<btnType[]>([
     label: '继续',
     key: 'continue',
     type: 'success',
-    icon: Right,
+    icon: markRaw(Right),
     position: 'right',
     onClick: () => {
       backHandleCon()
@@ -48,7 +50,8 @@ const backHandleBack = () => {
 }
 
 const backHandleCon = () => {
-  console.log('继续')
+  const projectStore = useProjectStore()
+  projectStore.examData.phone = password.value
   router.push('/layout/vehicleModel')
 }
 
@@ -59,7 +62,7 @@ onMounted(() => {
 
 <template>
   <div class="content">
-    <numberKey />
+    <numberKey v-model:password="password" />
     <overtime :time-num="300" :nextPageData="nextPageData" class="overtime" />
     <BtnBox :btns="btns" />
   </div>

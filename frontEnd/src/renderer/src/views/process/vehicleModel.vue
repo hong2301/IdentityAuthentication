@@ -232,7 +232,7 @@ const clickCarCard = () => {
 // 确定信息
 const over=()=>{
   const projectStore=useProjectStore()
-  projectStore.carType=selectCar.value
+  projectStore.examData.carType=selectCar.value
     router.push('/layout/confurm')
 }
 

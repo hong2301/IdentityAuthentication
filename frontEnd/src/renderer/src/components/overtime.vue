@@ -37,7 +37,7 @@ const props = defineProps({
   },
   btns: {
     type: Array as () => btnType[],
-    default: () => ({}),
+    default: () => [],
   },
   timeoutBtn: {
     type: Boolean,
