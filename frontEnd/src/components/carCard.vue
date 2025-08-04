@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
+const emit = defineEmits(['update:active', 'clickCard'])
+
 // 定义 props
 const props = defineProps({
   number: {
@@ -25,16 +27,23 @@ const props = defineProps({
   },
 })
 
+const activeMaster = ref(props.active)
+const click = () => {
+  activeMaster.value = !activeMaster.value
+  emit('update:active', activeMaster.value) // 切换状态
+  emit('clickCard')
+}
+
 onMounted(() => {})
 </script>
 
 <template>
-  <div class="overture" :class="{ 'active-overture': active }">
+  <div class="overture" :class="{ 'active-overture': activeMaster }" @click="click()">
     <div class="left">
       <div
         class="number"
         :style="{ fontSize: `${fontSize}rem` }"
-        :class="{ 'active-number': active }"
+        :class="{ 'active-number': activeMaster }"
       >
         {{ number }}
       </div>

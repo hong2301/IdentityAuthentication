@@ -7,6 +7,7 @@ import { Back, Right } from '@element-plus/icons-vue'
 import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
 import CarCard from '@/components/carCard.vue'
+import type { carType } from '@/types/car'
 const cmdStore = useCmdStore()
 
 const nextPageData = ref({
@@ -43,6 +44,139 @@ const btns = ref<btnType[]>([
   },
 ])
 
+const carType1 = ref<carType[]>([
+  {
+    text: '小型汽车',
+    fontSize: 2,
+    number: 'C1',
+    active: false,
+    img: '../assets/log.png',
+  },
+  {
+    text: '小型自动挡汽车',
+    fontSize: 2,
+    number: 'C2',
+    active: false,
+    img: '../assets/log.png',
+  },
+])
+const carType2 = ref<carType[]>([
+  {
+    text: '大型客车',
+    fontSize: 1.2,
+    number: 'A1',
+    active: false,
+    img: '../assets/log.png',
+  },
+  {
+    text: '牵引车',
+    fontSize: 1.2,
+    number: 'A2',
+    active: false,
+    img: '../assets/log.png',
+  },
+  {
+    text: '城市公交车',
+    fontSize: 1.2,
+    number: 'A3',
+    active: false,
+    img: '../assets/log.png',
+  },
+  {
+    text: '中型客车',
+    fontSize: 1.2,
+    number: 'B1',
+    active: false,
+    img: '../assets/log.png',
+  },
+  {
+    text: '大型汽车',
+    fontSize: 1.2,
+    number: 'B2',
+    active: false,
+    img: '../assets/log.png',
+  },
+])
+const carType3 = ref<carType[]>([
+  {
+    text: '普通三轮摩托车',
+    fontSize: 1.2,
+    number: 'D',
+    active: false,
+    img: '../assets/log.png',
+  },
+  {
+    text: '普通二轮摩托车',
+    fontSize: 1.2,
+    number: 'E',
+    active: false,
+    img: '../assets/log.png',
+  },
+  {
+    text: '轻便摩托车',
+    fontSize: 1.2,
+    number: 'F',
+    active: false,
+    img: '../assets/log.png',
+  },
+  {
+    text: '低速载货车',
+    fontSize: 1.2,
+    number: 'C3',
+    active: false,
+    img: '../assets/log.png',
+  },
+  {
+    text: '三轮汽车',
+    fontSize: 1.2,
+    number: 'C4',
+    active: false,
+    img: '../assets/log.png',
+  },
+])
+const carType4 = ref<carType[]>([
+  {
+    text: '残疾人专用自动挡汽车',
+    fontSize: 1.2,
+    number: 'C5',
+    active: false,
+    img: '../assets/log.png',
+  },
+  {
+    text: '轻型牵引挂车',
+    fontSize: 1.2,
+    number: 'C6',
+    active: false,
+    img: '../assets/log.png',
+  },
+  {
+    text: '轮式自行机械车',
+    fontSize: 1.2,
+    number: 'M',
+    active: false,
+    img: '../assets/log.png',
+  },
+  {
+    text: '无轨电车',
+    fontSize: 1.2,
+    number: 'N',
+    active: false,
+    img: '../assets/log.png',
+  },
+  {
+    text: '有轨电车',
+    fontSize: 1.2,
+    number: 'P',
+    active: false,
+    img: '../assets/log.png',
+  },
+])
+
+// 选择变化
+const clickCarCard = () => {
+  console.log(carType1.value)
+}
+
 const backHandleBack = () => {
   router.go(-1)
 }
@@ -62,29 +196,53 @@ onMounted(() => {
     <div class="title">请点击选择准架车型(再次点击可取消选择，可多选进行组合)</div>
     <div class="car-box">
       <div class="row1">
-        <CarCard number="C1" text="小型汽车" :font-size="2" class="card1" />
-        <CarCard number="C2" text="小型自动挡汽车" :font-size="2" class="card1" />
+        <CarCard
+          v-for="(cItem, cIndex) in carType1"
+          :key="cIndex"
+          :number="cItem.number"
+          :text="cItem.text"
+          :font-size="cItem.fontSize"
+          v-model:active="cItem.active"
+          :img="cItem.img"
+          @click-card="clickCarCard"
+          class="card1"
+        />
       </div>
       <div class="row2">
-        <CarCard number="A1" text="大型客车" class="card2" />
-        <CarCard number="A2" text="牵引车" class="card2" />
-        <CarCard number="A3" text="城市公交车" class="card2" />
-        <CarCard number="B1" text="中型客车" class="card2" />
-        <CarCard number="B2" text="大型汽车" class="card2" />
+        <CarCard
+          v-for="(cItem, cIndex) in carType2"
+          :key="cIndex"
+          :number="cItem.number"
+          :text="cItem.text"
+          :font-size="cItem.fontSize"
+          :active="cItem.active"
+          :img="cItem.img"
+          class="card2"
+        />
       </div>
       <div class="row3">
-        <CarCard number="D" text="普通三轮摩托车" class="card3" />
-        <CarCard number="E" text="普通二轮摩托车" class="card3" />
-        <CarCard number="F" text="轻便摩托车" class="card3" />
-        <CarCard number="C3" text="低速载货车" class="card3" />
-        <CarCard number="C4" text="三轮汽车" class="card3" />
+        <CarCard
+          v-for="(cItem, cIndex) in carType3"
+          :key="cIndex"
+          :number="cItem.number"
+          :text="cItem.text"
+          :font-size="cItem.fontSize"
+          :active="cItem.active"
+          :img="cItem.img"
+          class="card3"
+        />
       </div>
       <div class="row4">
-        <CarCard number="C5" :font-size="1" text="残疾人专用自动挡汽车" class="card4" />
-        <CarCard number="C6" text="轻型牵引挂车" class="card4" />
-        <CarCard number="M" text="轮式自行机械车" class="card4" />
-        <CarCard number="N" text="无轨电车" class="card4" />
-        <CarCard number="P" text="有轨电车" class="card4" />
+        <CarCard
+          v-for="(cItem, cIndex) in carType4"
+          :key="cIndex"
+          :number="cItem.number"
+          :text="cItem.text"
+          :font-size="cItem.fontSize"
+          :active="cItem.active"
+          :img="cItem.img"
+          class="card4"
+        />
       </div>
     </div>
     <overtime :time-num="300" :nextPageData="nextPageData" class="overtime" />
@@ -114,7 +272,6 @@ onMounted(() => {
 .car-box {
   width: 90%;
   height: 90%;
-  background-color: red;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
