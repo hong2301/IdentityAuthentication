@@ -19,8 +19,6 @@ const nextPageData = ref({
   label: '操作超时',
   icon: 'Timer',
   type: 0,
-  continue: 0,
-  over: 0,
 })
 
 const btns = ref<btnType[]>([

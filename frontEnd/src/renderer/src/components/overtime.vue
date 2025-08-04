@@ -6,15 +6,12 @@ import type { btnType } from '@/types/components'
 const emit = defineEmits(['update:timeoutBtn'])
 
 interface NextPageData {
-  back: number | undefined
   path: string
   seconds: number
   secondsLabel: string
   label: string
   icon: string
   type: number
-  continue: number
-  over: number
 }
 
 // 定义 props
