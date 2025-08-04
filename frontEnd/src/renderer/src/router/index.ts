@@ -22,6 +22,7 @@ import OvertimeView from '../views/overtime.vue'
 import GetId from '@/views/process/getId.vue'
 import GetIphoneView from '@/views/process/getIphone.vue'
 import VehicleModelView from '@/views/process/vehicleModel.vue'
+import ConfurmView from '@/views/process/confurm.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -140,8 +141,12 @@ const router = createRouter({
           path: 'vehicleModel',
           name: '准驾车型选择',
           component: VehicleModelView
+        },
+        {
+          path: 'confurm',
+          name: '信息确认',
+          component: ConfurmView
         }
-
 
       ]
     },

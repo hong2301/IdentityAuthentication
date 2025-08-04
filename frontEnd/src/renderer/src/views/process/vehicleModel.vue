@@ -8,6 +8,7 @@ import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
 import CarCard from '@/components/carCard.vue'
 import type { carType } from '@/types/car'
+import { useProjectStore } from '@/stores/project'
 const cmdStore = useCmdStore()
 
 const nextPageData = ref({
@@ -228,6 +229,13 @@ const clickCarCard = () => {
   })
 }
 
+// 确定信息
+const over=()=>{
+  const projectStore=useProjectStore()
+  projectStore.carType=selectCar.value
+    router.push('/layout/confurm')
+}
+
 
 onMounted(() => {
   cmdStore.overBtn = 1
@@ -312,13 +320,13 @@ onMounted(() => {
           <el-button size="large" @click="showCard = false">
             <span style="font-size: 1.5rem">重选</span>
           </el-button>
-          <el-button size="large" type="primary" @click="showCard = false">
+          <el-button size="large" type="primary" @click="over">
             <span style="font-size: 1.5rem">确定</span>
           </el-button>
         </div>
       </template>
     </el-dialog>
-     <overtime ref="overtimeRef" v-model:timeout-btn="timeoutBtn" :btns="overtimeBtns" :time-num="3" :nextPageData="nextPageData" class="overtime" />
+     <overtime ref="overtimeRef" v-model:timeout-btn="timeoutBtn" :btns="overtimeBtns" :time-num="300" :nextPageData="nextPageData" class="overtime" />
   </div>
 </template>
 

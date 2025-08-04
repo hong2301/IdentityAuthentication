@@ -10,6 +10,8 @@ export const useProjectStore = defineStore('preject', () => {
         process: [],
         step: 0
     })
+    const carType = ''
+
     const router = useRouter()
     const cmdStore = useCmdStore()
 
@@ -22,5 +24,5 @@ export const useProjectStore = defineStore('preject', () => {
         router.push(nowProject.value.process[nowProject.value.step].path)
     }
 
-    return { mountProject, nextStep }
+    return { mountProject, nextStep, carType }
 })
