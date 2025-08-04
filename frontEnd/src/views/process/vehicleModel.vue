@@ -61,7 +61,31 @@ onMounted(() => {
   <div class="content">
     <div class="title">请点击选择准架车型(再次点击可取消选择，可多选进行组合)</div>
     <div class="car-box">
-      <CarCard />
+      <div class="row1">
+        <CarCard class="card1" />
+        <CarCard class="card1" />
+      </div>
+      <div class="row2">
+        <CarCard class="card2" />
+        <CarCard class="card2" />
+        <CarCard class="card2" />
+        <CarCard class="card2" />
+        <CarCard class="card2" />
+      </div>
+      <div class="row3">
+        <CarCard class="card3" />
+        <CarCard class="card3" />
+        <CarCard class="card3" />
+        <CarCard class="card3" />
+        <CarCard class="card3" />
+      </div>
+      <div class="row4">
+        <CarCard class="card4" />
+        <CarCard class="card4" />
+        <CarCard class="card4" />
+        <CarCard class="card4" />
+        <CarCard class="card4" />
+      </div>
     </div>
     <overtime :time-num="300" :nextPageData="nextPageData" class="overtime" />
     <BtnBox :btns="btns" />
@@ -91,6 +115,57 @@ onMounted(() => {
   width: 90%;
   height: 90%;
   background-color: red;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.row1 {
+  height: 30%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.row2 {
+  height: 20%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.row3 {
+  height: 20%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.row4 {
+  height: 20%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.card1 {
+  width: 30%;
+  height: 100%;
+  background-color: aqua;
+}
+.card2 {
+  width: 15%;
+  height: 100%;
+  background-color: aqua;
+}
+.card3 {
+  width: 15%;
+  height: 100%;
+  background-color: aqua;
+}
+.card4 {
+  width: 15%;
+  height: 100%;
+  background-color: aqua;
 }
 .overtime {
   position: fixed;
