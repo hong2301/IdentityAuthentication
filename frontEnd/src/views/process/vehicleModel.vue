@@ -44,6 +44,8 @@ const btns = ref<btnType[]>([
   },
 ])
 
+const selectCar = ref('')
+
 const carType1 = ref<carType[]>([
   {
     text: '小型汽车',
@@ -137,7 +139,7 @@ const carType3 = ref<carType[]>([
 const carType4 = ref<carType[]>([
   {
     text: '残疾人专用自动挡汽车',
-    fontSize: 1.2,
+    fontSize: 1,
     number: 'C5',
     active: 0,
     img: '../assets/log.png',
@@ -174,7 +176,27 @@ const carType4 = ref<carType[]>([
 
 // 选择变化
 const clickCarCard = () => {
-  console.log(carType1.value)
+  selectCar.value = ''
+  carType1.value.forEach((item) => {
+    if (item.active === 1) {
+      selectCar.value += item.number + ', '
+    }
+  })
+  carType2.value.forEach((item) => {
+    if (item.active === 1) {
+      selectCar.value += item.number + ', '
+    }
+  })
+  carType3.value.forEach((item) => {
+    if (item.active === 1) {
+      selectCar.value += item.number + ', '
+    }
+  })
+  carType4.value.forEach((item) => {
+    if (item.active === 1) {
+      selectCar.value += item.number + ', '
+    }
+  })
 }
 
 const backHandleBack = () => {
@@ -215,8 +237,9 @@ onMounted(() => {
           :number="cItem.number"
           :text="cItem.text"
           :font-size="cItem.fontSize"
-          :active="cItem.active"
+          v-model:active="cItem.active"
           :img="cItem.img"
+          @click-card="clickCarCard"
           class="card2"
         />
       </div>
@@ -227,8 +250,9 @@ onMounted(() => {
           :number="cItem.number"
           :text="cItem.text"
           :font-size="cItem.fontSize"
-          :active="cItem.active"
+          v-model:active="cItem.active"
           :img="cItem.img"
+          @click-card="clickCarCard"
           class="card3"
         />
       </div>
@@ -239,12 +263,14 @@ onMounted(() => {
           :number="cItem.number"
           :text="cItem.text"
           :font-size="cItem.fontSize"
-          :active="cItem.active"
+          v-model:active="cItem.active"
           :img="cItem.img"
+          @click-card="clickCarCard"
           class="card4"
         />
       </div>
     </div>
+    <div class="title1">您选择的车型有: {{ selectCar }}</div>
     <overtime :time-num="300" :nextPageData="nextPageData" class="overtime" />
     <BtnBox :btns="btns" />
   </div>
@@ -258,6 +284,7 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  position: relative;
 }
 .title {
   margin-bottom: 1%;
@@ -268,6 +295,17 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.title1 {
+  position: absolute;
+  font-size: 2rem;
+  color: rgb(255, 255, 0);
+  font-weight: 800;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: -9%;
 }
 .car-box {
   width: 90%;
