@@ -45,6 +45,7 @@ const btns = ref<btnType[]>([
 ])
 
 const selectCar = ref('')
+const showCard = ref(false)
 
 const carType1 = ref<carType[]>([
   {
@@ -199,12 +200,15 @@ const clickCarCard = () => {
   })
 }
 
+// 点击返回
 const backHandleBack = () => {
   router.go(-1)
 }
 
+// 点击继续
 const backHandleCon = () => {
   console.log('继续')
+  showCard.value = true
   // router.push('/layout/vehicleModel')
 }
 
@@ -273,6 +277,31 @@ onMounted(() => {
     <div class="title1">您选择的车型有: {{ selectCar }}</div>
     <overtime :time-num="300" :nextPageData="nextPageData" class="overtime" />
     <BtnBox :btns="btns" />
+    <el-dialog v-model="showCard"  width="800">
+      <template #header>
+        确认消息
+      </template>
+      <div class="body">
+        <div style="width: 100%; display: flex; justify-content: center">
+          请参考下图实例核对选择的准架车型是否正确，如有多个准架车型，请务必选择。
+        </div>
+        <div class="img-box">
+          <img class="img"></img>
+          <img class="img"></img>
+        </div>
+        <div>当前准架车型有: <span style="color: brown;">{{ selectCar }}</span></div>
+      </div>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button size="large" @click="showCard = false">
+            <span style="font-size: 1.5rem">重选</span>
+          </el-button>
+          <el-button size="large" type="primary" @click="showCard = false">
+            <span style="font-size: 1.5rem">确定</span>
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -345,22 +374,18 @@ onMounted(() => {
 .card1 {
   width: 40%;
   height: 100%;
-  background-color: aqua;
 }
 .card2 {
   width: 19%;
   height: 100%;
-  background-color: aqua;
 }
 .card3 {
   width: 19%;
   height: 100%;
-  background-color: aqua;
 }
 .card4 {
   width: 19%;
   height: 100%;
-  background-color: aqua;
 }
 .overtime {
   position: fixed;
@@ -369,5 +394,27 @@ onMounted(() => {
   height: 10vh;
   display: flex;
   align-items: center;
+}
+.body {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 3px solid rgba(85, 140, 202, 1);
+  padding: 2%;
+  color: rgba(0, 0, 0, 1);
+  font-weight: 800;
+}
+.img-box{
+  width: 100%;
+  height: 30vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-block: 2%;
+}
+.img{
+  width: 45%;
+  height: 100%;
+    background-color: red;
 }
 </style>

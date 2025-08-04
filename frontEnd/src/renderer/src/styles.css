@@ -28,3 +28,16 @@
 .el-input__inner {
   font-size: 2.5rem;
 }
+
+.el-dialog__header {
+  font-size: 2rem;
+}
+.el-dialog__body {
+  font-size: 2rem;
+}
+* {
+  user-select: none; /* 禁止文本选中 */
+  -webkit-user-select: none; /* Safari兼容 */
+  -moz-user-select: none; /* Firefox兼容 */
+  -ms-user-select: none; /* IE/Edge兼容 */
+}
