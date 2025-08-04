@@ -62,29 +62,29 @@ onMounted(() => {
     <div class="title">请点击选择准架车型(再次点击可取消选择，可多选进行组合)</div>
     <div class="car-box">
       <div class="row1">
-        <CarCard class="card1" />
-        <CarCard class="card1" />
+        <CarCard number="C1" text="小型汽车" :font-size="2" class="card1" />
+        <CarCard number="C2" text="小型自动挡汽车" :font-size="2" class="card1" />
       </div>
       <div class="row2">
-        <CarCard class="card2" />
-        <CarCard class="card2" />
-        <CarCard class="card2" />
-        <CarCard class="card2" />
-        <CarCard class="card2" />
+        <CarCard number="A1" text="大型客车" class="card2" />
+        <CarCard number="A2" text="牵引车" class="card2" />
+        <CarCard number="A3" text="城市公交车" class="card2" />
+        <CarCard number="B1" text="中型客车" class="card2" />
+        <CarCard number="B2" text="大型汽车" class="card2" />
       </div>
       <div class="row3">
-        <CarCard class="card3" />
-        <CarCard class="card3" />
-        <CarCard class="card3" />
-        <CarCard class="card3" />
-        <CarCard class="card3" />
+        <CarCard number="D" text="普通三轮摩托车" class="card3" />
+        <CarCard number="E" text="普通二轮摩托车" class="card3" />
+        <CarCard number="F" text="轻便摩托车" class="card3" />
+        <CarCard number="C3" text="低速载货车" class="card3" />
+        <CarCard number="C4" text="三轮汽车" class="card3" />
       </div>
       <div class="row4">
-        <CarCard class="card4" />
-        <CarCard class="card4" />
-        <CarCard class="card4" />
-        <CarCard class="card4" />
-        <CarCard class="card4" />
+        <CarCard number="C5" :font-size="1" text="残疾人专用自动挡汽车" class="card4" />
+        <CarCard number="C6" text="轻型牵引挂车" class="card4" />
+        <CarCard number="M" text="轮式自行机械车" class="card4" />
+        <CarCard number="N" text="无轨电车" class="card4" />
+        <CarCard number="P" text="有轨电车" class="card4" />
       </div>
     </div>
     <overtime :time-num="300" :nextPageData="nextPageData" class="overtime" />
@@ -130,40 +130,40 @@ onMounted(() => {
   height: 20%;
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 }
 .row3 {
   height: 20%;
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 }
 .row4 {
   height: 20%;
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 }
 .card1 {
-  width: 30%;
+  width: 40%;
   height: 100%;
   background-color: aqua;
 }
 .card2 {
-  width: 15%;
+  width: 19%;
   height: 100%;
   background-color: aqua;
 }
 .card3 {
-  width: 15%;
+  width: 19%;
   height: 100%;
   background-color: aqua;
 }
 .card4 {
-  width: 15%;
+  width: 19%;
   height: 100%;
   background-color: aqua;
 }
