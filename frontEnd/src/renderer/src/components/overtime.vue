@@ -3,6 +3,8 @@ import { onMounted, onUnmounted, ref, watch, type PropType } from 'vue'
 import timeout from '@/components/timeout.vue'
 import type { btnType } from '@/types/components'
 
+const emit = defineEmits(['update:timeoutBtn'])
+
 interface NextPageData {
   back: number | undefined
   path: string
@@ -40,20 +42,26 @@ const props = defineProps({
     type: Array as () => btnType[],
     default: () => ({}),
   },
+  timeoutBtn: {
+    type: Boolean,
+    default: false,
+  },
 })
 
-const timeoutBtn = ref(0)
+const timeoutBtn = ref(props.timeoutBtn)
 
 const timeStep = ref(props.timeNum)
 let setIntervalData: number | undefined
 
 const runTime = () => {
   timeStep.value = props.timeNum
+  clearInterval(setIntervalData)
   setIntervalData = setInterval(() => {
     timeStep.value--
     if (timeStep.value <= 0) {
       clearInterval(setIntervalData)
-      timeoutBtn.value = 1
+      timeoutBtn.value = true
+      emit('update:timeoutBtn', timeoutBtn.value)
     }
   }, 1000)
 }
@@ -71,6 +79,16 @@ onMounted(() => {
 // 组件卸载时清除计时器
 onUnmounted(() => {
   clearTimer()
+})
+watch(
+  () => props.timeoutBtn,
+  (newValue) => {
+    timeoutBtn.value = newValue
+  },
+)
+defineExpose({
+  runTime,
+  clearTimer,
 })
 </script>
 

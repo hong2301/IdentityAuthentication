@@ -22,6 +22,9 @@ const nextPageData = ref({
   over: 1,
 })
 
+const timeoutBtn=ref(false)
+const overtimeRef=ref()
+
 const btns = ref<btnType[]>([
   {
     label: '返回',
@@ -30,7 +33,7 @@ const btns = ref<btnType[]>([
     icon: markRaw(Back),
     position: 'left',
     onClick: () => {
-      backHandleBack()
+      router.go(-1)
     },
   },
   {
@@ -40,7 +43,7 @@ const btns = ref<btnType[]>([
     icon: markRaw(Right),
     position: 'right',
     onClick: () => {
-      backHandleCon()
+      showCard.value = true
     },
   },
 ])
@@ -53,7 +56,7 @@ const overtimeBtns = ref<btnType[]>([
     icon: markRaw(Back),
     position: 'left',
     onClick: () => {
-      console.log("返回1")
+         router.go(-1)
     },
   },
   {
@@ -63,7 +66,8 @@ const overtimeBtns = ref<btnType[]>([
     icon: markRaw(Right),
     position: 'right',
     onClick: () => {
-      console.log("继续1")
+      timeoutBtn.value=false
+      overtimeRef.value.runTime()
     },
   },
 ])
@@ -224,16 +228,6 @@ const clickCarCard = () => {
   })
 }
 
-// 点击返回
-const backHandleBack = () => {
-  router.go(-1)
-}
-
-// 点击继续
-const backHandleCon = () => {
-  console.log('继续')
-  showCard.value = true
-}
 
 onMounted(() => {
   cmdStore.overBtn = 1
@@ -324,7 +318,7 @@ onMounted(() => {
         </div>
       </template>
     </el-dialog>
-     <overtime :btns="overtimeBtns" :time-num="3" :nextPageData="nextPageData" class="overtime" />
+     <overtime ref="overtimeRef" v-model:timeout-btn="timeoutBtn" :btns="overtimeBtns" :time-num="3" :nextPageData="nextPageData" class="overtime" />
   </div>
 </template>
 
