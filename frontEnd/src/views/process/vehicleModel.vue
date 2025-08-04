@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useCmdStore } from '@/stores/cmd'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, markRaw } from 'vue'
 import overtime from '@/components/overtime.vue'
 import type { btnType } from '@/types/components'
 import { Back, Right } from '@element-plus/icons-vue'
 import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
+import CarCard from '@/components/carCard.vue'
 const cmdStore = useCmdStore()
 
 const nextPageData = ref({
@@ -24,7 +25,7 @@ const btns = ref<btnType[]>([
     label: '返回',
     key: 'back',
     type: 'primary',
-    icon: Back,
+    icon: markRaw(Back),
     position: 'left',
     onClick: () => {
       backHandleBack()
@@ -34,7 +35,7 @@ const btns = ref<btnType[]>([
     label: '继续',
     key: 'continue',
     type: 'success',
-    icon: Right,
+    icon: markRaw(Right),
     position: 'right',
     onClick: () => {
       backHandleCon()
@@ -59,7 +60,9 @@ onMounted(() => {
 <template>
   <div class="content">
     <div class="title">请点击选择准架车型(再次点击可取消选择，可多选进行组合)</div>
-    <div class="car-box"></div>
+    <div class="car-box">
+      <CarCard />
+    </div>
     <overtime :time-num="300" :nextPageData="nextPageData" class="overtime" />
     <BtnBox :btns="btns" />
   </div>
