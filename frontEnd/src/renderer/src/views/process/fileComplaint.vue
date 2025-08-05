@@ -37,7 +37,7 @@ const ContinueBtn: btnType = {
   icon: markRaw(Right),
   position: 'right',
   onClick: () => {
-    router.push('/process/fileComplaint')
+    router.push('/process/signature')
   },
 }
 

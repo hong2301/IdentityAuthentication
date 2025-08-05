@@ -30,6 +30,7 @@ import ColorVisionView from '@/views/process/colorVision.vue'
 import HearingView from '@/views/process/hearing.vue'
 import HeightAndWeightView from '@/views/process/heightAndWeight.vue'
 import FileComplaintView from '@/views/process/fileComplaint.vue'
+import SignatureView from '@/views/process/signature.vue'
 
 
 const router = createRouter({
@@ -189,6 +190,11 @@ const router = createRouter({
           path: 'process/fileComplaint',
           name: '申告填写',
           component: FileComplaintView
+        },
+        {
+          path: 'process/signature',
+          name: '签名',
+          component: SignatureView
         },
 
       ]
