@@ -30,16 +30,6 @@ const backBtn: btnType = {
     router.go(-1)
   },
 }
-const refreshBtn: btnType = {
-  label: '清空',
-  key: 'refresh',
-  type: 'primary',
-  icon: markRaw(Refresh),
-  position: 'right',
-  onClick: () => {
-    clear()
-  },
-}
 const ContinueBtn: btnType = {
   label: '继续',
   key: 'continue',
@@ -47,13 +37,13 @@ const ContinueBtn: btnType = {
   icon: markRaw(Right),
   position: 'right',
   onClick: () => {
-    router.push('/process/fileComplaint')
+    router.push('/process/printConfirmation')
   },
 }
 
 const timeoutBtn = ref(false)
 const overtimeRef = ref()
-const btns = ref<btnType[]>([backBtn, refreshBtn, ContinueBtn])
+const btns = ref<btnType[]>([backBtn, ContinueBtn])
 const overtimeBtns = ref<btnType[]>([
   {
     label: '继续',
@@ -68,113 +58,13 @@ const overtimeBtns = ref<btnType[]>([
   },
 ])
 
-const clear = () => {
-  const canvas = document.querySelector('.board') as HTMLCanvasElement
-  const ctx = canvas.getContext('2d')!
-
-  function clearCanvas() {
-    // 清空整个画布
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-    // 如果需要重置画布状态（可选）
-    ctx.setTransform(1, 0, 0, 1, 0, 0) // 重置变换矩阵
-    ctx.globalAlpha = 1 // 重置透明度
-    ctx.strokeStyle = '#000000' // 重置线条颜色
-    ctx.fillStyle = '#000000' // 重置填充颜色
-    ctx.lineWidth = 2 // 重置线宽
-  }
-  clearCanvas()
-}
-
-const runCanvas = () => {
-  const canvas = document.querySelector('.board') as HTMLCanvasElement
-
-  const ctx = canvas.getContext('2d')!
-
-  // 设置画布大小（适配屏幕）
-  function resizeCanvas() {
-    canvas.width = canvas.offsetWidth
-    canvas.height = canvas.offsetHeight
-  }
-  window.addEventListener('resize', resizeCanvas)
-  resizeCanvas()
-
-  // 绘画设置
-  ctx.strokeStyle = '#000000' // 线条颜色
-  ctx.lineWidth = 3 // 线条粗细
-  ctx.lineCap = 'round' // 线条端点圆润
-  ctx.lineJoin = 'round' // 线条连接圆润
-
-  // 绘画状态
-  let isDrawing = false
-  let lastX = 0
-  let lastY = 0
-
-  // 开始绘画（触摸/鼠标按下）
-  function startDrawing(e: MouseEvent | Touch) {
-    isDrawing = true
-    const pos = getPosition(e)
-    ;[lastX, lastY] = [pos.x, pos.y]
-  }
-
-  // 绘画中（触摸移动/鼠标移动）
-  function draw(e: MouseEvent | Touch) {
-    if (!isDrawing) return
-
-    const pos = getPosition(e)
-    ctx.beginPath()
-    ctx.moveTo(lastX, lastY)
-    ctx.lineTo(pos.x, pos.y)
-    ctx.stroke()
-    ;[lastX, lastY] = [pos.x, pos.y]
-  }
-
-  // 结束绘画（触摸结束/鼠标抬起）
-  function stopDrawing() {
-    isDrawing = false
-  }
-
-  // 获取坐标（兼容触摸和鼠标事件）
-  function getPosition(e: any) {
-    const rect = canvas.getBoundingClientRect()
-    return {
-      x: (e.clientX || e.touches[0].clientX) - rect.left,
-      y: (e.clientY || e.touches[0].clientY) - rect.top,
-    }
-  }
-
-  // 鼠标事件监听
-  canvas.addEventListener('mousedown', startDrawing)
-  canvas.addEventListener('mousemove', draw)
-  canvas.addEventListener('mouseup', stopDrawing)
-  canvas.addEventListener('mouseout', stopDrawing)
-
-  // 触摸事件监听（移动端支持）
-  canvas.addEventListener('touchstart', (e) => {
-    e.preventDefault() // 阻止触摸滚动
-    startDrawing(e.touches[0])
-  })
-  canvas.addEventListener('touchmove', (e) => {
-    e.preventDefault() // 阻止触摸滚动
-    draw(e.touches[0])
-  })
-  canvas.addEventListener('touchend', stopDrawing)
-}
-
 onMounted(() => {
   cmdStore.overBtn = 1
-  runCanvas()
 })
 </script>
 
 <template>
-  <div class="content">
-    <div class="title">确认</div>
-    <canvas class="board">
-      <div class="line1"></div>
-      <div class="line2"></div>
-    </canvas>
-  </div>
+  <div class="content"></div>
   <BtnBox :btns="btns" />
   <overtime
     ref="overtimeRef"
@@ -194,38 +84,6 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-}
-.title {
-  margin-bottom: 1%;
-  font-size: 3rem;
-  color: white;
-  font-weight: 800;
-  width: 80%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.board {
-  width: 60%;
-  height: 80%;
-  background-color: white;
-  border-radius: 2vh;
-  border: 0.5vh solid wheat;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  touch-action: none; /* 禁止触摸默认行为 */
-}
-.line1 {
-  position: absolute;
-  height: 100%;
-  border: 2px dashed black;
-}
-.line2 {
-  position: absolute;
-  width: 100%;
-  border: 2px dashed black;
 }
 .overtime {
   position: fixed;
