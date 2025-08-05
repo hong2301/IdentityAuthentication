@@ -27,6 +27,7 @@ import FingerDetectionView from '@/views/process/fingerDetection.vue'
 import NeckView from '@/views/process/neck.vue'
 import VisionView from '@/views/process/vision.vue'
 import ColorVisionView from '@/views/process/colorVision.vue'
+import HearingView from '@/views/process/hearing.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -170,6 +171,11 @@ const router = createRouter({
           path: 'process/colorVision',
           name: '辨色力检测',
           component: ColorVisionView
+        },
+        {
+          path: 'process/hearing',
+          name: '听力检测',
+          component: HearingView
         },
 
       ]
