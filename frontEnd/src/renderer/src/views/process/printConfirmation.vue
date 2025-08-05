@@ -7,6 +7,8 @@ import { Back, Refresh, Right } from '@element-plus/icons-vue'
 import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
+import { jsPDF } from 'jspdf'
+import html2canvas from 'html2canvas'
 
 const projectStore = useProjectStore()
 const cmdStore = useCmdStore()
@@ -36,8 +38,27 @@ const ContinueBtn: btnType = {
   type: 'success',
   icon: markRaw(Right),
   position: 'right',
-  onClick: () => {
-    router.push('/process/printConfirmation')
+  onClick: async () => {
+    const element = document.querySelector('.paper') as HTMLElement
+
+    // 1. 将 HTML 转为 Canvas
+    const canvas = await html2canvas(element, {
+      scale: 2, // 提高清晰度
+      logging: false, // 关闭调试日志
+      useCORS: true, // 允许跨域图片
+    })
+
+    // 2. 计算 PDF 尺寸（A4 标准：210mm x 297mm）
+    const imgData = canvas.toDataURL('image/png')
+    const pdfWidth = 210 // mm
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width
+
+    // 3. 生成 PDF
+    const pdf = new jsPDF('p', 'mm', 'a4')
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
+
+    // 4. 下载 PDF
+    pdf.save('exported-document.pdf')
   },
 }
 
@@ -69,7 +90,9 @@ onMounted(() => {
       <div class="title">机动车驾驶人身体条件证明</div>
       <div class="paper-content">
         <div class="basic">
-          <div class="title1" style="border-right: 2px solid black">申请人填报事项</div>
+          <div class="title1" style="border-right: 2px solid black">
+            申<br />请<br />人<br />填<br />报<br />事<br />项
+          </div>
           <div class="basic-content">
             <div style="height: 45%; display: flex">
               <div
@@ -80,7 +103,7 @@ onMounted(() => {
                   box-sizing: border-box;
                 "
               >
-                申请人填报事项
+                申<br />请<br />人<br />填<br />报<br />事<br />项
               </div>
               <div style="flex: 1; height: 100%">
                 <div
@@ -224,13 +247,15 @@ onMounted(() => {
             </div>
             <div style="height: 55%">
               <div class="title1" style="border-right: 2px solid black; box-sizing: border-box">
-                申告事项
+                申<br />告<br />事<br />项
               </div>
             </div>
           </div>
         </div>
         <div class="health">
-          <div class="title1" style="border-right: 2px solid black">医疗机构填表事项</div>
+          <div class="title1" style="border-right: 2px solid black">
+            医<br />疗<br />机<br />构<br />填<br />表<br />事<br />项
+          </div>
         </div>
       </div>
     </div>
@@ -286,13 +311,12 @@ onMounted(() => {
   flex: 1;
 }
 .title1 {
-  writing-mode: vertical-rl;
   width: 2vw;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.1rem;
+  font-size: 1rem;
   box-sizing: border-box;
 }
 .health {
@@ -311,14 +335,14 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1rem;
+  font-size: 0.8rem;
   color: black;
   box-sizing: border-box;
 }
 .input {
   display: flex;
   align-items: center;
-  font-size: 1rem;
+  font-size: 0.8rem;
   color: brown;
   justify-content: flex-start;
   padding-left: 1%;

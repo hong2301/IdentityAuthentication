@@ -19,6 +19,8 @@
     "@element-plus/icons-vue": "^2.3.1",
     "axios": "^1.11.0",
     "element-plus": "^2.10.4",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
     "pinia": "^3.0.3",
     "vue": "^3.5.18",
     "vue-router": "^4.5.1"
@@ -26,6 +28,8 @@
   "devDependencies": {
     "@tsconfig/node18": "^18.2.2",
     "@types/eslint": "^9.6.1",
+    "@types/html2canvas": "^1.0.0",
+    "@types/jspdf": "^2.0.0",
     "@types/node": "^18.18.8",
     "@vitejs/plugin-vue": "^4.5.2",
     "@vue/eslint-config-prettier": "^10.2.0",
