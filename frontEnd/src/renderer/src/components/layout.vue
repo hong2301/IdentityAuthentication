@@ -22,7 +22,7 @@ const no = ref('')
 // 结束
 const over = () => {
   console.log('结束')
-  router.push('/layout')
+  router.push('/')
 }
 
 // 获取编号
@@ -89,7 +89,7 @@ const inBackGo = () => {
     ElMessage.error('密码错误!')
   } else {
     inBackBtn.value = false
-    router.push('/layout/back')
+    router.push('/back')
   }
 }
 

@@ -13,7 +13,7 @@ import { useProjectStore } from '@/stores/project'
 const timeoutBtn = ref(false)
 const overtimeRef = ref()
 const nextPageData = ref({
-  path: '/layout',
+  path: '/',
   seconds: 30000,
   secondsLabel: '点击继续可重试，否则即将前往首页:',
   label: '身份证信息获取超时',
@@ -77,7 +77,7 @@ const backHandleBack = () => {
 const backHandleCon = () => {
   const projectStore = useProjectStore()
   projectStore.examData.phone = password.value
-  router.push('/layout/vehicleModel')
+  router.push('/process/vehicleModel')
 }
 
 onMounted(() => {

@@ -18,18 +18,18 @@ import SnapvView from '../views/back/snapv.vue'
 import CarTypeView from '../views/back/carType.vue'
 import ExamView from '../views/exam.vue'
 import SnapView from '../views/snap.vue'
-import OvertimeView from '../views/overtime.vue'
 import GetId from '@/views/process/getId.vue'
 import GetIphoneView from '@/views/process/getIphone.vue'
 import VehicleModelView from '@/views/process/vehicleModel.vue'
 import ConfurmView from '@/views/process/confurm.vue'
 import SnapProView from '@/views/process/snap.vue'
+import FingerDetectionView from '@/views/process/fingerDetection.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
-      path: '/layout',
+      path: '/',
       name: 'layout',
       component: Layout,
       children: [
@@ -124,42 +124,38 @@ const router = createRouter({
           component: SnapView
         },
         {
-          path: 'overtime',
-          name: '超时',
-          component: OvertimeView
-        },
-        {
-          path: 'getId',
+          path: 'process/getId',
           name: '身份证信息获取',
           component: GetId
         },
         {
-          path: 'getIphone',
+          path: 'process/getIphone',
           name: '手机号码获取',
           component: GetIphoneView
         },
         {
-          path: 'vehicleModel',
+          path: 'process/vehicleModel',
           name: '准驾车型选择',
           component: VehicleModelView
         },
         {
-          path: 'confurm',
+          path: 'process/confurm',
           name: '信息确认',
           component: ConfurmView
         },
         {
-          path: 'snapPro',
+          path: 'process/snapPro',
           name: '拍照',
           component: SnapProView
+        },
+        {
+          path: 'process/fingerDetection',
+          name: '手指检测',
+          component: FingerDetectionView
         }
 
       ]
     },
-    {
-      path: '/',
-      redirect: '/layout'
-    }
   ]
 })
 

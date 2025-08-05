@@ -44,7 +44,7 @@ const runTime = () => {
     timeStep.value--
     if (timeStep.value <= 0) {
       clearInterval(setIntervalData)
-      router.push('/layout')
+      router.push('/')
     }
   }, 1000)
 }

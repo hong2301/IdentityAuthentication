@@ -12,7 +12,7 @@ const cmdStore = useCmdStore()
 const timeoutBtn = ref(false)
 const overtimeRef = ref()
 const nextPageData = ref({
-  path: '/layout',
+  path: '/',
   seconds: 30000,
   secondsLabel: '点击继续可重试，否则即将前往首页:',
   label: '身份证信息获取超时',
@@ -79,7 +79,7 @@ const backHandleCon = () => {
     name: '来做客',
     gender: '男',
   }
-  router.push('/layout/getIphone')
+  router.push('/process/getIphone')
 }
 
 onMounted(() => {

@@ -12,7 +12,7 @@ import { useProjectStore } from '@/stores/project'
 const cmdStore = useCmdStore()
 
 const nextPageData = ref({
-  path: '/layout',
+  path: '/',
   seconds: 30000,
   secondsLabel: '点击继续可重试，否则即将前往首页:',
   label: '车型选择超时',
@@ -233,7 +233,7 @@ const clickCarCard = () => {
 const over=()=>{
   const projectStore=useProjectStore()
   projectStore.examData.carType=selectCar.value
-    router.push('/layout/confurm')
+    router.push('/process/confurm')
 }
 
 

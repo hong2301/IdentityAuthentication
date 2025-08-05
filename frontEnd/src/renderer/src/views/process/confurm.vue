@@ -11,7 +11,7 @@ import { useProjectStore } from '@/stores/project'
 import tabel from '@/components/tabel.vue'
 
 const nextPageData = ref({
-  path: '/layout',
+  path: '/',
   seconds: 30000,
   secondsLabel: '点击继续可重新确认，否则即将前往首页:',
   label: '信息确认超时',
@@ -68,7 +68,7 @@ const btns = ref<btnType[]>([
     icon: markRaw(Right),
     position: 'right',
     onClick: () => {
-      router.push('/layout/snapPro')
+      router.push('/process/snapPro')
     },
   },
 ])

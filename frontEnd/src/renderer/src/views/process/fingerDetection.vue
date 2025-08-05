@@ -47,7 +47,7 @@ const continueBtn: btnType = {
   icon: markRaw(Right),
   position: 'right',
   onClick: () => {
-    router.push('/process/fingerDetection')
+    router.push('/process/vehicleModel')
   },
 }
 const timeoutBtn = ref(false)

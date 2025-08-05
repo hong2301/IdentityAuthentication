@@ -13,7 +13,7 @@ const projectStore = useProjectStore()
 const project = ref<projectType[]>([])
 
 const nextPageData = ref({
-  path: '/layout',
+  path: '/',
   seconds: 3,
   secondsLabel: '则即将前往首页: ',
   label: '操作超时',
@@ -53,7 +53,7 @@ const getProject = () => {
       process: [
         {
           name: '身份证获取',
-          path: '/layout/getId',
+          path: '/process/getId',
           state: 0,
         },
       ],
@@ -64,7 +64,7 @@ const getProject = () => {
       process: [
         {
           name: '手指检测',
-          path: '/layout/fingerCheck',
+          path: '/process/fingerCheck',
           state: 0,
         },
       ],
@@ -75,7 +75,7 @@ const getProject = () => {
       process: [
         {
           name: '身份证获取',
-          path: '/layout/getId',
+          path: '/process/getId',
           state: 0,
         },
       ],

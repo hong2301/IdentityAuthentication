@@ -6,11 +6,11 @@ import { Monitor } from '@element-plus/icons-vue'
 const router = useRouter()
 
 const clickExam = () => {
-  router.push('layout/exam')
+  router.push('exam')
 }
 
 const clickSnap = () => {
-  router.push('layout/snap')
+  router.push('snap')
 }
 onMounted(() => {})
 </script>
