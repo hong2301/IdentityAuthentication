@@ -38,7 +38,7 @@ const ContinueBtn: btnType = {
   icon: markRaw(Right),
   position: 'right',
   onClick: () => {
-    router.push('/')
+    router.push('/process/vision')
   },
 }
 const timeoutBtn = ref(false)
@@ -103,8 +103,9 @@ onMounted(() => {
     class="overtime"
   />
   <report
-    v-if="checkResult"
+    v-if="1"
     :type="1"
+    path="/process/vision"
     :seconds="300"
     secondsLabel="即将进行下一步: "
     :btns="[...btns, ContinueBtn]"
