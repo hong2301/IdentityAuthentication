@@ -3,7 +3,7 @@ import { useCmdStore } from '@/stores/cmd'
 import { markRaw, onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
 import type { btnType } from '@/types/components'
-import { Back, Right } from '@element-plus/icons-vue'
+import { Back, Refresh, Right } from '@element-plus/icons-vue'
 import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
@@ -30,6 +30,16 @@ const backBtn: btnType = {
     router.go(-1)
   },
 }
+const refreshBtn: btnType = {
+  label: '清空',
+  key: 'refresh',
+  type: 'primary',
+  icon: markRaw(Refresh),
+  position: 'right',
+  onClick: () => {
+    clear()
+  },
+}
 const ContinueBtn: btnType = {
   label: '继续',
   key: 'continue',
@@ -43,7 +53,7 @@ const ContinueBtn: btnType = {
 
 const timeoutBtn = ref(false)
 const overtimeRef = ref()
-const btns = ref<btnType[]>([backBtn, ContinueBtn])
+const btns = ref<btnType[]>([backBtn, refreshBtn, ContinueBtn])
 const overtimeBtns = ref<btnType[]>([
   {
     label: '继续',
@@ -57,6 +67,24 @@ const overtimeBtns = ref<btnType[]>([
     },
   },
 ])
+
+const clear = () => {
+  const canvas = document.querySelector('.board') as HTMLCanvasElement
+  const ctx = canvas.getContext('2d')!
+
+  function clearCanvas() {
+    // 清空整个画布
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    // 如果需要重置画布状态（可选）
+    ctx.setTransform(1, 0, 0, 1, 0, 0) // 重置变换矩阵
+    ctx.globalAlpha = 1 // 重置透明度
+    ctx.strokeStyle = '#000000' // 重置线条颜色
+    ctx.fillStyle = '#000000' // 重置填充颜色
+    ctx.lineWidth = 2 // 重置线宽
+  }
+  clearCanvas()
+}
 
 const runCanvas = () => {
   const canvas = document.querySelector('.board') as HTMLCanvasElement
