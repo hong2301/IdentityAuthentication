@@ -29,6 +29,7 @@ import VisionView from '@/views/process/vision.vue'
 import ColorVisionView from '@/views/process/colorVision.vue'
 import HearingView from '@/views/process/hearing.vue'
 import HeightAndWeightView from '@/views/process/heightAndWeight.vue'
+import FileComplaintView from '@/views/process/fileComplaint.vue'
 
 
 const router = createRouter({
@@ -183,6 +184,11 @@ const router = createRouter({
           path: 'process/heightAndWeight',
           name: '身高体重检测',
           component: HeightAndWeightView
+        },
+        {
+          path: 'process/fileComplaint',
+          name: '申告填写',
+          component: FileComplaintView
         },
 
       ]
