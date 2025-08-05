@@ -28,6 +28,8 @@ import NeckView from '@/views/process/neck.vue'
 import VisionView from '@/views/process/vision.vue'
 import ColorVisionView from '@/views/process/colorVision.vue'
 import HearingView from '@/views/process/hearing.vue'
+import HeightAndWeightView from '@/views/process/heightAndWeight.vue'
+
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -176,6 +178,11 @@ const router = createRouter({
           path: 'process/hearing',
           name: '听力检测',
           component: HearingView
+        },
+        {
+          path: 'process/heightAndWeight',
+          name: '身高体重检测',
+          component: HeightAndWeightView
         },
 
       ]
