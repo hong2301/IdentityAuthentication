@@ -15,6 +15,7 @@ export interface examDataType {
     carType: string,
     identity: identityType,
     phone: string
+    photo: any
 }
 export interface identityType {
     id: string

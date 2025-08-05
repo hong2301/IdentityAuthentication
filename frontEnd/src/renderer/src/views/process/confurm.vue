@@ -11,7 +11,7 @@ import { useProjectStore } from '@/stores/project'
 import tabel from '@/components/tabel.vue'
 
 const nextPageData = ref({
-  path: '/layout/overtime',
+  path: '/layout',
   seconds: 30000,
   secondsLabel: '点击继续可重新确认，否则即将前往首页:',
   label: '信息确认超时',

@@ -12,7 +12,7 @@ import { useProjectStore } from '@/stores/project'
 const cmdStore = useCmdStore()
 
 const nextPageData = ref({
-  path: '/layout/overtime',
+  path: '/layout',
   seconds: 30000,
   secondsLabel: '点击继续可重试，否则即将前往首页:',
   label: '车型选择超时',
