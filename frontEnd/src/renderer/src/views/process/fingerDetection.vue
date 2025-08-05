@@ -3,7 +3,7 @@ import { useCmdStore } from '@/stores/cmd'
 import { markRaw, onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
 import type { btnType } from '@/types/components'
-import { Back, Camera, Right } from '@element-plus/icons-vue'
+import { Back, Right } from '@element-plus/icons-vue'
 import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
@@ -14,7 +14,7 @@ const nextPageData = ref({
   path: '/',
   seconds: 30000,
   secondsLabel: '点击继续可重试，否则即将前往首页:',
-  label: '拍照超时',
+  label: '手指检测超时',
   icon: 'Timer',
   type: 0,
   continue: 1,
@@ -28,26 +28,6 @@ const backBtn: btnType = {
   position: 'left',
   onClick: () => {
     router.go(-1)
-  },
-}
-const snapBtnOpt: btnType = {
-  label: '拍照',
-  key: 'snap',
-  type: 'success',
-  icon: markRaw(Camera),
-  position: 'right',
-  onClick: () => {
-    clickSnap()
-  },
-}
-const continueBtn: btnType = {
-  label: '继续',
-  key: 'continue',
-  type: 'success',
-  icon: markRaw(Right),
-  position: 'right',
-  onClick: () => {
-    router.push('/process/vehicleModel')
   },
 }
 const timeoutBtn = ref(false)
@@ -75,118 +55,44 @@ const overtimeBtns = ref<btnType[]>([
     },
   },
 ])
-const btns = ref<btnType[]>([backBtn, snapBtnOpt])
-const photoData = ref([
-  {
-    active: 0,
-  },
-  {
-    active: 0,
-  },
-])
-
-let number = 2
-const nowNumber = ref(1)
-let countdown = 5
-const nowCountdown = ref(5)
-const snapBtn = ref(0)
 let interval: number | undefined
-
-// 点击拍照
-const clickSnap = () => {
-  snapBtn.value = 1
-  btns.value = [backBtn]
-  runTime()
-}
+const btns = ref<btnType[]>([backBtn])
+const checkResult = ref(0)
 
 // 倒计时
 const runTime = () => {
-  nowCountdown.value = countdown
   clearInterval(interval)
-  interval = setInterval(() => {
-    nowCountdown.value--
-    if (nowCountdown.value <= 0) {
-      clearInterval(interval)
-      nowNumber.value++
-      nowCountdown.value = countdown
-      if (nowNumber.value > number) {
-        snapBtn.value = 2
-        btns.value = [backBtn, continueBtn]
-      } else {
-        snapBtn.value = 0
-        btns.value = [backBtn, snapBtnOpt]
-      }
-    }
-  }, 1000)
+  interval = setInterval(() => {}, 1000)
 }
 
-// 获取拍照次数
-const getNumber = () => {
-  number = 2
-}
-// 获取拍照倒计时
-const getCountdown = () => {
-  countdown = 1
-  nowCountdown.value = countdown
-}
-// 选择照片
-const clickImg = (index: number) => {
-  photoData.value.forEach((item) => {
-    item.active = 0
-  })
-  photoData.value[index].active = 1
-  projectStore.examData.photo = photoData.value[index]
+// 手指检测
+const check = () => {
+  checkResult.value = 1
 }
 
 onMounted(() => {
   cmdStore.overBtn = 1
-  getNumber()
-  getCountdown()
 })
 </script>
 
 <template>
   <div class="content">
-    <div class="body" v-if="snapBtn !== 2">
-      <div class="example">
-        <div class="img">
-          <div class="img-content"></div>
-        </div>
-        <div class="img">
-          <div class="img-content"></div>
-        </div>
-      </div>
-      <div class="frame">
-        <div v-if="snapBtn === 1" class="prompt">
-          <div class="icon">⬆︎</div>
-          <div class="label1">请看前方镜头</div>
-        </div>
-      </div>
+    <div class="title">手指检测: 请举起双手, 将手掌完全与头同高</div>
+    <div class="body">
       <div class="example">
         <div class="img">
           <div class="img-content">
-            <div class="number-box">
-              <div class="label">拍照次数</div>
-              <div class="value">{{ nowNumber }}</div>
-            </div>
+            <div class="serial">1</div>
           </div>
         </div>
         <div class="img">
           <div class="img-content">
-            <div class="number-box">
-              <div class="label">倒计时</div>
-              <div class="value">{{ nowCountdown }}</div>
-            </div>
+            <div class="serial">2</div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="body" v-else>
-      <div class="okBox">
-        <div v-for="(item, index) in photoData" :key="index" class="okImg" @click="clickImg(index)">
-          <div class="okImgContent" :class="[`${item.active && 'okImgContent-active'}`]"></div>
-        </div>
-      </div>
+      <div class="frame"></div>
+      <div class="example"></div>
     </div>
   </div>
   <BtnBox :btns="btns" />
@@ -204,6 +110,17 @@ onMounted(() => {
 .content {
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.title {
+  margin-bottom: 1%;
+  font-size: 3rem;
+  color: white;
+  font-weight: 800;
+  width: 90%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -296,6 +213,21 @@ onMounted(() => {
   border: 0.5vh solid rgba(85, 140, 202, 1);
   box-sizing: border-box;
   background-color: white;
+  position: relative;
+}
+.serial {
+  position: absolute;
+  width: 20%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: gray;
+  border: 0.5vh solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 800;
 }
 .number-box {
   width: 100%;
