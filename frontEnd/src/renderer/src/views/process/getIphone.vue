@@ -10,6 +10,8 @@ const cmdStore = useCmdStore()
 import numberKey from '@/components/numberKey.vue'
 import { useProjectStore } from '@/stores/project'
 
+const timeoutBtn = ref(false)
+const overtimeRef = ref()
 const nextPageData = ref({
   path: '/layout',
   seconds: 30000,
@@ -44,6 +46,29 @@ const btns = ref<btnType[]>([
     },
   },
 ])
+const overtimeBtns = ref<btnType[]>([
+  {
+    label: '返回',
+    key: 'back',
+    type: 'primary',
+    icon: markRaw(Back),
+    position: 'left',
+    onClick: () => {
+      router.go(-1)
+    },
+  },
+  {
+    label: '继续',
+    key: 'continue',
+    type: 'success',
+    icon: markRaw(Right),
+    position: 'right',
+    onClick: () => {
+      timeoutBtn.value = false
+      overtimeRef.value.runTime()
+    },
+  },
+])
 
 const backHandleBack = () => {
   router.go(-1)
@@ -63,8 +88,15 @@ onMounted(() => {
 <template>
   <div class="content">
     <numberKey v-model:password="password" />
-    <overtime :time-num="300" :nextPageData="nextPageData" class="overtime" />
     <BtnBox :btns="btns" />
+    <overtime
+      ref="overtimeRef"
+      v-model:timeout-btn="timeoutBtn"
+      :btns="overtimeBtns"
+      :time-num="300"
+      :nextPageData="nextPageData"
+      class="overtime"
+    />
   </div>
 </template>
 
