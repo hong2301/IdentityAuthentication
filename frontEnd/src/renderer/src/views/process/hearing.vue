@@ -55,6 +55,20 @@ onMounted(() => {
 <template>
   <div class="content">
     <div class="title">听力检测: 请选择听到的声源的方向</div>
+    <div class="btn-box">
+      <div class="btn">
+        <div class="icon-box">
+            <img src="@/assets/volume.png" class="img"></img>
+        </div>
+        <div class="label">左侧</div>
+      </div>
+      <div class="btn">
+          <div class="icon-box">
+            <img src="@/assets/volume-right.png" class="img"></img>
+        </div>
+        <div class="label">右侧</div>
+      </div>
+    </div>
   </div>
   <overtime
     ref="overtimeRef"
@@ -99,6 +113,64 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
 }
+.btn-box {
+  width: 80%;
+  height: 85%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.icon-box {
+  height: 70%;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.img{
+    width: 40%;
+    aspect-ratio: 1;
+}
+.label {
+  width: 100%;
+  height: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  font-weight: 800;
+  color: white;
+  background-color: rgba(0, 50, 150, 0.2);
+  padding-bottom: 5%;
+}
+.btn {
+    cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  /* border: 1vh solid white; */
+
+  /* 新增渐变底色 */
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(100, 200, 255, 0.8) 0%,
+    rgba(0, 100, 200, 0.9) 50%,
+    rgba(0, 50, 150, 0.9) 100%
+  );
+
+  /* 添加高光效果 */
+  box-shadow:
+    inset 0 0 15px rgba(255, 255, 255, 0.6),
+    inset -5px -5px 10px rgba(0, 0, 100, 0.5),
+    0 0 10px rgba(0, 150, 255, 0.6);
+
+  /* 科技感元素 - 发光效果 */
+  position: relative;
+  overflow: hidden;
+}
+
 .overtime {
   position: fixed;
   top: 0;
@@ -128,5 +200,29 @@ onMounted(() => {
   color: brown;
   font-size: 2rem;
   font-weight: 800;
+}
+/* 点击效果 */
+.btn:active {
+  transform: scale(0.95); /* 按钮轻微缩小 */
+  
+  /* 改变阴影和高光，模拟按下效果 */
+  box-shadow: 
+    inset 0 0 20px rgba(0, 0, 0, 0.3),
+    inset 0 0 10px rgba(0, 100, 255, 0.8),
+    0 0 5px rgba(0, 150, 255, 0.6);
+  
+  /* 点击时改变渐变中心点 */
+  background: radial-gradient(
+    circle at 40% 40%,
+    rgba(80, 180, 240, 0.8) 0%,
+    rgba(0, 80, 180, 0.9) 50%,
+    rgba(0, 30, 120, 0.9) 100%
+  );
+}
+
+/* 可选：点击时增强光晕效果 */
+.btn:active::after {
+  opacity: 0.9;
+  animation-duration: 3s;
 }
 </style>
