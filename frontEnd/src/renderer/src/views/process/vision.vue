@@ -15,7 +15,7 @@ const nextPageData = ref({
   path: '/',
   seconds: 30000,
   secondsLabel: '点击继续可重试，否则即将前往首页:',
-  label: '颈部检测超时',
+  label: '视力检测超时',
   icon: 'Timer',
   type: 0,
   continue: 1,
@@ -38,7 +38,7 @@ const ContinueBtn: btnType = {
   icon: markRaw(Right),
   position: 'right',
   onClick: () => {
-    router.push('/process/vision')
+    router.push('/process/colorVision')
   },
 }
 const timeoutBtn = ref(false)
@@ -88,9 +88,20 @@ onMounted(() => {
 
 <template>
   <div class="content">
-    <div class="title">颈部检测: 按照提示完成检测</div>
+    <div class="title">
+      请根据前方视力表所指[E]开口方向按下<span style="color: brown">右侧</span>按钮
+    </div>
     <div class="body">
+      <div class="example">
+        <div class="img"></div>
+        <div class="label2">请留意前方屏幕</div>
+        <div class="img"></div>
+        <div class="label2">请按下右侧按钮</div>
+      </div>
       <div class="frame"></div>
+      <div class="example">
+        <div class="camera"></div>
+      </div>
     </div>
   </div>
   <BtnBox :btns="btns" />
@@ -103,17 +114,18 @@ onMounted(() => {
     class="overtime"
   />
   <report
-    v-if="checkResult"
+    v-if="1"
     :type="1"
-    path="/process/vision"
+    path="/process/colorVision"
     :seconds="300"
     secondsLabel="即将进行下一步: "
     :btns="[...btns, ContinueBtn]"
   >
     <div class="box">
-      <div class="title1">颈部检测完成</div>
+      <div class="title1">视力检测完成</div>
       <div class="result">检测结果: 合格</div>
-      <div class="des">颈部无问题</div>
+      <div class="des">左眼视力:</div>
+      <div class="des">右眼视力:</div>
     </div>
   </report>
 </template>
@@ -179,10 +191,11 @@ onMounted(() => {
 }
 .frame {
   position: relative;
-  width: 30%;
-  height: 90%;
+  width: 40%;
+  height: 80%;
   margin-inline: 4%;
   border: 1vh solid white;
+  border-radius: 2vw;
 }
 .prompt {
   position: absolute;
@@ -207,17 +220,28 @@ onMounted(() => {
 }
 .example {
   width: 22%;
-  height: 90%;
+  height: 80%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
 }
+.camera {
+  width: 100%;
+  height: 100%;
+  border: 0.5vh solid white;
+}
 .img {
-  height: 48%;
-  width: 70%;
+  height: 40%;
+  width: 100%;
   border: 0.5vh solid white;
   box-sizing: border-box;
+}
+.label2 {
+  font-size: 2rem;
+  color: white;
+  font-weight: 800;
+  margin-bottom: 8%;
 }
 .img-content {
   width: 100%;

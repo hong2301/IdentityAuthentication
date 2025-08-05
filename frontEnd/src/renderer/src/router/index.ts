@@ -26,6 +26,7 @@ import SnapProView from '@/views/process/snap.vue'
 import FingerDetectionView from '@/views/process/fingerDetection.vue'
 import NeckView from '@/views/process/neck.vue'
 import VisionView from '@/views/process/vision.vue'
+import ColorVisionView from '@/views/process/colorVision.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -164,7 +165,12 @@ const router = createRouter({
           path: 'process/vision',
           name: '视力检测',
           component: VisionView
-        }
+        },
+        {
+          path: 'process/colorVision',
+          name: '辨色力检测',
+          component: ColorVisionView
+        },
 
       ]
     },
