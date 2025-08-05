@@ -105,7 +105,7 @@ onMounted(() => {
               >
                 申<br />请<br />人<br />填<br />报<br />事<br />项
               </div>
-              <div style="flex: 1; height: 100%">
+              <div style="flex: 1; height: 100%; position: relative">
                 <div
                   style="
                     height: 25%;
@@ -239,10 +239,11 @@ onMounted(() => {
                     class="label"
                     style="width: 18.18%; height: 100%; border-right: 2px solid black"
                   >
-                    档案编号
+                    联系电话
                   </div>
-                  <div class="input" style="height: 100%">123</div>
+                  <div class="input" style="height: 100%">15022038853</div>
                 </div>
+                <div class="img"></div>
               </div>
             </div>
             <div style="height: 55%">
@@ -347,5 +348,16 @@ onMounted(() => {
   justify-content: flex-start;
   padding-left: 1%;
   box-sizing: border-box;
+}
+.img {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 50%;
+  width: 10%;
+  border-left: 2px solid black;
+  border-bottom: 2px solid black;
+  box-sizing: border-box;
+  background-color: white;
 }
 </style>
