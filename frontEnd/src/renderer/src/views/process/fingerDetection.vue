@@ -7,6 +7,7 @@ import { Back, Right } from '@element-plus/icons-vue'
 import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
+import report from '@/components/report.vue'
 
 const projectStore = useProjectStore()
 const cmdStore = useCmdStore()
@@ -29,6 +30,14 @@ const backBtn: btnType = {
   onClick: () => {
     router.go(-1)
   },
+}
+const ContinueBtn: btnType = {
+  label: '继续',
+  key: 'continue',
+  type: 'success',
+  icon: markRaw(Right),
+  position: 'right',
+  onClick: () => {},
 }
 const timeoutBtn = ref(false)
 const overtimeRef = ref()
@@ -104,6 +113,19 @@ onMounted(() => {
     :nextPageData="nextPageData"
     class="overtime"
   />
+  <report
+    v-if="checkResult"
+    :type="1"
+    :seconds="3"
+    secondsLabel="即将进行下一步: "
+    :btns="[...btns, ContinueBtn]"
+  >
+    <div class="box">
+      <div class="title1">手指检测完成</div>
+      <div class="result">检测结果: 合格</div>
+      <div class="des">手指无缺陷</div>
+    </div>
+  </report>
 </template>
 
 <style scoped>
@@ -245,6 +267,28 @@ onMounted(() => {
 .value {
   color: brown;
   font-size: 10rem;
+  font-weight: 800;
+}
+.box {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+}
+.title1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+}
+.result {
+  color: brown;
+  font-size: 2rem;
+  font-weight: 800;
+}
+.des {
+  color: brown;
+  font-size: 2rem;
   font-weight: 800;
 }
 </style>
