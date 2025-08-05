@@ -47,7 +47,7 @@ const ContinueBtn: btnType = {
   icon: markRaw(Right),
   position: 'right',
   onClick: () => {
-    router.push('/process/printConfirmation')
+    router.push('/process/fileComplaint')
   },
 }
 
@@ -169,7 +169,7 @@ onMounted(() => {
 
 <template>
   <div class="content">
-    <div class="title">请您在触屏感应框内签名之后点击确认，不要超出</div>
+    <div class="title">确认</div>
     <canvas class="board">
       <div class="line1"></div>
       <div class="line2"></div>

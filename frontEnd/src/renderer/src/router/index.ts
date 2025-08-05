@@ -31,6 +31,7 @@ import HearingView from '@/views/process/hearing.vue'
 import HeightAndWeightView from '@/views/process/heightAndWeight.vue'
 import FileComplaintView from '@/views/process/fileComplaint.vue'
 import SignatureView from '@/views/process/signature.vue'
+import PrintConfirmationView from '@/views/process/printConfirmation.vue'
 
 
 const router = createRouter({
@@ -195,6 +196,11 @@ const router = createRouter({
           path: 'process/signature',
           name: '签名',
           component: SignatureView
+        },
+        {
+          path: 'process/printConfirmation',
+          name: '打印确认',
+          component: PrintConfirmationView
         },
 
       ]
