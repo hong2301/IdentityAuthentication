@@ -114,7 +114,7 @@ onMounted(() => {
     class="overtime"
   />
   <report
-    v-if="1"
+    v-if="checkResult"
     :type="1"
     path="/process/colorVision"
     :seconds="300"
