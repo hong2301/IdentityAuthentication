@@ -18,6 +18,7 @@ export const useProjectStore = defineStore('preject', () => {
             name: '',
             gender: '',
         },
+        photo: '',
         phone: '',
         carType: ''
     })
