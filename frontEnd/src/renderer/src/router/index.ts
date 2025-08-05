@@ -24,6 +24,7 @@ import VehicleModelView from '@/views/process/vehicleModel.vue'
 import ConfurmView from '@/views/process/confurm.vue'
 import SnapProView from '@/views/process/snap.vue'
 import FingerDetectionView from '@/views/process/fingerDetection.vue'
+import NeckView from '@/views/process/neck.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -152,6 +153,11 @@ const router = createRouter({
           path: 'process/fingerDetection',
           name: '手指检测',
           component: FingerDetectionView
+        },
+        {
+          path: 'process/neck',
+          name: '颈部检测',
+          component: NeckView
         }
 
       ]

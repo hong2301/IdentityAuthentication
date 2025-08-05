@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import router from '@/router'
 import btnBox from './btnBox.vue'
 import type { btnType } from '@/types/components'
@@ -24,6 +24,10 @@ const props = defineProps({
     type: Array as () => btnType[],
     default: () => [],
   },
+  path: {
+    type: String,
+    default: '/',
+  },
 })
 
 const timeStep = ref(props.seconds)
@@ -35,13 +39,23 @@ const runTime = () => {
     timeStep.value--
     if (timeStep.value <= 0) {
       clearInterval(setIntervalData)
-      router.push('/')
+      router.push(props.path)
     }
   }, 1000)
 }
 
+const clearTimer = () => {
+  if (setIntervalData) {
+    clearInterval(setIntervalData)
+    setIntervalData = undefined
+  }
+}
+
 onMounted(() => {
   runTime()
+})
+onUnmounted(() => {
+  clearTimer()
 })
 </script>
 

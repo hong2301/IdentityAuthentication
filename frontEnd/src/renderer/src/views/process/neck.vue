@@ -38,7 +38,7 @@ const ContinueBtn: btnType = {
   icon: markRaw(Right),
   position: 'right',
   onClick: () => {
-    router.push('/process/neck')
+    router.push('/')
   },
 }
 const timeoutBtn = ref(false)
@@ -76,7 +76,7 @@ const runTime = () => {
   interval = setInterval(() => {}, 1000)
 }
 
-// 手指检测
+// 颈部检测
 const check = () => {
   checkResult.value = 1
 }
@@ -88,22 +88,9 @@ onMounted(() => {
 
 <template>
   <div class="content">
-    <div class="title">手指检测: 请举起双手, 将手掌完全与头同高</div>
+    <div class="title">颈部检测: 按照提示完成检测</div>
     <div class="body">
-      <div class="example">
-        <div class="img">
-          <div class="img-content">
-            <div class="serial">1</div>
-          </div>
-        </div>
-        <div class="img">
-          <div class="img-content">
-            <div class="serial">2</div>
-          </div>
-        </div>
-      </div>
       <div class="frame"></div>
-      <div class="example"></div>
     </div>
   </div>
   <BtnBox :btns="btns" />
@@ -117,16 +104,15 @@ onMounted(() => {
   />
   <report
     v-if="checkResult"
-    path="/process/neck"
     :type="1"
-    :seconds="3"
+    :seconds="300"
     secondsLabel="即将进行下一步: "
     :btns="[...btns, ContinueBtn]"
   >
     <div class="box">
-      <div class="title1">手指检测完成</div>
+      <div class="title1">颈部检测完成</div>
       <div class="result">检测结果: 合格</div>
-      <div class="des">手指无缺陷</div>
+      <div class="des">颈部无问题</div>
     </div>
   </report>
 </template>
