@@ -8,6 +8,7 @@ import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
 import report from '@/components/report.vue'
+import callSound from '@/utils/hardware'
 
 const projectStore = useProjectStore()
 const cmdStore = useCmdStore()
@@ -47,8 +48,61 @@ const overtimeBtns = ref<btnType[]>([
     },
   },
 ])
+
+// 测试次数
+const checkMaxNum=3
+// 当前测试次数
+let nowCheckIndex=1
+// 当前点击的方向
+let clickDir=''
+// 检测结果开关
+const checkResult=ref(0)
+
+// 测试流程
+const runCheck=async ()=>{
+    while(nowCheckIndex<=checkMaxNum){
+        nowCheckIndex++
+        // 随机调用一个声道
+        const randomChannel = Math.random() > 0.5 ;
+        const result=callSound(randomChannel? 'right' : 'left')
+        if (!result.success) return
+        await waitForButtonClick();
+        if(clickDir===result.result.direction){
+            console.log("对")
+        }else{
+            console.log("错")
+        }
+    }
+    checkResult.value=1
+
+}
+
+function waitForButtonClick() {
+    return new Promise<void>((resolve) => {
+        // Assuming you have button elements with IDs 'buttonLeft' and 'buttonRight'
+        const buttonLeft = document.getElementById('buttonLeft');
+        const buttonRight = document.getElementById('buttonRight');
+        if(buttonLeft&&buttonRight){
+            const clickHandler = () => {
+                // Remove event listeners after one button is clicked
+                buttonLeft.removeEventListener('click', clickHandler);
+                buttonRight.removeEventListener('click', clickHandler);
+                resolve();
+            };
+            
+            buttonLeft.addEventListener('click', clickHandler);
+            buttonRight.addEventListener('click', clickHandler);
+        }
+    });
+}
+
+const clickBtn=(dir:'left'|'right')=>{
+    clickDir=dir
+}
+
 onMounted(() => {
   cmdStore.overBtn = 1
+  runCheck()
 })
 </script>
 
@@ -56,13 +110,13 @@ onMounted(() => {
   <div class="content">
     <div class="title">听力检测: 请选择听到的声源的方向</div>
     <div class="btn-box">
-      <div class="btn">
+      <div id="buttonLeft" class="btn" @click="clickBtn('left')">
         <div class="icon-box">
             <img src="@/assets/volume.png" class="img"></img>
         </div>
-        <div class="label">左侧</div>
+        <div class="label" >左侧</div>
       </div>
-      <div class="btn">
+      <div id="buttonRight" class="btn" @click="clickBtn('right')">
           <div class="icon-box">
             <img src="@/assets/volume-right.png" class="img"></img>
         </div>
@@ -79,7 +133,7 @@ onMounted(() => {
     class="overtime"
   />
   <report
-    v-if="0"
+    v-if="checkResult"
     :type="1"
     path="/process/hearing"
     :seconds="3"
@@ -87,9 +141,8 @@ onMounted(() => {
     :btns="[ContinueBtn]"
   >
     <div class="box">
-      <div class="title1">辨色力检测完成</div>
+      <div class="title1">听力检测完成</div>
       <div class="result">检测结果: 合格</div>
-      <div class="des">无红绿色盲题</div>
     </div>
   </report>
 </template>
