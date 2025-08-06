@@ -1011,7 +1011,7 @@ onMounted(() => {
   flex-direction: column;
 }
 .paper {
-  width: 40%;
+  width: 45%;
   height: 100%;
   background-color: white;
   padding: 0.5%;
