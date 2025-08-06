@@ -707,6 +707,284 @@ onMounted(() => {
                 </div>
               </div>
             </div>
+            <div
+              style="
+                height: 20%;
+                width: 100%;
+                border-bottom: 2px solid black;
+                display: flex;
+                box-sizing: border-box;
+              "
+            >
+              <div class="label" style="width: 18.18%; height: 100%; border-right: 2px solid black">
+                听力
+              </div>
+              <div
+                style="
+                  width: 13.64%;
+                  height: 100%;
+                  border-right: 2px solid black;
+                  box-sizing: border-box;
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <div class="label" style="height: 100%">左耳</div>
+                  <div class="input" style="height: 100%">合格</div>
+                </div>
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <div class="label" style="height: 100%">右耳</div>
+                  <div class="input" style="height: 100%">合格</div>
+                </div>
+              </div>
+              <div
+                style="
+                  width: 18.18%;
+                  height: 100%;
+                  border-right: 2px solid black;
+                  display: flex;
+                  flex-direction: column;
+                  box-sizing: border-box;
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <div class="label" style="height: 100%">佩戴助听器</div>
+                </div>
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="have"
+                    style="height: 100%"
+                    :font-size="0.8"
+                    label="是"
+                    color="#a52a2a"
+                  />
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="notHave"
+                    style="height: 100%"
+                    :font-size="0.8"
+                    label="否"
+                    color="#a52a2a"
+                  />
+                </div>
+              </div>
+              <div class="label" style="width: 18.18%; height: 100%; border-right: 2px solid black">
+                躯干和颈部
+              </div>
+              <div
+                style="
+                  flex: 1;
+                  height: 100%;
+                  display: flex;
+                  flex-direction: column;
+                  box-sizing: border-box;
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <div class="label" style="height: 100%">运动功能障碍</div>
+                </div>
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="have"
+                    style="height: 100%"
+                    :font-size="0.8"
+                    label="是"
+                    color="#a52a2a"
+                  />
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="notHave"
+                    style="height: 100%"
+                    :font-size="0.8"
+                    label="否"
+                    color="#a52a2a"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              style="
+                height: 20%;
+                width: 100%;
+                border-bottom: 2px solid black;
+                display: flex;
+                box-sizing: border-box;
+              "
+            >
+              <div class="label" style="width: 18.18%; height: 100%; border-right: 2px solid black">
+                上肢
+              </div>
+              <div
+                style="
+                  width: 31.82%;
+                  height: 100%;
+                  border-right: 2px solid black;
+                  box-sizing: border-box;
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <div class="label" style="height: 100%">左上肢</div>
+                  <div class="input" style="height: 100%">合格</div>
+                </div>
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <div class="label" style="height: 100%">右上肢</div>
+                  <div class="input" style="height: 100%">合格</div>
+                </div>
+              </div>
+              <div class="label" style="width: 18.18%; height: 100%; border-right: 2px solid black">
+                下肢
+              </div>
+              <div style="width: 31.82%; height: 100%; box-sizing: border-box">
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <div class="label" style="height: 100%">左下肢</div>
+                  <div class="input" style="height: 100%">合格</div>
+                </div>
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <div class="label" style="height: 100%">右下肢</div>
+                  <div class="input" style="height: 100%">合格</div>
+                </div>
+              </div>
+            </div>
+            <div
+              style="
+                height: 20%;
+                width: 100%;
+                border-bottom: 2px solid black;
+                display: flex;
+                box-sizing: border-box;
+              "
+            >
+              <div
+                style="
+                  width: 100%;
+                  height: 100%;
+                  display: flex;
+                  flex-direction: column;
+                  box-sizing: border-box;
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <div class="label" style="height: 100%">
+                    双肢缺失或者丧失运动功能是否能够自助坐立
+                  </div>
+                </div>
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="have"
+                    style="height: 100%"
+                    :font-size="0.8"
+                    label="是"
+                    color="#a52a2a"
+                  />
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="notHave"
+                    style="height: 100%"
+                    :font-size="0.8"
+                    label="否"
+                    color="#a52a2a"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
