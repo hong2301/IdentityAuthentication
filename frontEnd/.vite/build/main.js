@@ -480,20 +480,26 @@ const createWindow = () => {
   const mainWindow = new require$$3$1.BrowserWindow({
     width: 800,
     height: 600,
+    frame: false,
+    // This removes the standard window frame (title bar, borders, etc.)
+    titleBarStyle: "hidden",
+    // For macOS specific styling
     webPreferences: {
       preload: path$1.join(__dirname, "preload.js")
     }
   });
-  mainWindow.loadFile("dist/index.html");
+  mainWindow.loadFile("src/renderer/dist/index.html");
 };
-require$$3$1.app.on("ready", createWindow);
+require$$3$1.app.whenReady().then(() => {
+  createWindow();
+  require$$3$1.app.on("activate", () => {
+    if (require$$3$1.BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
+});
 require$$3$1.app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     require$$3$1.app.quit();
-  }
-});
-require$$3$1.app.on("activate", () => {
-  if (require$$3$1.BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
   }
 });
