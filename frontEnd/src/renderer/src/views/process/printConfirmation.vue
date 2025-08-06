@@ -246,9 +246,33 @@ onMounted(() => {
                 <div class="img"></div>
               </div>
             </div>
-            <div style="height: 55%">
+            <div style="height: 55%; display: flex">
               <div class="title1" style="border-right: 2px solid black; box-sizing: border-box">
                 申<br />告<br />事<br />项
+              </div>
+              <div
+                style="
+                  flex: 1;
+                  height: 100%;
+                  position: relative;
+                  display: flex;
+                  flex-direction: column;
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    border-bottom: 2px solid black;
+                    display: flex;
+                    box-sizing: border-box;
+                    display: flex;
+                    justify-content: center;
+                  "
+                  :style="{ height: `${(11.25 / 55) * 100}%` }"
+                >
+                  <div class="label">本人如实申告</div>
+                </div>
+                <div style="width: 100%; display: flex; flex: 1; box-sizing: border-box"></div>
               </div>
             </div>
           </div>
