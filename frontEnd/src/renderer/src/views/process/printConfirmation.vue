@@ -9,6 +9,7 @@ import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
 import { jsPDF } from 'jspdf'
 import html2canvas from 'html2canvas'
+import hangerCheckbox from '@/components/hangerCheckbox.vue'
 
 const projectStore = useProjectStore()
 const cmdStore = useCmdStore()
@@ -78,6 +79,10 @@ const overtimeBtns = ref<btnType[]>([
     },
   },
 ])
+// 具有
+const have = ref(false)
+// 不具有
+const notHave = ref(false)
 
 onMounted(() => {
   cmdStore.overBtn = 1
@@ -265,14 +270,193 @@ onMounted(() => {
                     border-bottom: 2px solid black;
                     display: flex;
                     box-sizing: border-box;
-                    display: flex;
-                    justify-content: center;
+                    justify-content: space-around;
+                    align-items: center;
                   "
                   :style="{ height: `${(11.25 / 55) * 100}%` }"
                 >
                   <div class="label">本人如实申告</div>
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="have"
+                    style="height: 100%"
+                    :font-size="0.8"
+                    label="具有"
+                    color="#a52a2a"
+                  />
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="notHave"
+                    style="height: 100%"
+                    :font-size="0.8"
+                    label="不具有"
+                    color="#a52a2a"
+                  />
+                  <div class="label">下列疾病或者情况</div>
                 </div>
-                <div style="width: 100%; display: flex; flex: 1; box-sizing: border-box"></div>
+                <div
+                  style="
+                    height: 14%;
+                    width: 100%;
+                    display: flex;
+                    box-sizing: border-box;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="have"
+                    style="height: 100%; width: 20%"
+                    :font-size="0.8"
+                    label="器质性心脏病"
+                    color="#a52a2a"
+                  />
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="notHave"
+                    style="height: 100%; width: 20%"
+                    :font-size="0.8"
+                    label="眩晕"
+                    color="#a52a2a"
+                  />
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="notHave"
+                    style="height: 100%; width: 20%"
+                    :font-size="0.8"
+                    label="癫痫"
+                    color="#a52a2a"
+                  />
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="notHave"
+                    style="height: 100%; width: 20%"
+                    :font-size="0.8"
+                    label="癔症"
+                    color="#a52a2a"
+                  />
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="notHave"
+                    style="height: 100%; width: 20%; display: flex"
+                    :font-size="0.8"
+                    label="美尼尔氏症"
+                    color="#a52a2a"
+                  />
+                </div>
+                <div
+                  style="
+                    height: 14%;
+                    width: 100%;
+                    display: flex;
+                    box-sizing: border-box;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="have"
+                    style="height: 100%; width: 20%"
+                    :font-size="0.8"
+                    label="震癫麻痹"
+                    color="#a52a2a"
+                  />
+                  <div style="width: 20%"></div>
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="notHave"
+                    style="height: 100%; width: 20%"
+                    :font-size="0.8"
+                    label="精神病"
+                    color="#a52a2a"
+                  />
+                  <div style="width: 20%"></div>
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="notHave"
+                    style="height: 100%; width: 20%"
+                    :font-size="0.8"
+                    label="痴呆"
+                    color="#a52a2a"
+                  />
+                </div>
+                <div
+                  style="
+                    height: 14%;
+                    width: 100%;
+                    display: flex;
+                    box-sizing: border-box;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="notHave"
+                    style="height: 100%; width: 20%; position: relative"
+                    :font-size="0.8"
+                    label=""
+                    color="#a52a2a"
+                  >
+                    <div style="white-space: nowrap" :style="{ fontSize: `0.8rem` }">
+                      影响肢体活动的神经系统疾病等妨碍安全驾驶疾病
+                    </div>
+                  </hangerCheckbox>
+                  <div style="width: 20%"></div>
+                  <div style="width: 20%"></div>
+                  <div style="width: 20%"></div>
+                  <div style="width: 20%"></div>
+                  <div style="width: 20%"></div>
+                </div>
+                <div
+                  style="
+                    height: 20%;
+                    width: 100%;
+                    display: flex;
+                    box-sizing: border-box;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="notHave"
+                    style="height: 100%; width: 20%; position: relative"
+                    :font-size="0.8"
+                    label=""
+                    color="#a52a2a"
+                  >
+                    <div style="display: flex; flex-direction: column">
+                      <div style="white-space: nowrap" :style="{ fontSize: `0.8rem` }">
+                        三年内有吸食，注射毒品行为或者解除强制隔离戒毒措施未满三年，
+                      </div>
+                      <div style="white-space: nowrap" :style="{ fontSize: `0.8rem` }">
+                        或者长期服用依赖性精神药品成瘾尚未解除
+                      </div>
+                    </div>
+                  </hangerCheckbox>
+                  <div style="width: 20%"></div>
+                  <div style="width: 20%"></div>
+                  <div style="width: 20%"></div>
+                  <div style="width: 20%"></div>
+                  <div style="width: 20%"></div>
+                </div>
+                <div
+                  style="
+                    height: 38%;
+                    width: 100%;
+                    display: flex;
+                    box-sizing: border-box;
+                    justify-content: flex-start;
+                    align-items: center;
+                    font-size: 0.8rem;
+                    padding-left: 2%;
+                  "
+                >
+                  上述申告为本人真实情况和真实意思表示，如果不属实本人自愿承担相应的法律责任
+                </div>
               </div>
             </div>
           </div>
@@ -383,5 +567,12 @@ onMounted(() => {
   border-bottom: 2px solid black;
   box-sizing: border-box;
   background-color: white;
+}
+.hangerCheckbox {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 2%;
 }
 </style>
