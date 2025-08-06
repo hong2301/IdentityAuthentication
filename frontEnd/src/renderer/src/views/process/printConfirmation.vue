@@ -465,6 +465,30 @@ onMounted(() => {
           <div class="title1" style="border-right: 2px solid black">
             医<br />疗<br />机<br />构<br />填<br />表<br />事<br />项
           </div>
+          <div class="basic-content">
+            <div
+              style="
+                height: 20%;
+                width: 100%;
+                border-bottom: 2px solid black;
+                display: flex;
+                box-sizing: border-box;
+              "
+            >
+              <div class="label" style="width: 18.18%; height: 100%; border-right: 2px solid black">
+                身高(cm)
+              </div>
+              <div class="input" style="width: 31.82%; height: 100%; border-right: 2px solid black">
+                167
+              </div>
+              <div class="label" style="width: 18.18%; height: 100%; border-right: 2px solid black">
+                辨色力
+              </div>
+              <div class="input" style="width: 31.82%; height: 100%; border-right: 2px solid black">
+                男
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -531,6 +555,7 @@ onMounted(() => {
 .health {
   width: 100%;
   height: 45%;
+  display: flex;
 }
 .overtime {
   position: fixed;
