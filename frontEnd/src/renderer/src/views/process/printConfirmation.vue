@@ -484,8 +484,227 @@ onMounted(() => {
               <div class="label" style="width: 18.18%; height: 100%; border-right: 2px solid black">
                 辨色力
               </div>
-              <div class="input" style="width: 31.82%; height: 100%; border-right: 2px solid black">
-                男
+              <div
+                style="
+                  flex: 1;
+                  height: 100%;
+                  display: flex;
+                  flex-direction: column;
+                  box-sizing: border-box;
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <div class="label" style="height: 100%">红绿色盲</div>
+                </div>
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="have"
+                    style="height: 100%"
+                    :font-size="0.8"
+                    label="是"
+                    color="#a52a2a"
+                  />
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="notHave"
+                    style="height: 100%"
+                    :font-size="0.8"
+                    label="否"
+                    color="#a52a2a"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              style="
+                height: 20%;
+                width: 100%;
+                border-bottom: 2px solid black;
+                display: flex;
+                box-sizing: border-box;
+              "
+            >
+              <div class="label" style="width: 18.18%; height: 100%; border-right: 2px solid black">
+                视力
+              </div>
+              <div
+                style="
+                  width: 13.64%;
+                  height: 100%;
+                  border-right: 2px solid black;
+                  box-sizing: border-box;
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <div class="label" style="height: 100%">左眼</div>
+                  <div class="input" style="height: 100%">5.0</div>
+                </div>
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <div class="label" style="height: 100%">右眼</div>
+                  <div class="input" style="height: 100%">5.0</div>
+                </div>
+              </div>
+              <div
+                style="
+                  width: 18.18%;
+                  height: 100%;
+                  border-right: 2px solid black;
+                  display: flex;
+                  flex-direction: column;
+                  box-sizing: border-box;
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <div class="label" style="height: 100%">单眼视力障碍</div>
+                </div>
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="have"
+                    style="height: 100%"
+                    :font-size="0.8"
+                    label="是"
+                    color="#a52a2a"
+                  />
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="notHave"
+                    style="height: 100%"
+                    :font-size="0.8"
+                    label="否"
+                    color="#a52a2a"
+                  />
+                </div>
+              </div>
+              <div class="label" style="width: 15.18%; height: 100%; border-right: 2px solid black">
+                是否矫正
+              </div>
+              <div
+                style="
+                  width: 18.18%;
+                  height: 100%;
+                  border-right: 2px solid black;
+                  display: flex;
+                  flex-direction: column;
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    border-bottom: 2px solid black;
+                    display: flex;
+                    justify-content: center;
+                  "
+                >
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="have"
+                    style="height: 100%"
+                    :font-size="0.8"
+                    label="是"
+                    color="#a52a2a"
+                  />
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="notHave"
+                    style="height: 100%"
+                    :font-size="0.8"
+                    label="否"
+                    color="#a52a2a"
+                  />
+                </div>
+                <div style="width: 100%; height: 50%; display: flex; justify-content: center">
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="have"
+                    style="height: 100%"
+                    :font-size="0.8"
+                    label="是"
+                    color="#a52a2a"
+                  />
+                  <hangerCheckbox
+                    class="hangerCheckbox"
+                    v-model:active="notHave"
+                    style="height: 100%"
+                    :font-size="0.8"
+                    label="否"
+                    color="#a52a2a"
+                  />
+                </div>
+              </div>
+              <div style="flex: 1; height: 100%; display: flex; flex-direction: column">
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  <div class="label" style="height: 100%">优眼水平视野</div>
+                </div>
+                <div
+                  style="
+                    width: 100%;
+                    height: 50%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                  "
+                >
+                  150
+                </div>
               </div>
             </div>
           </div>
