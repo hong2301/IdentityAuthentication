@@ -1,1 +1,0 @@
-cmd_Release/grayscale-node.node := c++ -bundle -undefined dynamic_lookup -Wl,-search_paths_first -mmacosx-version-min=10.15 -arch arm64 -L./Release -stdlib=libc++  -o Release/grayscale-node.node Release/obj.target/grayscale-node/src/grayscale.o Release/nothing.a 
