@@ -5,8 +5,7 @@ module.exports = {
   packagerConfig: {
     asar: true,
     files: [
-      "src/renderer/*",       // 包含 dist 下的所有文件
-
+      "src/renderer/*",
     ],
   },
   rebuildConfig: {},
