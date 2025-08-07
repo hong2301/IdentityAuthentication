@@ -12,6 +12,7 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    fullscreen: true,
     frame: false, // This removes the standard window frame (title bar, borders, etc.)
     titleBarStyle: 'hidden', // For macOS specific styling
     webPreferences: {
@@ -21,14 +22,14 @@ const createWindow = () => {
 
   mainWindow.loadFile('src/renderer/dist/index.html');
   // and load the index.html of the app.
-//  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-//    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
-//  } else {
-//    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
-//  }
+  //  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+  //    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
+  //  } else {
+  //    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+  //  }
 
   // Open the DevTools.
-//  mainWindow.webContents.openDevTools();
+  //  mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
