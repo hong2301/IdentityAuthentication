@@ -99,7 +99,7 @@ onMounted(() => {
         class="card"
         @click="clickProject(pItem)"
       >
-        {{ pItem.name }}
+        <div class="label">{{ pItem.name }}</div>
       </div>
     </div>
     <overtime :time-num="300" :nextPageData="nextPageData" class="overtime" />
@@ -139,6 +139,9 @@ onMounted(() => {
   background: linear-gradient(145deg, #1a56b4, #0d47a1);
   border-radius: 2%;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .overtime {
   position: fixed;
@@ -147,5 +150,10 @@ onMounted(() => {
   height: 10vh;
   display: flex;
   align-items: center;
+}
+.label {
+  font-size: 4rem;
+  color: white;
+  font-weight: 800;
 }
 </style>
