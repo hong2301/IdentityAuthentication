@@ -266,9 +266,10 @@ defineExpose({
 </script>
 
 <template>
-  <div class="overture"></div>
-  <video class="video" ref="videoRef" id="webcam" autoplay playsinline></video>
-  <canvas class="canvas" id="output_canvas"></canvas>
+  <div class="overture">
+    <video class="video" ref="videoRef" id="webcam" autoplay playsinline></video>
+    <canvas class="canvas" id="output_canvas"></canvas>
+  </div>
 </template>
 
 <style scoped>
