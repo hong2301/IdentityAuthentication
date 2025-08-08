@@ -1,6 +1,8 @@
 <template>
-  <video id="webcam" width="640" height="480" autoplay></video>
-  <canvas id="output_canvas" width="640" height="480"></canvas>
+  <div class="overture">
+    <video class="video" id="webcam" width="640" height="480" autoplay></video>
+    <canvas class="canvas" id="output_canvas" width="640" height="480"></canvas>
+  </div>
 </template>
 <script setup lang="ts">
 import { GestureRecognizer, FilesetResolver, DrawingUtils } from '@mediapipe/tasks-vision'
@@ -158,3 +160,19 @@ onMounted(() => {
   createGestureRecognizer()
 })
 </script>
+
+<style scoped>
+.overture {
+  position: relative;
+}
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+</style>
