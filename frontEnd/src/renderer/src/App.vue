@@ -1,10 +1,4 @@
-<script setup lang="ts">
-import { read } from './api/cardReader'
-
-read().then((res) => {
-  console.log(res)
-})
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <router-view></router-view>
