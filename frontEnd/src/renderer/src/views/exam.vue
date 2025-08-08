@@ -55,35 +55,31 @@ const getProject = () => {
           name: '身份证获取',
           path: '/process/getId',
           state: 0,
-          data: {
-            name: '',
-            id: '',
-            gander: '',
-          },
+          data: {},
         },
         {
           name: '电话号码获取',
           path: '/process/getIphone',
           state: 0,
-          data: {
-            phone: '',
-          },
+          data: {},
         },
         {
           name: '车型选择',
           path: '/process/vehicleModel',
           state: 0,
-          data: {
-            modes: '',
-          },
+          data: {},
+        },
+        {
+          name: '信息确认',
+          path: '/process/confurm',
+          state: 0,
+          data: {},
         },
         {
           name: '拍照',
-          path: '/process/snap',
+          path: '/process/snapPro',
           state: 0,
-          data: {
-            img: '',
-          },
+          data: {},
         },
       ],
       step: -1,

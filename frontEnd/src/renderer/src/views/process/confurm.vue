@@ -96,7 +96,7 @@ const getData = () => {
   })
   data.value.push({
     key: '准驾车型',
-    value: projectStore.examData.carType.replace(/,\s*/g, ''),
+    value: projectStore.examData.carType,
   })
 }
 

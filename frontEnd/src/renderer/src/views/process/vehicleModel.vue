@@ -232,8 +232,8 @@ const clickCarCard = () => {
 // 确定信息
 const over=()=>{
   const projectStore=useProjectStore()
-  projectStore.examData.carType=selectCar.value
-    router.push('/process/confurm')
+  projectStore.setVlaueForNowProject('carType',selectCar.value.slice(0, -2).replace(/,\s*/g, ''))
+  projectStore.nextStep()
 }
 
 
