@@ -12,7 +12,7 @@ import tabel from '@/components/tabel.vue'
 
 const nextPageData = ref({
   path: '/',
-  seconds: 30000,
+  seconds: 10,
   secondsLabel: '点击继续可重新确认，否则即将前往首页:',
   label: '信息确认超时',
   icon: 'Timer',
@@ -33,7 +33,7 @@ const overtimeBtns = ref<btnType[]>([
     icon: markRaw(Back),
     position: 'left',
     onClick: () => {
-      router.go(-1)
+      projectStore.back()
     },
   },
   {
@@ -58,7 +58,7 @@ const btns = ref<btnType[]>([
     icon: markRaw(Back),
     position: 'left',
     onClick: () => {
-      router.go(-1)
+      projectStore.back()
     },
   },
   {
@@ -68,35 +68,36 @@ const btns = ref<btnType[]>([
     icon: markRaw(Right),
     position: 'right',
     onClick: () => {
-      router.push('/process/snapPro')
+      projectStore.nextStep()
     },
   },
 ])
 
 const getData = () => {
+  const projectData = projectStore.getNowProject()
   data.value.push({
     key: '办理业务类型',
-    value: projectStore.examData.projectName,
+    value: projectData.projectName,
   })
   data.value.push({
     key: '姓名',
-    value: projectStore.examData.identity.name,
+    value: projectData.getId.name,
   })
   data.value.push({
     key: '性别',
-    value: projectStore.examData.identity.gender,
+    value: projectData.getId.gander,
   })
   data.value.push({
     key: '手机号码',
-    value: projectStore.examData.phone,
+    value: projectData.getIphone.phone,
   })
   data.value.push({
     key: '身份证',
-    value: projectStore.examData.identity.id,
+    value: projectData.getId.id,
   })
   data.value.push({
     key: '准驾车型',
-    value: projectStore.examData.carType,
+    value: projectData.vehicleModel.carType,
   })
 }
 
@@ -116,7 +117,7 @@ onMounted(() => {
       ref="overtimeRef"
       v-model:timeout-btn="timeoutBtn"
       :btns="overtimeBtns"
-      :time-num="300"
+      :time-num="30"
       :nextPageData="nextPageData"
       class="overtime"
     />

@@ -40,7 +40,6 @@ const backHandleBack = () => {
 
 // 开始进程
 const clickProject = (data: projectType) => {
-  projectStore.examData.projectName = data.name
   projectStore.mountProject(data)
   projectStore.nextStep()
 }
@@ -54,30 +53,35 @@ const getProject = () => {
         {
           name: '身份证获取',
           path: '/process/getId',
+          key: 'getId',
           state: 0,
           data: {},
         },
         {
           name: '电话号码获取',
           path: '/process/getIphone',
+          key: 'getIphone',
           state: 0,
           data: {},
         },
         {
           name: '车型选择',
           path: '/process/vehicleModel',
+          key: 'vehicleModel',
           state: 0,
           data: {},
         },
         {
           name: '信息确认',
           path: '/process/confurm',
+          key: 'confurm',
           state: 0,
           data: {},
         },
         {
           name: '拍照',
           path: '/process/snapPro',
+          key: 'snapPro',
           state: 0,
           data: {},
         },
@@ -90,6 +94,7 @@ const getProject = () => {
         {
           name: '手指检测',
           path: '/process/fingerCheck',
+          key: 'fingerCheck',
           state: 0,
           data: {},
         },
@@ -102,6 +107,7 @@ const getProject = () => {
         {
           name: '身份证获取',
           path: '/process/getId',
+          key: 'getId',
           state: 0,
           data: {},
         },

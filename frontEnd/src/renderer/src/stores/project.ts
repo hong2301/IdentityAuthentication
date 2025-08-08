@@ -16,13 +16,7 @@ export const useProjectStore = defineStore(
             step: 0
         })
 
-        const examData = ref<examDataType>({
-            projectName: '',
-            identity: { id: '', name: '', gender: '' },
-            photo: '',
-            phone: '',
-            carType: ''
-        })
+        const projectData = ref<any>({})
 
         // --- 逻辑定义 (与之前完全一样) ---
         const router = useRouter()
@@ -66,7 +60,17 @@ export const useProjectStore = defineStore(
             }
         }
 
-        return { mountProject, nextStep, setVlaueForNowProject, examData, nowProject, back, getStep }
+        const getNowProject = () => {
+            nowProject.value.process.forEach(item => {
+                if (item && item.key && item.data && typeof item.data === 'object') {
+                    projectData.value[item.key] = item.data;
+                }
+            });
+            projectData.value.projectName = nowProject.value.name
+            return projectData.value
+        }
+
+        return { mountProject, nextStep, setVlaueForNowProject, nowProject, back, getStep, getNowProject }
     },
     {
         // 3. 添加持久化配置

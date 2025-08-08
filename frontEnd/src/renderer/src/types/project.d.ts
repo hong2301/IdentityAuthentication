@@ -7,6 +7,7 @@ export interface projectType {
 export interface processType {
     name: string,
     path: string,
+    key: string,
     state: 0 | 1;
     data: Record<string, any>;
 }
