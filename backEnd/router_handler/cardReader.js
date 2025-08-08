@@ -1,5 +1,5 @@
-// const path = require('path');
-// const grayscale = require(path.join(__dirname, '..', 'addon', 'grayscale', 'build', 'Release', 'grayscale-node.node'));
+const path = require('path');
+const caedReader = require(path.join(__dirname, '..', 'addon', 'caedReader', 'build', 'Release', 'caedReader.node'));
 
 // 读卡
 exports.read = (req, res) => {
