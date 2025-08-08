@@ -13,7 +13,7 @@ const cmdStore = useCmdStore()
 
 const nextPageData = ref({
   path: '/',
-  seconds: 30000,
+  seconds: 10,
   secondsLabel: '点击继续可重试，否则即将前往首页:',
   label: '车型选择超时',
   icon: 'Timer',
@@ -326,7 +326,7 @@ onMounted(() => {
         </div>
       </template>
     </el-dialog>
-     <overtime ref="overtimeRef" v-model:timeout-btn="timeoutBtn" :btns="overtimeBtns" :time-num="300" :nextPageData="nextPageData" class="overtime" />
+     <overtime ref="overtimeRef" v-model:timeout-btn="timeoutBtn" :btns="overtimeBtns" :time-num="30" :nextPageData="nextPageData" class="overtime" />
   </div>
 </template>
 
