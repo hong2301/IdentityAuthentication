@@ -1,8 +1,8 @@
 const path = require('path');
-const caedReader = require(path.join(__dirname, '..', 'addon', 'caedReader', 'build', 'Release', 'caedReader.node'));
+const caedReader = require(path.join(__dirname, '..', 'addon', 'cardReader', 'build', 'Debug', 'cardreader.node'));
 
 // 读卡
 exports.read = (req, res) => {
-    // const reqBody = req.body
-    // res.send({ status: 0, result: reqBody.value })
+    const cardInfo = caedReader.readIDCard();
+    res.send({ status: 0, result: cardInfo })
 };
