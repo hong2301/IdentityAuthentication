@@ -20,9 +20,13 @@ app.use((req, res, next) => {
     next()
 })
 
-// 路由
+//// 路由
+// 测试
 const testRouter = require('./router/test')
 app.use('/test', testRouter)
+// 读卡
+const cardReaderRouter = require('./router/cardReader')
+app.use('/cardReader', cardReaderRouter)
 
 // 错误处理中间件 (放在最后)
 app.use((err, req, res, next) => {
