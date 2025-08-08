@@ -55,6 +55,35 @@ const getProject = () => {
           name: '身份证获取',
           path: '/process/getId',
           state: 0,
+          data: {
+            name: '',
+            id: '',
+            gander: '',
+          },
+        },
+        {
+          name: '电话号码获取',
+          path: '/process/getIphone',
+          state: 0,
+          data: {
+            phone: '',
+          },
+        },
+        {
+          name: '车型选择',
+          path: '/process/vehicleModel',
+          state: 0,
+          data: {
+            modes: '',
+          },
+        },
+        {
+          name: '拍照',
+          path: '/process/snap',
+          state: 0,
+          data: {
+            img: '',
+          },
         },
       ],
       step: 0,
@@ -66,6 +95,7 @@ const getProject = () => {
           name: '手指检测',
           path: '/process/fingerCheck',
           state: 0,
+          data: {},
         },
       ],
       step: 0,
@@ -77,6 +107,7 @@ const getProject = () => {
           name: '身份证获取',
           path: '/process/getId',
           state: 0,
+          data: {},
         },
       ],
       step: 0,

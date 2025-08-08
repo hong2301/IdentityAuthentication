@@ -8,6 +8,7 @@ export interface processType {
     name: string,
     path: string,
     state: 0 | 1;
+    data: Record<string, any>;
 }
 
 export interface examDataType {
