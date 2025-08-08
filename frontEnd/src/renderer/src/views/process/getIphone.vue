@@ -10,6 +10,7 @@ const cmdStore = useCmdStore()
 import numberKey from '@/components/numberKey.vue'
 import { useProjectStore } from '@/stores/project'
 
+const projectStore = useProjectStore()
 const timeoutBtn = ref(false)
 const overtimeRef = ref()
 const nextPageData = ref({
@@ -75,13 +76,13 @@ const backHandleBack = () => {
 }
 
 const backHandleCon = () => {
-  const projectStore = useProjectStore()
   projectStore.examData.phone = password.value
   router.push('/process/vehicleModel')
 }
 
 onMounted(() => {
   cmdStore.overBtn = 1
+  console.log('phone', projectStore.nowProject.step)
 })
 </script>
 

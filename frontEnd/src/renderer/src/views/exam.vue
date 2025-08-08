@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { markRaw, onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
 import type { projectType } from '@/types/project'
 import { useProjectStore } from '@/stores/project'
@@ -26,7 +26,7 @@ const btns = ref<btnType[]>([
     label: '返回',
     key: 'back',
     type: 'primary',
-    icon: Back,
+    icon: markRaw(Back),
     position: 'left',
     onClick: () => {
       backHandleBack()
@@ -86,7 +86,7 @@ const getProject = () => {
           },
         },
       ],
-      step: 0,
+      step: -1,
     },
     {
       name: '申领增驾',
@@ -98,7 +98,7 @@ const getProject = () => {
           data: {},
         },
       ],
-      step: 0,
+      step: -1,
     },
     {
       name: '年审体检',
@@ -110,7 +110,7 @@ const getProject = () => {
           data: {},
         },
       ],
-      step: 0,
+      step: -1,
     },
   ]
 }

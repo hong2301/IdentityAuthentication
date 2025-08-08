@@ -4,16 +4,18 @@ import { markRaw, onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
 import type { btnType } from '@/types/components'
 import { Back, Right } from '@element-plus/icons-vue'
-import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
+import { read } from '@/api/cardReader'
+import { delay } from '@/utils/delay'
 const cmdStore = useCmdStore()
 
+const projectStore = useProjectStore()
 const timeoutBtn = ref(false)
 const overtimeRef = ref()
 const nextPageData = ref({
   path: '/',
-  seconds: 30000,
+  seconds: 10,
   secondsLabel: '点击继续可重试，否则即将前往首页:',
   label: '身份证信息获取超时',
   icon: 'Timer',
@@ -23,38 +25,38 @@ const nextPageData = ref({
 })
 
 const btns = ref<btnType[]>([
-  {
-    label: '返回',
-    key: 'back',
-    type: 'primary',
-    icon: markRaw(Back),
-    position: 'left',
-    onClick: () => {
-      backHandleBack()
-    },
-  },
-  {
-    label: '继续',
-    key: 'continue',
-    type: 'success',
-    icon: markRaw(Right),
-    position: 'right',
-    onClick: () => {
-      backHandleCon()
-    },
-  },
+  // {
+  //   label: '返回',
+  //   key: 'back',
+  //   type: 'primary',
+  //   icon: markRaw(Back),
+  //   position: 'left',
+  //   onClick: () => {
+  //     backHandleBack()
+  //   },
+  // },
+  // {
+  //   label: '继续',
+  //   key: 'continue',
+  //   type: 'success',
+  //   icon: markRaw(Right),
+  //   position: 'right',
+  //   onClick: () => {
+  //     // backHandleCon()
+  //   },
+  // },
 ])
 const overtimeBtns = ref<btnType[]>([
-  {
-    label: '返回',
-    key: 'back',
-    type: 'primary',
-    icon: markRaw(Back),
-    position: 'left',
-    onClick: () => {
-      router.go(-1)
-    },
-  },
+  // {
+  //   label: '返回',
+  //   key: 'back',
+  //   type: 'primary',
+  //   icon: markRaw(Back),
+  //   position: 'left',
+  //   onClick: () => {
+  //     projectStore.back()
+  //   },
+  // },
   {
     label: '继续',
     key: 'continue',
@@ -68,22 +70,29 @@ const overtimeBtns = ref<btnType[]>([
   },
 ])
 
-const backHandleBack = () => {
-  router.go(-1)
-}
+// const backHandleBack = () => {
+//   projectStore.back()
+// }
 
-const backHandleCon = () => {
-  const projectStore = useProjectStore()
-  projectStore.examData.identity = {
-    id: '441521200301929952',
-    name: '来做客',
-    gender: '男',
+const backHandleCon = async () => {
+  let getBtn = true
+  while (getBtn) {
+    const readResult = await read()
+    if (readResult.result.code !== -1) {
+      projectStore.setVlaueForNowProject('name', readResult.result.name)
+      projectStore.setVlaueForNowProject('id', readResult.result.idCode)
+      projectStore.setVlaueForNowProject('gender', readResult.result.sex)
+      projectStore.nextStep()
+      getBtn = false
+    } else {
+      await delay(500)
+    }
   }
-  router.push('/process/getIphone')
 }
 
 onMounted(() => {
   cmdStore.overBtn = 1
+  backHandleCon()
 })
 </script>
 
@@ -96,7 +105,7 @@ onMounted(() => {
       ref="overtimeRef"
       v-model:timeout-btn="timeoutBtn"
       :btns="overtimeBtns"
-      :time-num="300"
+      :time-num="30"
       :nextPageData="nextPageData"
       class="overtime"
     />
