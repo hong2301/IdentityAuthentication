@@ -15,7 +15,7 @@ const timeoutBtn = ref(false)
 const overtimeRef = ref()
 const nextPageData = ref({
   path: '/',
-  seconds: 30000,
+  seconds: 10,
   secondsLabel: '点击继续可重试，否则即将前往首页:',
   label: '电话输入超时获取超时',
   icon: 'Timer',
@@ -108,7 +108,7 @@ onMounted(() => {
       ref="overtimeRef"
       v-model:timeout-btn="timeoutBtn"
       :btns="overtimeBtns"
-      :time-num="300"
+      :time-num="30"
       :nextPageData="nextPageData"
       class="overtime"
     />

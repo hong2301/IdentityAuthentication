@@ -4,7 +4,6 @@ import { markRaw, onMounted, ref,onUnmounted } from 'vue'
 import overtime from '@/components/overtime.vue'
 import type { btnType } from '@/types/components'
 import { Back, Camera, Right } from '@element-plus/icons-vue'
-import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
 
@@ -12,7 +11,7 @@ const projectStore = useProjectStore()
 const cmdStore = useCmdStore()
 const nextPageData = ref({
   path: '/',
-  seconds: 30000,
+  seconds: 10,
   secondsLabel: '点击继续可重试，否则即将前往首页:',
   label: '拍照超时',
   icon: 'Timer',
@@ -280,7 +279,7 @@ onUnmounted(() => {
     ref="overtimeRef"
     v-model:timeout-btn="timeoutBtn"
     :btns="overtimeBtns"
-    :time-num="300"
+    :time-num="30"
     :nextPageData="nextPageData"
     class="overtime"
   />
