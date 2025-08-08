@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
+    "@mediapipe/tasks-vision": "0.10.22-rc.20250304",
     "axios": "^1.11.0",
     "element-plus": "^2.10.4",
     "html2canvas": "^1.4.1",
