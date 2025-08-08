@@ -2,6 +2,7 @@
 import { onMounted, ref, onUnmounted, nextTick } from 'vue'
 import { GestureRecognizer, FilesetResolver, DrawingUtils } from '@mediapipe/tasks-vision'
 import { delay } from '@/utils/delay'
+import evaluateFingerFunction from '@/utils/finger'
 
 const emit = defineEmits([])
 
@@ -117,7 +118,7 @@ const stopCamera = () => {
 }
 
 // 创建手势识别器
-const createGestureRecognizer = async () => {
+const createGestureRecognizer = async (timeout: number = 999999999) => {
   // 加载指定版本的MediaPipe视觉任务WebAssembly模块
   const vision = await FilesetResolver.forVisionTasks('/wasm')
 
@@ -135,114 +136,127 @@ const createGestureRecognizer = async () => {
   })
   console.log('手势识别器加载完毕')
   // 识别视频中的手势
-  predictWebcam()
+  const predictWebcamResult = await predictWebcam(timeout)
+
+  return evaluateFingerFunction(predictWebcamResult)
 }
+const predictWebcam = (timeout: number = 999999999): Promise<{ type: number; value: number }[]> => {
+  return new Promise(async (resolve) => {
+    const rows: { type: number; value: number }[] = []
 
-// 识别视频中的手势
-const predictWebcam = async () => {
-  // 判断手势识别器是否加载完成
-  if (!gestureRecognizer) return alert('手势识别器未加载完成')
+    // 设置超时定时器
+    const timeoutId = setTimeout(() => {
+      resolve(rows) // 超时后返回已收集的数据
+    }, timeout)
 
-  if (runningMode.value !== 'VIDEO') {
-    // 设置识别器识别的类型为视频
-    runningMode.value = 'VIDEO'
-    await gestureRecognizer.setOptions({ runningMode: runningMode.value })
-  }
+    // 判断手势识别器是否加载完成
+    if (!gestureRecognizer) return alert('手势识别器未加载完成')
 
-  await gestureRecognizer.setOptions({ numHands: 2 })
-
-  nextTick(async () => {
-    // 获取video元素
-    const video = document.getElementById('webcam') as HTMLVideoElement
-    // 获取视频手势节点绘制的canvas元素
-    const canvasElement = document.getElementById('output_canvas') as HTMLCanvasElement
-
-    // 设置canvas的宽度和高度为video的宽度和高度
-    // 检查视频是否已加载有效数据
-    while (video.videoWidth === 0 || video.videoHeight === 0) {
-      await delay(500)
+    if (runningMode.value !== 'VIDEO') {
+      // 设置识别器识别的类型为视频
+      runningMode.value = 'VIDEO'
+      await gestureRecognizer.setOptions({ runningMode: runningMode.value })
     }
-    canvasElement.width = video.videoWidth
-    canvasElement.height = video.videoHeight
-    const diff = video.videoWidth - video.clientWidth
 
-    // 获取canvas的上下文
-    const canvasCtx = canvasElement.getContext('2d') as CanvasRenderingContext2D
+    await gestureRecognizer.setOptions({ numHands: 2 })
 
-    // 设置上次识别视频手势的时间
-    let lastVideoTime = -1
+    nextTick(async () => {
+      // 获取video元素
+      const video = document.getElementById('webcam') as HTMLVideoElement
+      // 获取视频手势节点绘制的canvas元素
+      const canvasElement = document.getElementById('output_canvas') as HTMLCanvasElement
 
-    // 识别视频中的手势
-    const predictWebcam = () => {
-      // 获取当前视频的时间
-      let nowInMs = Date.now()
-      let results: any = {}
-
-      // 如果视频的时间发生变化,则识别视频中的手势
-      if (video.currentTime !== lastVideoTime) {
-        // 替换上次识别视频手势的时间
-        lastVideoTime = video.currentTime
-        results = gestureRecognizer.recognizeForVideo(video, nowInMs)
+      // 设置canvas的宽度和高度为video的宽度和高度
+      // 检查视频是否已加载有效数据
+      while (video.videoWidth === 0 || video.videoHeight === 0) {
+        await delay(500)
       }
+      canvasElement.width = video.videoWidth
+      canvasElement.height = video.videoHeight
+      const diff = video.videoWidth - video.clientWidth
 
-      // 保存当前的canvas状态
-      canvasCtx.save()
-      // 清除canvas的内容
-      canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height)
-      canvasCtx.beginPath()
-      canvasCtx.rect(diff / 2, 0, video.clientWidth, canvasElement.height) // x, y, width, height
-      canvasCtx.clip() // 后续绘制只会在这个区域内生效
+      // 获取canvas的上下文
+      const canvasCtx = canvasElement.getContext('2d') as CanvasRenderingContext2D
 
-      // 创建drawingUtils实例,用于可视化MediaPipeVision任务的结果
-      const drawingUtils = new DrawingUtils(canvasCtx)
-      // 判断是否识别到手势
-      if (results.landmarks) {
-        // 循环绘制手势的节点
-        for (const landmarks of results.landmarks) {
-          // 绘制手势连接线
-          drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
-            // 连接线的颜色
-            color: '#00FF00',
-            // 连接线的宽度
-            lineWidth: 3,
-          })
-          // 绘制手势关节点
-          drawingUtils.drawLandmarks(landmarks, {
-            // 关节点的颜色
-            color: '#FF0000',
-            // 关节点的半径
-            radius: 2.5,
-          })
+      // 设置上次识别视频手势的时间
+      let lastVideoTime = -1
+
+      // 识别视频中的手势
+      const predictWebcam = () => {
+        // 获取当前视频的时间
+        let nowInMs = Date.now()
+        let results: any = {}
+
+        // 如果视频的时间发生变化,则识别视频中的手势
+        if (video.currentTime !== lastVideoTime) {
+          // 替换上次识别视频手势的时间
+          lastVideoTime = video.currentTime
+          results = gestureRecognizer.recognizeForVideo(video, nowInMs)
         }
+
+        // 保存当前的canvas状态
+        canvasCtx.save()
+        // 清除canvas的内容
+        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height)
+        canvasCtx.beginPath()
+        canvasCtx.rect(diff / 2, 0, video.clientWidth, canvasElement.height) // x, y, width, height
+        canvasCtx.clip() // 后续绘制只会在这个区域内生效
+
+        // 创建drawingUtils实例,用于可视化MediaPipeVision任务的结果
+        const drawingUtils = new DrawingUtils(canvasCtx)
+        // 判断是否识别到手势
+        if (results.landmarks) {
+          // 循环绘制手势的节点
+          for (const landmarks of results.landmarks) {
+            // 绘制手势连接线
+            drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
+              // 连接线的颜色
+              color: '#00FF00',
+              // 连接线的宽度
+              lineWidth: 3,
+            })
+            // 绘制手势关节点
+            drawingUtils.drawLandmarks(landmarks, {
+              // 关节点的颜色
+              color: '#FF0000',
+              // 关节点的半径
+              radius: 2.5,
+            })
+          }
+        }
+        // 恢复canvas的状态
+        canvasCtx.restore()
+
+        // 判断是否识别到手势数据
+        if (results?.gestures?.length > 0) {
+          videoGestureInfo.value.categoryName = enumGesture[results.gestures[0][0].categoryName]
+          videoGestureInfo.value.categoryScore = Number(
+            (results.gestures[0][0].score * 100).toFixed(2),
+          )
+          videoGestureInfo.value.handedness = results.handednesses[0][0].displayName
+          rows.push({
+            type: videoGestureInfo.value.categoryName === '握紧拳头' ? 0 : 1,
+            value: videoGestureInfo.value.categoryScore,
+          })
+          // console.log('识别到的手势类别', videoGestureInfo.value.categoryName)
+          // console.log('识别到的手势得分', videoGestureInfo.value.categoryScore)
+        } else {
+          videoGestureInfo.value.categoryName = ''
+          videoGestureInfo.value.categoryScore = ''
+          videoGestureInfo.value.handedness = ''
+        }
+
+        // 递归调用,继续识别视频中的手势
+        requestAnimationFrame(predictWebcam)
       }
-      // 恢复canvas的状态
-      canvasCtx.restore()
 
-      // 判断是否识别到手势数据
-      if (results?.gestures?.length > 0) {
-        videoGestureInfo.value.categoryName = enumGesture[results.gestures[0][0].categoryName]
-        videoGestureInfo.value.categoryScore = Number(
-          (results.gestures[0][0].score * 100).toFixed(2),
-        )
-        videoGestureInfo.value.handedness = results.handednesses[0][0].displayName
-        console.log('识别到的手势类别', videoGestureInfo.value.categoryName)
-        console.log('识别到的手势得分', videoGestureInfo.value.categoryScore)
-      } else {
-        videoGestureInfo.value.categoryName = ''
-        videoGestureInfo.value.categoryScore = ''
-        videoGestureInfo.value.handedness = ''
-      }
-
-      // 递归调用,继续识别视频中的手势
-      requestAnimationFrame(predictWebcam)
-    }
-
-    // 打开摄像头
-    navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-      // 视频流添加到video元素中
-      video.srcObject = stream
-      // 绑定视频加载完成事件,开始识别视频中的手势
-      video.addEventListener('loadeddata', predictWebcam)
+      // 打开摄像头
+      navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+        // 视频流添加到video元素中
+        video.srcObject = stream
+        // 绑定视频加载完成事件,开始识别视频中的手势
+        video.addEventListener('loadeddata', predictWebcam)
+      })
     })
   })
 }
@@ -262,6 +276,7 @@ onUnmounted(() => {
 defineExpose({
   stopCamera,
   capturePhoto,
+  createGestureRecognizer,
 })
 </script>
 

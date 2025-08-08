@@ -10,6 +10,7 @@ import { useProjectStore } from '@/stores/project'
 import report from '@/components/report.vue'
 import camera from '@/components/camera.vue'
 
+const cameraRef = ref()
 const projectStore = useProjectStore()
 const cmdStore = useCmdStore()
 const nextPageData = ref({
@@ -82,8 +83,10 @@ const check = () => {
   checkResult.value = 1
 }
 
-onMounted(() => {
+onMounted(async () => {
   cmdStore.overBtn = 1
+  const result = await cameraRef.value.createGestureRecognizer(5000)
+  console.log('你好', result)
 })
 </script>
 
@@ -104,7 +107,7 @@ onMounted(() => {
         </div>
       </div>
       <div class="frame">
-        <camera :finger-check-btn="true" ref="cameraRef" class="canvas" />
+        <camera ref="cameraRef" class="canvas" />
       </div>
       <div class="example"></div>
     </div>
