@@ -8,6 +8,7 @@ import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
 import report from '@/components/report.vue'
+import camera from '@/components/camera.vue'
 
 const projectStore = useProjectStore()
 const cmdStore = useCmdStore()
@@ -102,7 +103,9 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div class="frame"></div>
+      <div class="frame">
+        <camera :finger-check-btn="true" ref="cameraRef" class="canvas" />
+      </div>
       <div class="example"></div>
     </div>
   </div>
@@ -192,10 +195,15 @@ onMounted(() => {
 }
 .frame {
   position: relative;
-  width: 30%;
+  width: 50%;
   height: 90%;
-  margin-inline: 4%;
+  margin-inline: 1%;
   border: 1vh solid white;
+}
+.canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 .prompt {
   position: absolute;
