@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { Timer } from '@element-plus/icons-vue'
 import router from '@/router'
 import btnBox from './btnBox.vue'
@@ -39,18 +39,30 @@ const timeStep = ref(props.seconds)
 let setIntervalData: number | undefined
 
 const runTime = () => {
+  clearTimer()
   timeStep.value = props.seconds
   setIntervalData = setInterval(() => {
     timeStep.value--
     if (timeStep.value <= 0) {
-      clearInterval(setIntervalData)
+      clearTimer()
       router.push('/')
     }
   }, 1000)
 }
 
+const clearTimer = () => {
+  if (setIntervalData) {
+    clearInterval(setIntervalData)
+  }
+}
+
 onMounted(() => {
   runTime()
+})
+
+// 组件卸载时清除计时器
+onUnmounted(() => {
+  clearTimer()
 })
 </script>
 
