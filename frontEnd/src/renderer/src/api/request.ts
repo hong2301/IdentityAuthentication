@@ -1,6 +1,5 @@
 import axios, { type AxiosRequestConfig } from 'axios'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import router from '@/router'
+// import { ElMessage } from 'element-plus'
 
 // 创建 axios 实例
 const service = axios.create({
@@ -29,11 +28,11 @@ service.interceptors.response.use(
         const res = response.data
         if (res.status !== 0) {
             // ElMessage.error 用于显示错误提示
-            ElMessage({
-                message: res.message || 'Error',
-                type: 'error',
-                duration: 5 * 1000
-            })
+            // ElMessage({
+            //     message: res.message || 'Error',
+            //     type: 'error',
+            //     duration: 5 * 1000
+            // })
             return Promise.reject(new Error(res.message || 'Error'))
         } else {
             return res
@@ -70,7 +69,7 @@ service.interceptors.response.use(
             message = error.message
         }
 
-        ElMessage.error(message)
+        // ElMessage.error(message)
         return Promise.reject(error)
     }
 )
