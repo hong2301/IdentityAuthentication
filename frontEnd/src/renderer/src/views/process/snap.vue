@@ -60,6 +60,7 @@ const overtimeBtns = ref<btnType[]>([
     icon: markRaw(Back),
     position: 'left',
     onClick: () => {
+      
       router.go(-1)
     },
   },
@@ -88,7 +89,7 @@ let interval: number | undefined
 // 点击拍照
 const clickSnap = () => {
   snapBtn.value = 1
-  btns.value = [backBtn]
+  btns.value = []
   runTime()
 }
 
