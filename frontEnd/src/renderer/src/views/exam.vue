@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { markRaw, onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
 import type { projectType } from '@/types/project'
 import { useProjectStore } from '@/stores/project'
@@ -26,7 +26,7 @@ const btns = ref<btnType[]>([
     label: '返回',
     key: 'back',
     type: 'primary',
-    icon: Back,
+    icon: markRaw(Back),
     position: 'left',
     onClick: () => {
       backHandleBack()
@@ -40,7 +40,6 @@ const backHandleBack = () => {
 
 // 开始进程
 const clickProject = (data: projectType) => {
-  projectStore.examData.projectName = data.name
   projectStore.mountProject(data)
   projectStore.nextStep()
 }
@@ -54,10 +53,40 @@ const getProject = () => {
         {
           name: '身份证获取',
           path: '/process/getId',
+          key: 'getId',
           state: 0,
+          data: {},
+        },
+        {
+          name: '电话号码获取',
+          path: '/process/getIphone',
+          key: 'getIphone',
+          state: 0,
+          data: {},
+        },
+        {
+          name: '车型选择',
+          path: '/process/vehicleModel',
+          key: 'vehicleModel',
+          state: 0,
+          data: {},
+        },
+        {
+          name: '信息确认',
+          path: '/process/confurm',
+          key: 'confurm',
+          state: 0,
+          data: {},
+        },
+        {
+          name: '拍照',
+          path: '/process/snapPro',
+          key: 'snapPro',
+          state: 0,
+          data: {},
         },
       ],
-      step: 0,
+      step: -1,
     },
     {
       name: '申领增驾',
@@ -65,10 +94,12 @@ const getProject = () => {
         {
           name: '手指检测',
           path: '/process/fingerCheck',
+          key: 'fingerCheck',
           state: 0,
+          data: {},
         },
       ],
-      step: 0,
+      step: -1,
     },
     {
       name: '年审体检',
@@ -76,10 +107,12 @@ const getProject = () => {
         {
           name: '身份证获取',
           path: '/process/getId',
+          key: 'getId',
           state: 0,
+          data: {},
         },
       ],
-      step: 0,
+      step: -1,
     },
   ]
 }

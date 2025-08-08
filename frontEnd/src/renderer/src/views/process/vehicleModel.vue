@@ -9,11 +9,13 @@ import BtnBox from '@/components/btnBox.vue'
 import CarCard from '@/components/carCard.vue'
 import type { carType } from '@/types/car'
 import { useProjectStore } from '@/stores/project'
+
 const cmdStore = useCmdStore()
+const projectStore=useProjectStore()
 
 const nextPageData = ref({
   path: '/',
-  seconds: 30000,
+  seconds: 10,
   secondsLabel: '点击继续可重试，否则即将前往首页:',
   label: '车型选择超时',
   icon: 'Timer',
@@ -34,7 +36,7 @@ const btns = ref<btnType[]>([
     icon: markRaw(Back),
     position: 'left',
     onClick: () => {
-      router.go(-1)
+      projectStore.back()
     },
   },
   {
@@ -57,7 +59,7 @@ const overtimeBtns = ref<btnType[]>([
     icon: markRaw(Back),
     position: 'left',
     onClick: () => {
-         router.go(-1)
+      projectStore.back()
     },
   },
   {
@@ -231,9 +233,8 @@ const clickCarCard = () => {
 
 // 确定信息
 const over=()=>{
-  const projectStore=useProjectStore()
-  projectStore.examData.carType=selectCar.value
-    router.push('/process/confurm')
+  projectStore.setVlaueForNowProject('carType',selectCar.value.slice(0, -2).replace(/,\s*/g, ''))
+  projectStore.nextStep()
 }
 
 
@@ -326,7 +327,7 @@ onMounted(() => {
         </div>
       </template>
     </el-dialog>
-     <overtime ref="overtimeRef" v-model:timeout-btn="timeoutBtn" :btns="overtimeBtns" :time-num="300" :nextPageData="nextPageData" class="overtime" />
+     <overtime ref="overtimeRef" v-model:timeout-btn="timeoutBtn" :btns="overtimeBtns" :time-num="30" :nextPageData="nextPageData" class="overtime" />
   </div>
 </template>
 
