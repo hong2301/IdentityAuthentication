@@ -81,7 +81,7 @@ const backHandleCon = async () => {
     if (readResult.result.code !== -1) {
       projectStore.setVlaueForNowProject('name', readResult.result.name)
       projectStore.setVlaueForNowProject('id', readResult.result.idCode)
-      projectStore.setVlaueForNowProject('gender', readResult.result.sex)
+      projectStore.setVlaueForNowProject('gander', readResult.result.sex)
       projectStore.nextStep()
       getBtn = false
     } else {
