@@ -9,7 +9,9 @@ import BtnBox from '@/components/btnBox.vue'
 import CarCard from '@/components/carCard.vue'
 import type { carType } from '@/types/car'
 import { useProjectStore } from '@/stores/project'
+
 const cmdStore = useCmdStore()
+const projectStore=useProjectStore()
 
 const nextPageData = ref({
   path: '/',
@@ -34,7 +36,7 @@ const btns = ref<btnType[]>([
     icon: markRaw(Back),
     position: 'left',
     onClick: () => {
-      router.go(-1)
+      projectStore.back()
     },
   },
   {
@@ -57,7 +59,7 @@ const overtimeBtns = ref<btnType[]>([
     icon: markRaw(Back),
     position: 'left',
     onClick: () => {
-         router.go(-1)
+      projectStore.back()
     },
   },
   {
@@ -231,7 +233,6 @@ const clickCarCard = () => {
 
 // 确定信息
 const over=()=>{
-  const projectStore=useProjectStore()
   projectStore.setVlaueForNowProject('carType',selectCar.value.slice(0, -2).replace(/,\s*/g, ''))
   projectStore.nextStep()
 }
