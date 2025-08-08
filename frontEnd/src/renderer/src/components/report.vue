@@ -4,10 +4,14 @@ import router from '@/router'
 import btnBox from './btnBox.vue'
 import type { btnType } from '@/types/components'
 
-const emit = defineEmits(['continue', 'back'])
+const emit = defineEmits(['continue', 'back', 'update:btn'])
 
 // 定义 props
 const props = defineProps({
+  btn: {
+    type: Number,
+    default: 0,
+  },
   seconds: {
     type: Number,
     default: 30,
@@ -40,6 +44,7 @@ const runTime = () => {
     if (timeStep.value <= 0) {
       clearInterval(setIntervalData)
       router.push(props.path)
+      emit('update:btn', 0)
     }
   }, 1000)
 }
