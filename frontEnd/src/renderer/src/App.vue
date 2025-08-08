@@ -18,7 +18,7 @@ const sendPostRequest = async () => {
   try {
     // 4. 发送 POST 请求
     // axios.post(url, data, config) 的结构非常清晰
-    const response = await axios.post(url, config)
+    const response = await axios.post(url,{value:'123'}, config)
 
     // 5. 处理成功的响应
     console.log('响应状态码:', response.status)
