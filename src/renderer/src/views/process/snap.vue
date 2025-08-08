@@ -6,7 +6,9 @@ import type { btnType } from '@/types/components'
 import { Back, Camera, Right } from '@element-plus/icons-vue'
 import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
+import camera from '@/components/camera.vue'
 
+const cameraRef=ref()
 const projectStore = useProjectStore()
 const cmdStore = useCmdStore()
 const nextPageData = ref({
@@ -101,8 +103,9 @@ const runTime = () => {
       clearInterval(interval)
       nowNumber.value++
       nowCountdown.value = countdown
-      capturePhoto()
+      photoData.value.push(cameraRef.value.capturePhoto())
       if (nowNumber.value > number) {
+        cameraRef.value.stopCamera()
         snapBtn.value = 2
         btns.value = [backBtn, continueBtn]
       } else {
@@ -131,102 +134,12 @@ const clickImg = (index: number) => {
   projectStore.setVlaueForNowProject('photo',photoData.value[index].data)
 }
 
-
-//// 摄像头模块
-const videoRef = ref<HTMLVideoElement>();
-let mediaStream: MediaStream | null = null;
-
-// 开启摄像头
-const startCamera = async () => {
-  try {
-    // 请求摄像头权限
-    mediaStream = await navigator.mediaDevices.getUserMedia({
-      video: true,  // 启用视频
-      audio: false, // 禁用音频
-    });
-    if (videoRef.value) {
-      videoRef.value.srcObject = mediaStream;
-    }
-  } catch (error:any) {
-    console.error('摄像头访问失败:', error);
-    alert(`无法访问摄像头: ${error.message}`);
-  }
-};
-
-// 拍照
-const capturePhoto = () => {
-  if (!videoRef.value || !mediaStream) return;
-
-  const video = videoRef.value;
-  const sourceWidth = video.videoWidth;
-  const sourceHeight = video.videoHeight;
-
-  // 目标比例 32:22 ≈ 1.4545
-  const targetRatio = 22 / 32; 
-
-  // 计算裁剪区域（保持居中）
-  let cropWidth, cropHeight, cropX, cropY;
-
-  // 如果视频比目标比例更宽（如 16:9），则裁剪左右两侧
-  if (sourceWidth / sourceHeight > targetRatio) {
-    cropHeight = sourceHeight;
-    cropWidth = cropHeight * targetRatio;
-    cropX = (sourceWidth - cropWidth) / 2;
-    cropY = 0;
-  } 
-  // 如果视频比目标比例更高（如 4:3），则裁剪上下两侧
-  else {
-    cropWidth = sourceWidth;
-    cropHeight = cropWidth / targetRatio;
-    cropX = 0;
-    cropY = (sourceHeight - cropHeight) / 2;
-  }
-
-  // 创建 canvas，尺寸为目标比例
-  const canvas = document.createElement('canvas');
-  canvas.width = cropWidth;  // 最终宽度
-  canvas.height = cropHeight; // 最终高度
-
-  const ctx = canvas.getContext('2d');
-  if(!ctx)return
-  // 裁剪并绘制图像
-  ctx.drawImage(
-    video, 
-    cropX, cropY,        // 源图像裁剪起始点
-    cropWidth, cropHeight, // 源图像裁剪尺寸
-    0, 0,                // 画布起始点
-    canvas.width, canvas.height // 画布绘制尺寸
-  );
-
-  // 存储 Base64 数据
-  photoData.value.push({
-    active: 0,
-    data: canvas.toDataURL('image/jpeg', 0.9), // 可调整图片质量（0-1）
-  });
-};
-
-// 关闭摄像头
-const stopCamera = () => {
-  if (mediaStream) {
-    mediaStream.getTracks().forEach((track: { stop: () => any }) => track.stop());
-    mediaStream = null;
-  }
-  if (videoRef.value) {
-    videoRef.value.srcObject = null;
-  }
-};
-
 onMounted(() => {
   cmdStore.overBtn = 1
   getNumber()
   getCountdown()
-  startCamera()
 })
 
-// 组件卸载时关闭摄像头
-onUnmounted(() => {
-  stopCamera();
-});
 </script>
 
 <template>
@@ -241,7 +154,7 @@ onUnmounted(() => {
         </div>
       </div>
       <div class="frame">
-        <video class="canvas" ref="videoRef" autoplay playsinline></video>
+        <camera ref="cameraRef" class="canvas"/>
         <div v-if="snapBtn === 1" class="prompt">
           <div class="icon">⬆︎</div>
           <div class="label1">请看前方镜头</div>
