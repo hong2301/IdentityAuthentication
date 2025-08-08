@@ -27,7 +27,7 @@ const backBtn: btnType = {
   icon: markRaw(Back),
   position: 'left',
   onClick: () => {
-    router.go(-1)
+    projectStore.back()
   },
 }
 const snapBtnOpt: btnType = {
@@ -47,7 +47,7 @@ const continueBtn: btnType = {
   icon: markRaw(Right),
   position: 'right',
   onClick: () => {
-    router.push('/process/fingerDetection')
+    projectStore.nextStep()
   },
 }
 const timeoutBtn = ref(false)
@@ -60,8 +60,7 @@ const overtimeBtns = ref<btnType[]>([
     icon: markRaw(Back),
     position: 'left',
     onClick: () => {
-      
-      router.go(-1)
+      projectStore.back()
     },
   },
   {
@@ -77,7 +76,7 @@ const overtimeBtns = ref<btnType[]>([
   },
 ])
 const btns = ref<btnType[]>([backBtn, snapBtnOpt])
-const photoData = ref([])
+const photoData = ref<any>([])
 
 let number = 2
 const nowNumber = ref(1)
@@ -126,18 +125,17 @@ const getCountdown = () => {
 }
 // 选择照片
 const clickImg = (index: number) => {
-  photoData.value.forEach((item) => {
+  photoData.value.forEach((item: { active: number }) => {
     item.active = 0
   })
   photoData.value[index].active = 1
-  projectStore.examData.photo = photoData.value[index]
+  projectStore.setVlaueForNowProject('photo',photoData.value[index].data)
 }
 
 
 //// 摄像头模块
-const videoRef = ref(null);
-const photoUrl = ref([]);
-let mediaStream = null;
+const videoRef = ref<HTMLVideoElement>();
+let mediaStream: MediaStream | null = null;
 
 // 开启摄像头
 const startCamera = async () => {
@@ -150,7 +148,7 @@ const startCamera = async () => {
     if (videoRef.value) {
       videoRef.value.srcObject = mediaStream;
     }
-  } catch (error) {
+  } catch (error:any) {
     console.error('摄像头访问失败:', error);
     alert(`无法访问摄像头: ${error.message}`);
   }
@@ -191,7 +189,7 @@ const capturePhoto = () => {
   canvas.height = cropHeight; // 最终高度
 
   const ctx = canvas.getContext('2d');
-  
+  if(!ctx)return
   // 裁剪并绘制图像
   ctx.drawImage(
     video, 
@@ -211,7 +209,7 @@ const capturePhoto = () => {
 // 关闭摄像头
 const stopCamera = () => {
   if (mediaStream) {
-    mediaStream.getTracks().forEach(track => track.stop());
+    mediaStream.getTracks().forEach((track: { stop: () => any }) => track.stop());
     mediaStream = null;
   }
   if (videoRef.value) {
