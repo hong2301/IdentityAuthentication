@@ -1,308 +1,160 @@
+<template>
+  <video id="webcam" width="640" height="480" autoplay></video>
+  <canvas id="output_canvas" width="640" height="480"></canvas>
+</template>
 <script setup lang="ts">
-import { useCmdStore } from '@/stores/cmd'
-import { markRaw, onMounted, ref } from 'vue'
-import overtime from '@/components/overtime.vue'
-import type { btnType } from '@/types/components'
-import { Back, Right } from '@element-plus/icons-vue'
-import router from '@/router'
-import BtnBox from '@/components/btnBox.vue'
-import { useProjectStore } from '@/stores/project'
-import report from '@/components/report.vue'
-import camera from '@/components/camera.vue'
+import { GestureRecognizer, FilesetResolver, DrawingUtils } from '@mediapipe/tasks-vision'
+import { ref, onMounted, nextTick } from 'vue'
+// 手势识别器实例
+let gestureRecognizer: any = null
 
-const projectStore = useProjectStore()
-const cmdStore = useCmdStore()
-const nextPageData = ref({
-  path: '/',
-  seconds: 30000,
-  secondsLabel: '点击继续可重试，否则即将前往首页:',
-  label: '手指检测超时',
-  icon: 'Timer',
-  type: 0,
-  continue: 1,
-  over: 1,
-})
-const backBtn: btnType = {
-  label: '返回',
-  key: 'back',
-  type: 'primary',
-  icon: markRaw(Back),
-  position: 'left',
-  onClick: () => {
-    router.go(-1)
-  },
+// 识别器识别的类型(图片/视频)
+const runningMode = ref()
+
+// 视频手势信息
+const videoGestureInfo = ref<any>({})
+
+// 手势枚举
+const enumGesture: any = {
+  Closed_Fist: '握紧拳头',
+  Open_Palm: '张开手掌',
+  Thumb_Up: '竖起大拇指',
+  Thumb_Down: '拇指朝下',
+  Pointing_Up: '指向上',
+  Victory: '胜利',
+  None: '未识别',
 }
-const ContinueBtn: btnType = {
-  label: '继续',
-  key: 'continue',
-  type: 'success',
-  icon: markRaw(Right),
-  position: 'right',
-  onClick: () => {
-    router.push('/process/neck')
-  },
-}
-const timeoutBtn = ref(false)
-const overtimeRef = ref()
-const overtimeBtns = ref<btnType[]>([
-  {
-    label: '返回',
-    key: 'back',
-    type: 'primary',
-    icon: markRaw(Back),
-    position: 'left',
-    onClick: () => {
-      router.go(-1)
+
+// 创建手势识别器
+const createGestureRecognizer = async () => {
+  // 加载指定版本的MediaPipe视觉任务WebAssembly模块
+  const vision = await FilesetResolver.forVisionTasks('/wasm')
+
+  // 创建了一个手势识别器实例(这个手势识别器实例使用的是指定版本的MediaPipe视觉任务WebAssembly模块)
+  gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
+    // 识别器配置
+    baseOptions: {
+      // 指向手势识别模型的路径
+      modelAssetPath: '/gesture_recognizer.task',
+      // 设置为GPU以尝试利用图形处理单元进行加速,提高模型推理的速度
+      delegate: 'GPU',
     },
-  },
-  {
-    label: '继续',
-    key: 'continue',
-    type: 'success',
-    icon: markRaw(Right),
-    position: 'right',
-    onClick: () => {
-      timeoutBtn.value = false
-      overtimeRef.value.runTime()
-    },
-  },
-])
-let interval: number | undefined
-const btns = ref<btnType[]>([backBtn])
-const checkResult = ref(0)
-
-// 倒计时
-const runTime = () => {
-  clearInterval(interval)
-  interval = setInterval(() => {}, 1000)
+    // 检测手掌的数量
+    numHands: 2,
+  })
+  console.log('手势识别器加载完毕')
+  // 识别视频中的手势
+  predictWebcam()
 }
 
-// 手指检测
-const check = () => {
-  checkResult.value = 1
+// 识别视频中的手势
+const predictWebcam = async () => {
+  // 判断是否可以使用摄像头
+  if (!hasGetUserMedia()) return alert('此设备不允许使用摄像头!')
+  // 判断手势识别器是否加载完成
+  if (!gestureRecognizer) return alert('手势识别器未加载完成')
+
+  if (runningMode.value !== 'VIDEO') {
+    // 设置识别器识别的类型为视频
+    runningMode.value = 'VIDEO'
+    await gestureRecognizer.setOptions({ runningMode: runningMode.value })
+  }
+
+  await gestureRecognizer.setOptions({ numHands: 2 })
+
+  nextTick(() => {
+    // 获取video元素
+    const video = document.getElementById('webcam') as HTMLVideoElement
+    // 获取视频手势节点绘制的canvas元素
+    const canvasElement = document.getElementById('output_canvas') as HTMLCanvasElement
+    // 设置canvas的宽度和高度为video的宽度和高度
+    canvasElement.width = video.clientWidth
+    canvasElement.height = video.clientHeight
+    // 获取canvas的上下文
+    const canvasCtx = canvasElement.getContext('2d') as CanvasRenderingContext2D
+
+    // 设置上次识别视频手势的时间
+    let lastVideoTime = -1
+
+    // 识别视频中的手势
+    const predictWebcam = () => {
+      // 获取当前视频的时间
+      let nowInMs = Date.now()
+      let results: any = {}
+
+      // 如果视频的时间发生变化,则识别视频中的手势
+      if (video.currentTime !== lastVideoTime) {
+        // 替换上次识别视频手势的时间
+        lastVideoTime = video.currentTime
+        results = gestureRecognizer.recognizeForVideo(video, nowInMs)
+      }
+
+      // 保存当前的canvas状态
+      canvasCtx.save()
+      // 清除canvas的内容
+      canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height)
+
+      // 创建drawingUtils实例,用于可视化MediaPipeVision任务的结果
+      const drawingUtils = new DrawingUtils(canvasCtx)
+      // 判断是否识别到手势
+      if (results.landmarks) {
+        // 循环绘制手势的节点
+        for (const landmarks of results.landmarks) {
+          // 绘制手势连接线
+          drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
+            // 连接线的颜色
+            color: '#00FF00',
+            // 连接线的宽度
+            lineWidth: 3,
+          })
+          // 绘制手势关节点
+          drawingUtils.drawLandmarks(landmarks, {
+            // 关节点的颜色
+            color: '#FF0000',
+            // 关节点的半径
+            radius: 2.5,
+          })
+        }
+      }
+      // 恢复canvas的状态
+      canvasCtx.restore()
+
+      // 判断是否识别到手势数据
+      if (results?.gestures?.length > 0) {
+        videoGestureInfo.value.categoryName = enumGesture[results.gestures[0][0].categoryName]
+        videoGestureInfo.value.categoryScore = parseFloat(
+          results.gestures[0][0].score * 100,
+        ).toFixed(2)
+        videoGestureInfo.value.handedness = results.handednesses[0][0].displayName
+        console.log('识别到的手势类别', videoGestureInfo.value.categoryName)
+        console.log('识别到的手势得分', videoGestureInfo.value.categoryScore)
+      } else {
+        videoGestureInfo.value.categoryName = ''
+        videoGestureInfo.value.categoryScore = ''
+        videoGestureInfo.value.handedness = ''
+      }
+
+      // 递归调用,继续识别视频中的手势
+      requestAnimationFrame(predictWebcam)
+    }
+
+    // 打开摄像头
+    navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+      // 视频流添加到video元素中
+      video.srcObject = stream
+      // 绑定视频加载完成事件,开始识别视频中的手势
+      video.addEventListener('loadeddata', predictWebcam)
+    })
+  })
+}
+
+// 判断是否可以使用摄像头
+function hasGetUserMedia() {
+  return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)
 }
 
 onMounted(() => {
-  cmdStore.overBtn = 1
+  // 加载手势识别器
+  createGestureRecognizer()
 })
 </script>
-
-<template>
-  <div class="content">
-    <div class="title">手指检测: 请举起双手, 将手掌完全与头同高</div>
-    <div class="body">
-      <div class="example">
-        <div class="img">
-          <div class="img-content">
-            <div class="serial">1</div>
-          </div>
-        </div>
-        <div class="img">
-          <div class="img-content">
-            <div class="serial">2</div>
-          </div>
-        </div>
-      </div>
-      <div class="frame">
-        <camera ref="cameraRef" class="canvas" />
-      </div>
-      <div class="example"></div>
-    </div>
-  </div>
-  <BtnBox :btns="btns" />
-  <overtime
-    ref="overtimeRef"
-    v-model:timeout-btn="timeoutBtn"
-    :btns="overtimeBtns"
-    :time-num="300"
-    :nextPageData="nextPageData"
-    class="overtime"
-  />
-  <report
-    v-if="checkResult"
-    path="/process/neck"
-    :type="1"
-    :seconds="3"
-    secondsLabel="即将进行下一步: "
-    :btns="[...btns, ContinueBtn]"
-  >
-    <div class="box">
-      <div class="title1">手指检测完成</div>
-      <div class="result">检测结果: 合格</div>
-      <div class="des">手指无缺陷</div>
-    </div>
-  </report>
-</template>
-
-<style scoped>
-.content {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-.title {
-  margin-bottom: 1%;
-  font-size: 3rem;
-  color: white;
-  font-weight: 800;
-  width: 90%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.body {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.okBox {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-.okImg {
-  width: 30%;
-  height: 80%;
-  border: 0.5vh solid white;
-  box-sizing: border-box;
-  cursor: pointer;
-}
-.okImgContent {
-  width: 100%;
-  height: 100%;
-  border: 0.5vh solid rgba(85, 140, 202, 1);
-  box-sizing: border-box;
-  background-color: white;
-}
-.okImgContent-active {
-  border-color: orange;
-  transform: scale(1.05); /* 放大5% */
-}
-.overtime {
-  position: fixed;
-  top: 0;
-  right: 16vw;
-  height: 10vh;
-  display: flex;
-  align-items: center;
-}
-.frame {
-  position: relative;
-  width: 30%;
-  height: 90%;
-  margin-inline: 4%;
-  border: 1vh solid white;
-}
-.canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.prompt {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-}
-.icon {
-  font-size: 5rem;
-  color: brown;
-}
-.label1 {
-  font-size: 3rem;
-  color: rgb(255, 255, 0);
-  font-weight: 800;
-  margin-bottom: 4%;
-}
-.example {
-  width: 22%;
-  height: 90%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-}
-.img {
-  height: 48%;
-  width: 70%;
-  border: 0.5vh solid white;
-  box-sizing: border-box;
-}
-.img-content {
-  width: 100%;
-  height: 100%;
-  border: 0.5vh solid rgba(85, 140, 202, 1);
-  box-sizing: border-box;
-  background-color: white;
-  position: relative;
-}
-.serial {
-  position: absolute;
-  width: 20%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background-color: gray;
-  border: 0.5vh solid white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 800;
-}
-.number-box {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-.label {
-  color: brown;
-  font-size: 2rem;
-  font-weight: 800;
-}
-.value {
-  color: brown;
-  font-size: 10rem;
-  font-weight: 800;
-}
-.box {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-direction: column;
-}
-.title1 {
-  font-size: 3.5rem;
-  font-weight: 800;
-}
-.result {
-  color: brown;
-  font-size: 2rem;
-  font-weight: 800;
-}
-.des {
-  color: brown;
-  font-size: 2rem;
-  font-weight: 800;
-}
-</style>
