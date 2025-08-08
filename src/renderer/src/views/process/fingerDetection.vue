@@ -10,12 +10,14 @@ import { useProjectStore } from '@/stores/project'
 import report from '@/components/report.vue'
 import camera from '@/components/camera.vue'
 
+const checkResultShow = ref('')
+const checkResultText = ref('')
 const cameraRef = ref()
 const projectStore = useProjectStore()
 const cmdStore = useCmdStore()
 const nextPageData = ref({
   path: '/',
-  seconds: 30000,
+  seconds: 10,
   secondsLabel: '点击继续可重试，否则即将前往首页:',
   label: '手指检测超时',
   icon: 'Timer',
@@ -30,7 +32,7 @@ const backBtn: btnType = {
   icon: markRaw(Back),
   position: 'left',
   onClick: () => {
-    router.go(-1)
+    projectStore.back()
   },
 }
 const ContinueBtn: btnType = {
@@ -40,7 +42,7 @@ const ContinueBtn: btnType = {
   icon: markRaw(Right),
   position: 'right',
   onClick: () => {
-    router.push('/process/neck')
+    projectStore.nextStep()
   },
 }
 const timeoutBtn = ref(false)
@@ -53,7 +55,7 @@ const overtimeBtns = ref<btnType[]>([
     icon: markRaw(Back),
     position: 'left',
     onClick: () => {
-      router.go(-1)
+      projectStore.back()
     },
   },
   {
@@ -72,21 +74,23 @@ let interval: number | undefined
 const btns = ref<btnType[]>([backBtn])
 const checkResult = ref(0)
 
-// 倒计时
-const runTime = () => {
-  clearInterval(interval)
-  interval = setInterval(() => {}, 1000)
-}
-
 // 手指检测
-const check = () => {
+const check = async () => {
+  const result = await cameraRef.value.createGestureRecognizer(10000)
+  if (result.reasons[0] === '手指功能正常') {
+    checkResultShow.value = '合格'
+    projectStore.setVlaueForNowProject('fingerCheck', 1)
+  } else {
+    checkResultShow.value = '不合格'
+    projectStore.setVlaueForNowProject('fingerCheck', 0)
+  }
+  checkResultText.value = result.reasons[0]
   checkResult.value = 1
 }
 
 onMounted(async () => {
   cmdStore.overBtn = 1
-  const result = await cameraRef.value.createGestureRecognizer(5000)
-  console.log('你好', result)
+  check()
 })
 </script>
 
@@ -117,7 +121,7 @@ onMounted(async () => {
     ref="overtimeRef"
     v-model:timeout-btn="timeoutBtn"
     :btns="overtimeBtns"
-    :time-num="300"
+    :time-num="30"
     :nextPageData="nextPageData"
     class="overtime"
   />
@@ -131,8 +135,8 @@ onMounted(async () => {
   >
     <div class="box">
       <div class="title1">手指检测完成</div>
-      <div class="result">检测结果: 合格</div>
-      <div class="des">手指无缺陷</div>
+      <div class="result">检测结果: {{ checkResultShow }}</div>
+      <div class="des">{{ checkResultText }}</div>
     </div>
   </report>
 </template>
