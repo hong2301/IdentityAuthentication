@@ -143,26 +143,62 @@ const createGestureRecognizer = async (timeout: number = 999999999) => {
 const predictWebcam = (timeout: number = 999999999): Promise<{ type: number; value: number }[]> => {
   return new Promise(async (resolve) => {
     const rows: { type: number; value: number }[] = []
+    let video: HTMLVideoElement | null = null
+    let stream: MediaStream | null = null
+    let animationFrameId: number | null = null
+    let videoLoadedListener: (() => void) | null = null
+
+    // 清理资源的函数
+    const cleanup = () => {
+      // 取消动画帧循环
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId)
+        animationFrameId = null
+      }
+
+      // 移除事件监听器
+      if (video && videoLoadedListener) {
+        video.removeEventListener('loadeddata', videoLoadedListener)
+        videoLoadedListener = null
+      }
+
+      // 关闭摄像头流
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop())
+        stream = null
+      }
+
+      // 清空video引用
+      if (video) {
+        video.srcObject = null
+        video = null
+      }
+    }
 
     // 设置超时定时器
     const timeoutId = setTimeout(() => {
+      cleanup()
       resolve(rows) // 超时后返回已收集的数据
     }, timeout)
 
-    // 判断手势识别器是否加载完成
-    if (!gestureRecognizer) return alert('手势识别器未加载完成')
+    try {
+      // 判断手势识别器是否加载完成
+      if (!gestureRecognizer) {
+        throw new Error('手势识别器未加载完成')
+      }
 
-    if (runningMode.value !== 'VIDEO') {
-      // 设置识别器识别的类型为视频
-      runningMode.value = 'VIDEO'
-      await gestureRecognizer.setOptions({ runningMode: runningMode.value })
-    }
+      if (runningMode.value !== 'VIDEO') {
+        // 设置识别器识别的类型为视频
+        runningMode.value = 'VIDEO'
+        await gestureRecognizer.setOptions({ runningMode: runningMode.value })
+      }
 
-    await gestureRecognizer.setOptions({ numHands: 2 })
+      await gestureRecognizer.setOptions({ numHands: 2 })
 
-    nextTick(async () => {
+      await nextTick()
+
       // 获取video元素
-      const video = document.getElementById('webcam') as HTMLVideoElement
+      video = document.getElementById('webcam') as HTMLVideoElement
       // 获取视频手势节点绘制的canvas元素
       const canvasElement = document.getElementById('output_canvas') as HTMLCanvasElement
 
@@ -188,7 +224,7 @@ const predictWebcam = (timeout: number = 999999999): Promise<{ type: number; val
         let results: any = {}
 
         // 如果视频的时间发生变化,则识别视频中的手势
-        if (video.currentTime !== lastVideoTime) {
+        if (video && video.currentTime !== lastVideoTime) {
           // 替换上次识别视频手势的时间
           lastVideoTime = video.currentTime
           results = gestureRecognizer.recognizeForVideo(video, nowInMs)
@@ -238,26 +274,37 @@ const predictWebcam = (timeout: number = 999999999): Promise<{ type: number; val
             type: videoGestureInfo.value.categoryName === '握紧拳头' ? 0 : 1,
             value: videoGestureInfo.value.categoryScore,
           })
-          // console.log('识别到的手势类别', videoGestureInfo.value.categoryName)
-          // console.log('识别到的手势得分', videoGestureInfo.value.categoryScore)
         } else {
           videoGestureInfo.value.categoryName = ''
           videoGestureInfo.value.categoryScore = ''
           videoGestureInfo.value.handedness = ''
         }
 
-        // 递归调用,继续识别视频中的手势
-        requestAnimationFrame(predictWebcam)
+        // 继续识别视频中的手势
+        animationFrameId = requestAnimationFrame(predictWebcam)
       }
 
       // 打开摄像头
-      navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-        // 视频流添加到video元素中
-        video.srcObject = stream
-        // 绑定视频加载完成事件,开始识别视频中的手势
-        video.addEventListener('loadeddata', predictWebcam)
-      })
-    })
+      stream = await navigator.mediaDevices.getUserMedia({ video: true })
+      video.srcObject = stream
+
+      // 添加事件监听器并保存引用以便后续移除
+      videoLoadedListener = predictWebcam
+      video.addEventListener('loadeddata', videoLoadedListener)
+    } catch (error) {
+      // 发生错误时清理资源并reject
+      cleanup()
+      clearTimeout(timeoutId)
+      throw error
+    }
+
+    // 添加一个finally处理，确保Promise resolve时清理资源
+    const originalResolve = resolve
+    resolve = (value) => {
+      cleanup()
+      clearTimeout(timeoutId)
+      originalResolve(value)
+    }
   })
 }
 
