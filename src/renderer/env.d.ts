@@ -1,9 +1,14 @@
 /// <reference types="vite/client" />
+
 interface ImportMetaEnv {
     // 在这里定义你的环境变量
     readonly VITE_API_BASE_URL: string;
-    // 如果你有其他变量，可以继续在这里添加
-    // readonly VITE_APP_TITLE: string;
+
+    // 基础Vite环境变量
+    readonly MODE: string;
+    readonly DEV: boolean;
+    readonly PROD: boolean;
+    readonly SSR: boolean;
 }
 
 interface ImportMeta {
