@@ -9,7 +9,7 @@ export default function evaluateFingerFunction(data: { type: number, value: numb
         return {
             hasDefect: true,
             confidence: 0,
-            reason: '无有效检测数据',
+            reasons: ['无有效检测数据'],
             details: null
         };
     }
