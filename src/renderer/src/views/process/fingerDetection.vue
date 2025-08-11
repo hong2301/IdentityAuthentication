@@ -10,6 +10,21 @@ import { useProjectStore } from '@/stores/project'
 import report from '@/components/report.vue'
 import camera from '@/components/camera.vue'
 
+const reportData = ref<{
+  btn: boolean
+  path: string
+  type: number
+  seconds: number
+  btns: btnType[]
+  secondsLabel: string
+}>({
+  btn: false,
+  path: '',
+  btns: [],
+  type: 1,
+  seconds: 3,
+  secondsLabel: '即将进行下一步',
+})
 const checkResultShow = ref('')
 const checkResultText = ref('')
 const cameraRef = ref()
@@ -35,7 +50,7 @@ const backBtn: btnType = {
     projectStore.back()
   },
 }
-const ContinueBtn: btnType = {
+const continueBtn: btnType = {
   label: '继续',
   key: 'continue',
   type: 'success',
@@ -43,6 +58,18 @@ const ContinueBtn: btnType = {
   position: 'right',
   onClick: () => {
     projectStore.nextStep()
+  },
+}
+const reContinueBtn: btnType = {
+  label: '继续',
+  key: 'continue',
+  type: 'success',
+  icon: markRaw(Right),
+  position: 'right',
+  onClick: () => {
+    timeoutBtn.value = false
+    overtimeRef.value.runTime()
+    reportData.value.btn = false
   },
 }
 const timeoutBtn = ref(false)
@@ -72,7 +99,6 @@ const overtimeBtns = ref<btnType[]>([
 ])
 let interval: number | undefined
 const btns = ref<btnType[]>([backBtn])
-const checkResult = ref(0)
 
 // 手指检测
 const check = async () => {
@@ -80,12 +106,20 @@ const check = async () => {
   if (result.reasons[0] === '手指功能正常') {
     checkResultShow.value = '合格'
     projectStore.setVlaueForNowProject('fingerCheck', 1)
+    reportData.value.type = 1
+    reportData.value.seconds = 3
+    reportData.value.btns = [backBtn, continueBtn]
+    reportData.value.secondsLabel = '即将前往下一步'
   } else {
     checkResultShow.value = '不合格'
     projectStore.setVlaueForNowProject('fingerCheck', 0)
+    reportData.value.type = 0
+    reportData.value.seconds = 10
+    reportData.value.btns = [backBtn, reContinueBtn]
+    reportData.value.secondsLabel = '点击继续可重试，否则即将结束进程'
   }
   checkResultText.value = result.reasons[0]
-  checkResult.value = 1
+  reportData.value.btn = true
 }
 
 onMounted(async () => {
@@ -126,12 +160,12 @@ onMounted(async () => {
     class="overtime"
   />
   <report
-    v-if="checkResult"
-    path="/process/neck"
-    :type="1"
-    :seconds="3"
-    secondsLabel="即将进行下一步: "
-    :btns="[...btns, ContinueBtn]"
+    v-if="reportData.btn"
+    :path="reportData.path"
+    :type="reportData.type"
+    :seconds="reportData.seconds"
+    :secondsLabel="reportData.secondsLabel"
+    :btns="reportData.btns"
   >
     <div class="box">
       <div class="title1">手指检测完成</div>
