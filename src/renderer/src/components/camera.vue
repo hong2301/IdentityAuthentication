@@ -153,22 +153,24 @@ const createGestureRecognizer = async (timeout: number = 999999999) => {
 }
 
 // 创建脸部识别器
-const createFaceDetector = async (timeout: number = 999999999) => {
-  const vision = await FilesetResolver.forVisionTasks(
-    import.meta.env.MODE === 'development' ? '/wasm' : '../dist/wasm',
-  )
-  faceDetector = await FaceDetector.createFromOptions(vision, {
-    baseOptions: {
-      modelAssetPath:
-        import.meta.env.MODE === 'development'
-          ? '/blaze_face_short_range.tflite'
-          : '../dist/blaze_face_short_range.tflite',
-      delegate: 'GPU',
-    },
+const createFaceDetector = (timeout: number = 999999999): Promise<void> => {
+  return new Promise(async (resolve) => {
+    const vision = await FilesetResolver.forVisionTasks(
+      import.meta.env.MODE === 'development' ? '/wasm' : '../dist/wasm',
+    )
+    faceDetector = await FaceDetector.createFromOptions(vision, {
+      baseOptions: {
+        modelAssetPath:
+          import.meta.env.MODE === 'development'
+            ? '/blaze_face_short_range.tflite'
+            : '../dist/blaze_face_short_range.tflite',
+        delegate: 'GPU',
+      },
+    })
+    console.log('脸部识别器加载完毕')
+    await facePredictWebcam(timeout)
+    resolve()
   })
-  console.log('脸部识别器加载完毕')
-
-  await facePredictWebcam(timeout)
 }
 
 const predictWebcam = (timeout: number = 999999999): Promise<{ type: number; value: number }[]> => {
@@ -540,7 +542,7 @@ defineExpose({
   height: 100%; /* 固定高度 */
   top: 50%; /* 垂直居中 */
   left: 50%; /* 水平居中起始点 */
-  transform: translate(-50%, -50%) scaleX(-1); /* 同时处理水平和垂直居中 */
+  transform: translate(-50%, -50%); /* 同时处理水平和垂直居中 */
   object-fit: cover;
 }
 .canvas {
@@ -548,6 +550,6 @@ defineExpose({
   height: 100%; /* 固定高度 */
   top: 50%; /* 垂直居中 */
   left: 50%; /* 水平居中起始点 */
-  transform: translate(-50%, -50%) scaleX(-1); /* 同时处理水平和垂直居中 */
+  transform: translate(-50%, -50%); /* 同时处理水平和垂直居中 */
 }
 </style>
