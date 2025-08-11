@@ -235,7 +235,7 @@ const predictWebcam = (timeout: number = 999999999): Promise<{ type: number; val
         // 清除canvas的内容
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height)
         canvasCtx.beginPath()
-        canvasCtx.rect(diff / 2, 0, video.clientWidth, canvasElement.height) // x, y, width, height
+        canvasCtx.rect(diff / 2, 0, video?.clientWidth ?? 1000, canvasElement.height) // x, y, width, height
         canvasCtx.clip() // 后续绘制只会在这个区域内生效
 
         // 创建drawingUtils实例,用于可视化MediaPipeVision任务的结果
