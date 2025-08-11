@@ -8,6 +8,8 @@ import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
 import report from '@/components/report.vue'
+import camera from '@/components/camera.vue'
+
 const projectStore = useProjectStore()
 const cmdStore = useCmdStore()
 const nextPageData = ref({
@@ -130,8 +132,8 @@ onMounted(() => {
         <div class="label2">请按下右侧按钮</div>
       </div>
       <div class="frame"></div>
-      <div class="example">
-        <div class="camera"></div>
+      <div class="example1">
+        <camera ref="cameraRef" class="canvas" />
       </div>
     </div>
   </div>
@@ -257,10 +259,16 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
 }
-.camera {
+.example1 {
+  width: 22%;
+  height: 80%;
+  border: 0.5vh solid white;
+  position: relative;
+}
+.canvas {
+  position: absolute;
   width: 100%;
   height: 100%;
-  border: 0.5vh solid white;
 }
 .img {
   height: 40%;

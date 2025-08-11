@@ -94,7 +94,6 @@ const overtimeBtns = ref<btnType[]>([
     },
   },
 ])
-let interval: number | undefined
 const btns = ref<btnType[]>([backBtn])
 
 // 手指检测
