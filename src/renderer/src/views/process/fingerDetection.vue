@@ -4,7 +4,6 @@ import { markRaw, onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
 import type { btnType } from '@/types/components'
 import { Back, Right } from '@element-plus/icons-vue'
-import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
 import report from '@/components/report.vue'
@@ -67,9 +66,7 @@ const reContinueBtn: btnType = {
   icon: markRaw(Right),
   position: 'right',
   onClick: () => {
-    timeoutBtn.value = false
-    overtimeRef.value.runTime()
-    reportData.value.btn = false
+    location.reload()
   },
 }
 const timeoutBtn = ref(false)
