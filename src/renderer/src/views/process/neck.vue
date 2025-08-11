@@ -68,19 +68,17 @@ const overtimeBtns = ref<btnType[]>([
     },
   },
 ])
-let interval: number | undefined
 const btns = ref<btnType[]>([backBtn])
 const checkResult = ref(0)
 
-// 倒计时
-const runTime = () => {
-  clearInterval(interval)
-  interval = setInterval(() => {}, 1000)
-}
-
 // 颈部检测
 const check = async () => {
-  const result = await cameraRef.value.createFaceDetector(10000)
+  await cameraRef.value.createFaceDetector(15000)
+}
+
+// 有动作
+const camerraAction = (type: string) => {
+  console.log(type)
 }
 
 onMounted(() => {
@@ -94,7 +92,7 @@ onMounted(() => {
     <div class="title">颈部检测: 按照提示完成检测</div>
     <div class="body">
       <div class="frame">
-        <camera ref="cameraRef" class="canvas" />
+        <camera ref="cameraRef" class="canvas" @action="camerraAction" />
       </div>
     </div>
   </div>

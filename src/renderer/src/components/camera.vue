@@ -10,7 +10,7 @@ import { delay } from '@/utils/delay'
 import { evaluateFingerFunction, detectHeadPose } from '@/utils/vision'
 import type { FaceFeature } from '@/types/project'
 
-const emit = defineEmits([])
+const emit = defineEmits(['action'])
 
 // 定义 props
 const props = defineProps({
@@ -168,11 +168,7 @@ const createFaceDetector = async (timeout: number = 999999999) => {
   })
   console.log('脸部识别器加载完毕')
 
-  const facePredictWebcamResult = await facePredictWebcam(timeout)
-
-  console.log(facePredictWebcamResult)
-
-  // return evaluateFingerFunction(facePredictWebcamResult)
+  await facePredictWebcam(timeout)
 }
 
 const predictWebcam = (timeout: number = 999999999): Promise<{ type: number; value: number }[]> => {
@@ -444,6 +440,7 @@ const facePredictWebcam = (timeout: number = 999999999): Promise<FaceFeature[]> 
           })
           const detectLeftHeadTurnResult = detectHeadPose(rows)
           if (detectLeftHeadTurnResult !== 'front') {
+            emit('action', detectLeftHeadTurnResult)
             rows = []
           }
           if (rows.length >= 20) {
