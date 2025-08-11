@@ -148,36 +148,36 @@ const createGestureRecognizer = async (timeout: number = 999999999) => {
 }
 const predictWebcam = (timeout: number = 999999999): Promise<{ type: number; value: number }[]> => {
   return new Promise(async (resolve) => {
+    const beforeUnloadListener = () => cleanup()
+    window.addEventListener('beforeunload', beforeUnloadListener)
+
     const rows: { type: number; value: number }[] = []
     let video: HTMLVideoElement | null = null
-    let stream: MediaStream | null = null
     let animationFrameId: number | null = null
     let videoLoadedListener: (() => void) | null = null
 
     // 清理资源的函数
     const cleanup = () => {
-      // 取消动画帧循环
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId)
-        animationFrameId = null
-      }
+      try {
+        // 取消动画帧循环
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId)
+          animationFrameId = null
+        }
 
-      // 移除事件监听器
-      if (video && videoLoadedListener) {
-        video.removeEventListener('loadeddata', videoLoadedListener)
-        videoLoadedListener = null
-      }
+        // 移除事件监听器
+        if (video && videoLoadedListener) {
+          video.removeEventListener('loadeddata', videoLoadedListener)
+          videoLoadedListener = null
+        }
 
-      // 关闭摄像头流
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop())
-        stream = null
-      }
-
-      // 清空video引用
-      if (video) {
-        video.srcObject = null
-        video = null
+        // 清空video引用
+        if (video) {
+          video.srcObject = null
+          video = null
+        }
+      } catch (e) {
+        console.error('Cleanup error:', e)
       }
     }
 
@@ -307,6 +307,7 @@ const predictWebcam = (timeout: number = 999999999): Promise<{ type: number; val
     // 添加一个finally处理，确保Promise resolve时清理资源
     const originalResolve = resolve
     resolve = (value) => {
+      window.removeEventListener('beforeunload', beforeUnloadListener) // 移除监听
       cleanup()
       clearTimeout(timeoutId)
       originalResolve(value)
