@@ -270,6 +270,10 @@ const predictWebcam = (timeout: number = 999999999): Promise<{ type: number; val
         // 清除canvas的内容
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height)
         canvasCtx.beginPath()
+        // 添加水平翻转
+        canvasCtx.translate(canvasElement.width, 0)
+        canvasCtx.scale(-1, 1)
+
         canvasCtx.rect(diff / 2, 0, video?.clientWidth ?? 1000, canvasElement.height) // x, y, width, height
         canvasCtx.clip() // 后续绘制只会在这个区域内生效
 
@@ -425,6 +429,10 @@ const facePredictWebcam = (timeout: number = 999999999): Promise<FaceFeature[]> 
         canvasCtx.save()
         // 清除canvas的内容
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height)
+        // 添加水平翻转
+        canvasCtx.translate(canvasElement.width, 0)
+        canvasCtx.scale(-1, 1)
+
         canvasCtx.beginPath()
         canvasCtx.rect(diff / 2, 0, video?.clientWidth ?? 1000, canvasElement.height) // x, y, width, height
         canvasCtx.clip() // 后续绘制只会在这个区域内生效
@@ -534,6 +542,7 @@ defineExpose({
   width: 100%; /* 父容器宽度 */
   height: 100%; /* 父容器高度（根据实际需求调整） */
   overflow: hidden; /* 超出部分隐藏 */
+  transform: scaleX(-1);
 }
 
 .video {
@@ -542,7 +551,7 @@ defineExpose({
   height: 100%; /* 固定高度 */
   top: 50%; /* 垂直居中 */
   left: 50%; /* 水平居中起始点 */
-  transform: translate(-50%, -50%); /* 同时处理水平和垂直居中 */
+  transform: translate(-50%, -50%) scaleX(-1); /* 同时处理水平和垂直居中 */
   object-fit: cover;
 }
 .canvas {
