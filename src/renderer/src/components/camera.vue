@@ -291,8 +291,8 @@ const predictWebcam = (timeout: number = 999999999): Promise<{ type: number; val
       }
 
       // 打开摄像头
-      stream = await navigator.mediaDevices.getUserMedia({ video: true })
-      video.srcObject = stream
+      if (!videoRef.value || !mediaStream) return
+      video.srcObject = videoRef.value.srcObject
 
       // 添加事件监听器并保存引用以便后续移除
       videoLoadedListener = predictWebcam
