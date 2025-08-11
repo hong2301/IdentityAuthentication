@@ -8,7 +8,9 @@ import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
 import report from '@/components/report.vue'
+import camera from '@/components/camera.vue'
 
+const cameraRef = ref()
 const projectStore = useProjectStore()
 const cmdStore = useCmdStore()
 const nextPageData = ref({
@@ -77,12 +79,13 @@ const runTime = () => {
 }
 
 // 颈部检测
-const check = () => {
-  checkResult.value = 1
+const check = async () => {
+  const result = await cameraRef.value.createFaceDetector(10000)
 }
 
 onMounted(() => {
   cmdStore.overBtn = 1
+  check()
 })
 </script>
 
@@ -90,7 +93,9 @@ onMounted(() => {
   <div class="content">
     <div class="title">颈部检测: 按照提示完成检测</div>
     <div class="body">
-      <div class="frame"></div>
+      <div class="frame">
+        <camera ref="cameraRef" class="canvas" />
+      </div>
     </div>
   </div>
   <BtnBox :btns="btns" />
@@ -183,6 +188,11 @@ onMounted(() => {
   height: 90%;
   margin-inline: 4%;
   border: 1vh solid white;
+}
+.canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 .prompt {
   position: absolute;
