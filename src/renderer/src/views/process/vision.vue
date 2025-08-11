@@ -3,12 +3,11 @@ import { useCmdStore } from '@/stores/cmd'
 import { markRaw, onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
 import type { btnType } from '@/types/components'
-import { Back, Right } from '@element-plus/icons-vue'
+import { Back, CaretLeft, CaretRight, CaretTop, CaretBottom, Right } from '@element-plus/icons-vue'
 import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
 import report from '@/components/report.vue'
-
 const projectStore = useProjectStore()
 const cmdStore = useCmdStore()
 const nextPageData = ref({
@@ -30,6 +29,38 @@ const backBtn: btnType = {
   onClick: () => {
     router.go(-1)
   },
+}
+const leftBtn: btnType = {
+  label: '左',
+  key: 'left',
+  type: 'primary',
+  icon: markRaw(CaretLeft),
+  position: 'right',
+  onClick: () => {},
+}
+const rightBtn: btnType = {
+  label: '右',
+  key: 'left',
+  type: 'primary',
+  icon: markRaw(CaretRight),
+  position: 'right',
+  onClick: () => {},
+}
+const upBtn: btnType = {
+  label: '上',
+  key: 'up',
+  type: 'primary',
+  icon: markRaw(CaretTop),
+  position: 'right',
+  onClick: () => {},
+}
+const bottomBtn: btnType = {
+  label: '下',
+  key: 'bottom',
+  type: 'primary',
+  icon: markRaw(CaretBottom),
+  position: 'right',
+  onClick: () => {},
 }
 const ContinueBtn: btnType = {
   label: '继续',
@@ -67,7 +98,7 @@ const overtimeBtns = ref<btnType[]>([
   },
 ])
 let interval: number | undefined
-const btns = ref<btnType[]>([backBtn])
+const btns = ref<btnType[]>([backBtn, leftBtn, rightBtn, upBtn, bottomBtn])
 const checkResult = ref(0)
 
 // 倒计时
