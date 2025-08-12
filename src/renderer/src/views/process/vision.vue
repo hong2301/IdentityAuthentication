@@ -206,7 +206,6 @@ const check = async (dir: string = 'left') => {
         nowEDir.value = 0
       }
       nowELevel.value = testVisualResult.data[testVisualResult.data.length - 1].level
-      console.log(testVisualResult.data[testVisualResult.data.length - 1].dir)
       // 回答
       while (answerDir === '') {
         await delay(100)
@@ -278,6 +277,7 @@ onMounted(async () => {
           >
             E
           </div>
+          <div v-if="!isBlock" class="img-prompt"></div>
           <div v-if="isBlock" class="frame-prompt1">
             正在检测{{ nowDir === 'left' ? '左眼' : '右眼' }}视力
           </div>
@@ -399,6 +399,12 @@ onMounted(async () => {
   justify-content: center;
   background-color: white;
   align-items: center;
+}
+.img-prompt {
+  position: absolute;
+  width: 50%;
+  aspect-ratio: 1;
+  background-color: white;
 }
 .e {
   color: black;

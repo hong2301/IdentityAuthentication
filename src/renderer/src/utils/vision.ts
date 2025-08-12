@@ -217,6 +217,14 @@ export function testVisual(visualData: {
     // 有测试记录
     if (visualData.length > 0) {
         const lastData = visualData[visualData.length - 1];
+        // 检测是否到最高级
+        if (lastData.level <= 1) {
+            return {
+                state: false,
+                data: visualData,
+                lever: lastData.level
+            }
+        }
         // 上一次测试正确
         if (lastData.result) {
             visualData.push({
