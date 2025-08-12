@@ -104,14 +104,24 @@ const bottomBtn: btnType = {
     answerDir = 'bottom'
   },
 }
-const ContinueBtn: btnType = {
+const reContinueBtn: btnType = {
   label: '继续',
   key: 'continue',
   type: 'success',
   icon: markRaw(Right),
   position: 'right',
   onClick: () => {
-    router.push('/process/colorVision')
+    location.reload()
+  },
+}
+const continueBtn: btnType = {
+  label: '继续',
+  key: 'continue',
+  type: 'success',
+  icon: markRaw(Right),
+  position: 'right',
+  onClick: () => {
+    projectStore.nextStep()
   },
 }
 const timeoutBtn = ref(false)
@@ -150,6 +160,10 @@ let testOption = {
 const isBlock = ref(false)
 // 当前测试模式
 const nowDir = ref('left')
+// 当前字母方向
+const nowEDir = ref(0)
+// 当前等级
+const nowELevel = ref(5)
 // 摄像头对象
 const cameraRef = ref()
 
@@ -180,7 +194,19 @@ const check = async (dir: string = 'left') => {
     }
     if (run) {
       answerDir = ''
-      console.log('提问', testVisualResult.data[testVisualResult.data.length - 1].dir)
+
+      const askDir = testVisualResult.data[testVisualResult.data.length - 1].dir
+      if (askDir === 'left') {
+        nowEDir.value = 180
+      } else if (askDir === 'top') {
+        nowEDir.value = 270
+      } else if (askDir === 'bottom') {
+        nowEDir.value = 90
+      } else {
+        nowEDir.value = 0
+      }
+      nowELevel.value = testVisualResult.data[testVisualResult.data.length - 1].level
+      console.log(testVisualResult.data[testVisualResult.data.length - 1].dir)
       // 回答
       while (answerDir === '') {
         await delay(100)
@@ -189,7 +215,27 @@ const check = async (dir: string = 'left') => {
         testVisualResult.data[testVisualResult.data.length - 1].result = true
       }
     } else {
-      console.log(testVisualResult.lever)
+      if (dir === 'left') {
+        reportData.value.result.left = testVisualResult.lever
+      } else {
+        reportData.value.result.right = testVisualResult.lever
+        reportData.value.btn = true
+        if (reportData.value.result.right < 4 && reportData.value.result.left < 4) {
+          reportData.value.result.label = '合格'
+          reportData.value.type = 1
+          reportData.value.seconds = 3
+          reportData.value.secondsLabel = '即将前往下一步:'
+          reportData.value.path = projectStore.nowProject.process[projectStore.getStep() + 1].path
+          reportData.value.btns = [backBtn, continueBtn]
+        } else {
+          reportData.value.result.label = '不合格'
+          reportData.value.type = 0
+          reportData.value.seconds = 10
+          reportData.value.secondsLabel = '点击继续重试，否则即将前往首页:'
+          reportData.value.path = '/'
+          reportData.value.btns = [backBtn, reContinueBtn]
+        }
+      }
     }
   }
 }
@@ -226,6 +272,12 @@ onMounted(async () => {
       </div>
       <div class="frame-box">
         <div class="frame">
+          <div
+            class="e"
+            :style="{ fontSize: `${nowELevel / 2}rem`, transform: `rotate(${nowEDir}deg)` }"
+          >
+            E
+          </div>
           <div v-if="isBlock" class="frame-prompt1">
             正在检测{{ nowDir === 'left' ? '左眼' : '右眼' }}视力
           </div>
@@ -258,7 +310,7 @@ onMounted(async () => {
     :path="reportData.path"
     :seconds="reportData.seconds"
     :secondsLabel="reportData.secondsLabel"
-    :btns="[...btns, ContinueBtn]"
+    :btns="reportData.btns"
   >
     <div class="box">
       <div class="title1">视力检测完成</div>
@@ -346,6 +398,10 @@ onMounted(async () => {
   display: flex;
   justify-content: center;
   background-color: white;
+  align-items: center;
+}
+.e {
+  color: black;
 }
 .frame-prompt1 {
   position: absolute;

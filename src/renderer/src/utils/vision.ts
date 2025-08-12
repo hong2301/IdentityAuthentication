@@ -220,7 +220,7 @@ export function testVisual(visualData: {
         // 上一次测试正确
         if (lastData.result) {
             visualData.push({
-                level: lastData.level + 1,
+                level: lastData.level - 1,
                 dir: dirs[Math.floor(Math.random() * 4)],
                 result: false
             })
@@ -244,7 +244,7 @@ export function testVisual(visualData: {
             }
             // 否则降低等级
             visualData.push({
-                level: lastData.level - 1,
+                level: lastData.level + 1,
                 dir: dirs[Math.floor(Math.random() * 4)],
                 result: false
             })
