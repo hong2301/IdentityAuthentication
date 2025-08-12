@@ -199,3 +199,73 @@ export function checkEyeBlock(score: number) {
     return false
 
 }
+
+const dirs = ['top', 'bottom', 'left', 'right']
+export function testVisual(visualData: {
+    level: number,
+    dir: string,
+    result: boolean,
+}[]): {
+    state: boolean,
+    lever: number,
+    data: {
+        level: number,
+        dir: string,
+        result: boolean,
+    }[]
+} {
+    // 有测试记录
+    if (visualData.length > 0) {
+        const lastData = visualData[visualData.length - 1];
+        // 上一次测试正确
+        if (lastData.result) {
+            visualData.push({
+                level: lastData.level + 1,
+                dir: dirs[Math.floor(Math.random() * 4)],
+                result: false
+            })
+            return {
+                state: true,
+                data: visualData,
+                lever: lastData.level
+            }
+        } else {
+            // 是否有俩次
+            if (visualData.length > 1) {
+                const lastLastData = visualData[visualData.length - 2];
+                // 如果上上一次是正确的则已到最大视力
+                if (lastLastData.result) {
+                    return {
+                        state: false,
+                        lever: lastLastData.level,
+                        data: []
+                    }
+                }
+            }
+            // 否则降低等级
+            visualData.push({
+                level: lastData.level - 1,
+                dir: dirs[Math.floor(Math.random() * 4)],
+                result: false
+            })
+            return {
+                state: true,
+                data: visualData,
+                lever: lastData.level
+            }
+
+        }
+    } else {
+        // 没有测试记录
+        visualData.push({
+            level: 6,
+            dir: dirs[Math.floor(Math.random() * 4)],
+            result: false
+        })
+        return {
+            state: true,
+            data: visualData,
+            lever: 6
+        }
+    }
+}

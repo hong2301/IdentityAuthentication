@@ -10,7 +10,9 @@ import { useProjectStore } from '@/stores/project'
 import report from '@/components/report.vue'
 import camera from '@/components/camera.vue'
 import { delay } from '@/utils/delay'
+import { testVisual } from '@/utils/vision'
 
+let answerDir = ''
 const reportData = ref<{
   btn: boolean
   path: string
@@ -64,15 +66,21 @@ const leftBtn: btnType = {
   type: 'primary',
   icon: markRaw(CaretLeft),
   position: 'right',
-  onClick: () => {},
+  onClick: () => {
+    if (!isBlock.value) return
+    answerDir = 'left'
+  },
 }
 const rightBtn: btnType = {
   label: '右',
-  key: 'left',
+  key: 'right',
   type: 'primary',
   icon: markRaw(CaretRight),
   position: 'right',
-  onClick: () => {},
+  onClick: () => {
+    if (!isBlock.value) return
+    answerDir = 'right'
+  },
 }
 const upBtn: btnType = {
   label: '上',
@@ -80,7 +88,10 @@ const upBtn: btnType = {
   type: 'primary',
   icon: markRaw(CaretTop),
   position: 'right',
-  onClick: () => {},
+  onClick: () => {
+    if (!isBlock.value) return
+    answerDir = 'top'
+  },
 }
 const bottomBtn: btnType = {
   label: '下',
@@ -88,7 +99,10 @@ const bottomBtn: btnType = {
   type: 'primary',
   icon: markRaw(CaretBottom),
   position: 'right',
-  onClick: () => {},
+  onClick: () => {
+    if (!isBlock.value) return
+    answerDir = 'bottom'
+  },
 }
 const ContinueBtn: btnType = {
   label: '继续',
@@ -142,20 +156,45 @@ const cameraRef = ref()
 // 检测是否有遮挡
 const checkBlock = () => {
   // 启动识别器方法
-  cameraRef.value.createFaceDetector(30000, { isEyeBlock: true })
+  cameraRef.value.createFaceDetector(40000, { isEyeBlock: true })
 }
 // 识别器检测回调
 const blockState = (state: boolean = true) => {
   isBlock.value = state
-  console.log(state)
 }
 
 // 检测
 const checkLeft = async () => {
-  checkBlock()
-  await delay(3000)
+  nowDir.value = 'left'
+
+  // 测视力循环
+  let run = true
+  let testLog: { level: number; dir: string; result: boolean }[] = []
+  while (run) {
+    // 获取题目
+    const testVisualResult = testVisual(testLog)
+    if (testVisualResult.state) {
+      testLog = testVisualResult.data
+    } else {
+      run = false
+    }
+    if (run) {
+      answerDir = ''
+      console.log('提问', testVisualResult.data[testVisualResult.data.length - 1].dir)
+      // 回答
+      while (answerDir === '') {
+        await delay(100)
+      }
+      if (answerDir === testVisualResult.data[testVisualResult.data.length - 1].dir) {
+        testVisualResult.data[testVisualResult.data.length - 1].result = true
+      }
+    } else {
+      console.log(testVisualResult.lever)
+    }
+  }
 }
 const checkRight = async () => {
+  nowDir.value = 'left'
   await delay(3000)
 }
 
@@ -171,6 +210,7 @@ const getTestOption = () => {
 onMounted(async () => {
   cmdStore.overBtn = 1
   getTestOption()
+  checkBlock()
   await checkLeft()
   await checkRight()
 })
