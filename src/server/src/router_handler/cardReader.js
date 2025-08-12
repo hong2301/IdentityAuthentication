@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const cardReader = require('../native/cardreader/cardreader.node');
+const cardReader = require('../../native/cardreader/cardreader.node');
 
 // 读卡
 exports.read = (req, res) => {
