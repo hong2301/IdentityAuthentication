@@ -122,7 +122,7 @@ const createGestureRecognizer = async (timeout: number = 999999999) => {
   // 加载指定版本的MediaPipe视觉任务WebAssembly模块
 
   const vision = await FilesetResolver.forVisionTasks(
-    import.meta.env.MODE === 'development' ? '/wasm' : '../dist/wasm',
+    import.meta.env.MODE === 'development' ? '/wasm' : './wasm',
   )
 
   // 创建了一个手势识别器实例(这个手势识别器实例使用的是指定版本的MediaPipe视觉任务WebAssembly模块)
@@ -133,7 +133,7 @@ const createGestureRecognizer = async (timeout: number = 999999999) => {
       modelAssetPath:
         import.meta.env.MODE === 'development'
           ? '/gesture_recognizer.task'
-          : '../dist/gesture_recognizer.task',
+          : './gesture_recognizer.task',
       // 设置为GPU以尝试利用图形处理单元进行加速,提高模型推理的速度
       delegate: 'GPU',
     },
