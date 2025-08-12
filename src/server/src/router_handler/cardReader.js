@@ -9,7 +9,7 @@ const requiredDlls = [
 ];
 
 // 源目录（DLL 所在的目录）
-const sourceDir = path.join(__dirname, '..', 'addon', 'cardReader', 'build', 'Debug');
+const sourceDir = path.join(__dirname, '..', 'native','cardreader');
 // 目标目录（Node.js 进程运行的当前工作目录）
 const targetDir = process.cwd();
 
