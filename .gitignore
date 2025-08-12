@@ -23,4 +23,3 @@ dist
 out
 build
 *.back
-electron/src/renderer
