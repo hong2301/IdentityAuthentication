@@ -12,7 +12,7 @@ export default defineConfig({
     vueDevTools(),
   ],
   build: {
-    outDir: 'dist', // 输出到上级dist
+    outDir: '../electron/src/renderer', // 输出到上级dist
   },
   resolve: {
     alias: {
