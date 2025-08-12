@@ -2,15 +2,10 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
 const started = require('electron-squirrel-startup')
-const { spawn } = require('child_process')
 
 // 导入我们的处理器模块
 const setupFileHandlers = require(path.join(__dirname, 'handlers', 'fileHandler.js'));
 const setupSystemHandlers = require(path.join(__dirname, 'handlers', 'systemHandler.js'));
-
-const BACKEND_PATH = path.join(__dirname, 'server')  // 根据实际结构调整
-const BACKEND_ENTRY = path.join(BACKEND_PATH, 'app.js')
-
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -42,31 +37,12 @@ const createWindow = () => {
 
   // Open the DevTools.
   //  mainWindow.webContents.openDevTools();
-
-    // 处理后端进程错误
-  backendProcess.on('error', (err) => {
-    console.error('后端启动失败:', err)
-    dialog.showErrorBox('错误', '后端服务启动失败: ' + err.message)
-  })
-  
-  backendProcess.on('exit', (code) => {
-    if (code !== 0) {
-      console.error(`后端异常退出，代码: ${code}`)
-    }
-  })
 };
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  // 启动后端进程
-  backendProcess = spawn('node', [BACKEND_ENTRY], {
-    cwd: BACKEND_PATH,  // 指定工作目录
-    stdio: 'inherit'    // 共享控制台输出
-  })
-
-
   // 注册所有的 IPC 处理器
   setupFileHandlers(ipcMain);
   setupSystemHandlers(ipcMain);
