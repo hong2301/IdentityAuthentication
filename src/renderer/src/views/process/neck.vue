@@ -4,11 +4,34 @@ import { markRaw, onMounted, ref } from 'vue'
 import overtime from '@/components/overtime.vue'
 import type { btnType } from '@/types/components'
 import { Back, Right } from '@element-plus/icons-vue'
-import router from '@/router'
 import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
 import report from '@/components/report.vue'
+import camera from '@/components/camera.vue'
+import { generateRandomBits } from '@/utils/math'
+import { delay } from '@/utils/delay'
 
+const reportData = ref<{
+  btn: boolean
+  path: string
+  type: number
+  seconds: number
+  btns: btnType[]
+  secondsLabel: string
+  result: string
+  des: string
+}>({
+  btn: false,
+  path: '',
+  btns: [],
+  type: 1,
+  seconds: 3,
+  secondsLabel: '即将进行下一步',
+  result: 'string',
+  des: 'string',
+})
+let whileBtn = true
+const cameraRef = ref()
 const projectStore = useProjectStore()
 const cmdStore = useCmdStore()
 const nextPageData = ref({
@@ -28,17 +51,27 @@ const backBtn: btnType = {
   icon: markRaw(Back),
   position: 'left',
   onClick: () => {
-    router.go(-1)
+    projectStore.back()
   },
 }
-const ContinueBtn: btnType = {
+const reContinueBtn: btnType = {
   label: '继续',
   key: 'continue',
   type: 'success',
   icon: markRaw(Right),
   position: 'right',
   onClick: () => {
-    router.push('/process/vision')
+    location.reload()
+  },
+}
+const continueBtn: btnType = {
+  label: '继续',
+  key: 'continue',
+  type: 'success',
+  icon: markRaw(Right),
+  position: 'right',
+  onClick: () => {
+    projectStore.nextStep()
   },
 }
 const timeoutBtn = ref(false)
@@ -51,7 +84,7 @@ const overtimeBtns = ref<btnType[]>([
     icon: markRaw(Back),
     position: 'left',
     onClick: () => {
-      router.go(-1)
+      projectStore.back()
     },
   },
   {
@@ -66,23 +99,82 @@ const overtimeBtns = ref<btnType[]>([
     },
   },
 ])
-let interval: number | undefined
 const btns = ref<btnType[]>([backBtn])
-const checkResult = ref(0)
-
-// 倒计时
-const runTime = () => {
-  clearInterval(interval)
-  interval = setInterval(() => {}, 1000)
+const prompt = {
+  front: {
+    icon: '⬆︎',
+    label: '请正视前方屏幕',
+    key: '',
+  },
+  left: {
+    icon: '⬅︎',
+    label: '向左转头',
+    key: 'left',
+  },
+  right: {
+    icon: '➡︎',
+    label: '向右转头',
+    key: 'right',
+  },
 }
+const showPrompt = ref(prompt.front)
 
 // 颈部检测
-const check = () => {
-  checkResult.value = 1
+const check = async (num: number = 3) => {
+  let bigWhileRun = true
+  cameraRef.value.createFaceDetector(15000).then((res: any) => {
+    bigWhileRun = false
+    whileBtn = false
+  })
+
+  await delay(1000)
+  // 生成随机数
+  const result = generateRandomBits(num)
+
+  let nowStep = 0
+  while (nowStep < result.length && bigWhileRun) {
+    whileBtn = true
+    while (whileBtn) {
+      const item = result[nowStep]
+      if (item) {
+        showPrompt.value = prompt.left
+      } else {
+        showPrompt.value = prompt.right
+      }
+      await delay(1000)
+    }
+    nowStep++
+  }
+  reportData.value.btn = true
+  if (nowStep !== num) {
+    reportData.value.type = 0
+    reportData.value.btns = [backBtn, reContinueBtn]
+    reportData.value.des = '颈部未能完成要求动作'
+    reportData.value.path = '/'
+    reportData.value.result = '不合格'
+    reportData.value.seconds = 10
+    reportData.value.secondsLabel = '点击继续可重试，否则即将前往首页：'
+  } else {
+    reportData.value.type = 1
+    reportData.value.btns = [backBtn, continueBtn]
+    reportData.value.des = '颈部没问题'
+    reportData.value.path = projectStore.nowProject.process[projectStore.getStep() + 1].path
+    reportData.value.result = '合格'
+    reportData.value.seconds = 3
+    reportData.value.secondsLabel = '则即将前往下一步：'
+  }
+}
+
+// 有动作
+const camerraAction = (type: string) => {
+  if (showPrompt.value.key === type) {
+    whileBtn = false
+  }
 }
 
 onMounted(() => {
   cmdStore.overBtn = 1
+  check()
 })
 </script>
 
@@ -90,7 +182,13 @@ onMounted(() => {
   <div class="content">
     <div class="title">颈部检测: 按照提示完成检测</div>
     <div class="body">
-      <div class="frame"></div>
+      <div class="frame">
+        <camera ref="cameraRef" class="canvas" @action="camerraAction" />
+        <div class="prompt">
+          <div class="icon">{{ showPrompt.icon }}</div>
+          <div class="label1">{{ showPrompt.label }}</div>
+        </div>
+      </div>
     </div>
   </div>
   <BtnBox :btns="btns" />
@@ -98,22 +196,22 @@ onMounted(() => {
     ref="overtimeRef"
     v-model:timeout-btn="timeoutBtn"
     :btns="overtimeBtns"
-    :time-num="300"
+    :time-num="30"
     :nextPageData="nextPageData"
     class="overtime"
   />
   <report
-    v-if="checkResult"
-    :type="1"
-    path="/process/vision"
-    :seconds="300"
-    secondsLabel="即将进行下一步: "
-    :btns="[...btns, ContinueBtn]"
+    v-if="reportData.btn"
+    :type="reportData.type"
+    :path="reportData.path"
+    :seconds="reportData.seconds"
+    :secondsLabel="reportData.secondsLabel"
+    :btns="reportData.btns"
   >
     <div class="box">
       <div class="title1">颈部检测完成</div>
-      <div class="result">检测结果: 合格</div>
-      <div class="des">颈部无问题</div>
+      <div class="result">检测结果: {{ reportData.result }}</div>
+      <div class="des">{{ reportData.des }}</div>
     </div>
   </report>
 </template>
@@ -183,6 +281,11 @@ onMounted(() => {
   height: 90%;
   margin-inline: 4%;
   border: 1vh solid white;
+}
+.canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 .prompt {
   position: absolute;

@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted, nextTick } from 'vue'
-import { GestureRecognizer, FilesetResolver, DrawingUtils } from '@mediapipe/tasks-vision'
+import {
+  GestureRecognizer,
+  FaceDetector,
+  FilesetResolver,
+  DrawingUtils,
+} from '@mediapipe/tasks-vision'
 import { delay } from '@/utils/delay'
-import evaluateFingerFunction from '@/utils/finger'
+import { evaluateFingerFunction, detectHeadPose } from '@/utils/vision'
+import type { FaceFeature } from '@/types/project'
 
-const emit = defineEmits([])
+const emit = defineEmits(['action'])
 
 // 定义 props
 const props = defineProps({
@@ -16,10 +22,10 @@ const props = defineProps({
 
 // 手势识别器实例
 let gestureRecognizer: any = null
+// 脸部识别器实例
+let faceDetector: any = null
 // 识别器识别的类型(图片/视频)
 const runningMode = ref()
-// 视频手势信息
-const videoGestureInfo = ref<any>({})
 // 手势枚举
 const enumGesture: any = {
   Closed_Fist: '握紧拳头',
@@ -120,7 +126,6 @@ const stopCamera = () => {
 // 创建手势识别器
 const createGestureRecognizer = async (timeout: number = 999999999) => {
   // 加载指定版本的MediaPipe视觉任务WebAssembly模块
-
   const vision = await FilesetResolver.forVisionTasks(
     import.meta.env.MODE === 'development' ? '/wasm' : '../dist/wasm',
   )
@@ -146,38 +151,62 @@ const createGestureRecognizer = async (timeout: number = 999999999) => {
 
   return evaluateFingerFunction(predictWebcamResult)
 }
+
+// 创建脸部识别器
+const createFaceDetector = (timeout: number = 999999999): Promise<void> => {
+  return new Promise(async (resolve) => {
+    const vision = await FilesetResolver.forVisionTasks(
+      import.meta.env.MODE === 'development' ? '/wasm' : '../dist/wasm',
+    )
+    faceDetector = await FaceDetector.createFromOptions(vision, {
+      baseOptions: {
+        modelAssetPath:
+          import.meta.env.MODE === 'development'
+            ? '/blaze_face_short_range.tflite'
+            : '../dist/blaze_face_short_range.tflite',
+        delegate: 'GPU',
+      },
+    })
+    console.log('脸部识别器加载完毕')
+    await facePredictWebcam(timeout)
+    resolve()
+  })
+}
+
 const predictWebcam = (timeout: number = 999999999): Promise<{ type: number; value: number }[]> => {
   return new Promise(async (resolve) => {
+    const beforeUnloadListener = () => cleanup()
+    window.addEventListener('beforeunload', beforeUnloadListener)
+
     const rows: { type: number; value: number }[] = []
     let video: HTMLVideoElement | null = null
-    let stream: MediaStream | null = null
     let animationFrameId: number | null = null
     let videoLoadedListener: (() => void) | null = null
+    // 视频手势信息
+    const videoGestureInfo = ref<any>({})
 
     // 清理资源的函数
     const cleanup = () => {
-      // 取消动画帧循环
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId)
-        animationFrameId = null
-      }
+      try {
+        // 取消动画帧循环
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId)
+          animationFrameId = null
+        }
 
-      // 移除事件监听器
-      if (video && videoLoadedListener) {
-        video.removeEventListener('loadeddata', videoLoadedListener)
-        videoLoadedListener = null
-      }
+        // 移除事件监听器
+        if (video && videoLoadedListener) {
+          video.removeEventListener('loadeddata', videoLoadedListener)
+          videoLoadedListener = null
+        }
 
-      // 关闭摄像头流
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop())
-        stream = null
-      }
-
-      // 清空video引用
-      if (video) {
-        video.srcObject = null
-        video = null
+        // 清空video引用
+        if (video) {
+          video.srcObject = null
+          video = null
+        }
+      } catch (e) {
+        console.error('Cleanup error:', e)
       }
     }
 
@@ -241,6 +270,10 @@ const predictWebcam = (timeout: number = 999999999): Promise<{ type: number; val
         // 清除canvas的内容
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height)
         canvasCtx.beginPath()
+        // 添加水平翻转
+        canvasCtx.translate(canvasElement.width, 0)
+        canvasCtx.scale(-1, 1)
+
         canvasCtx.rect(diff / 2, 0, video?.clientWidth ?? 1000, canvasElement.height) // x, y, width, height
         canvasCtx.clip() // 后续绘制只会在这个区域内生效
 
@@ -291,8 +324,8 @@ const predictWebcam = (timeout: number = 999999999): Promise<{ type: number; val
       }
 
       // 打开摄像头
-      stream = await navigator.mediaDevices.getUserMedia({ video: true })
-      video.srcObject = stream
+      if (!videoRef.value || !mediaStream) return
+      video.srcObject = videoRef.value.srcObject
 
       // 添加事件监听器并保存引用以便后续移除
       videoLoadedListener = predictWebcam
@@ -307,6 +340,168 @@ const predictWebcam = (timeout: number = 999999999): Promise<{ type: number; val
     // 添加一个finally处理，确保Promise resolve时清理资源
     const originalResolve = resolve
     resolve = (value) => {
+      window.removeEventListener('beforeunload', beforeUnloadListener) // 移除监听
+      cleanup()
+      clearTimeout(timeoutId)
+      originalResolve(value)
+    }
+  })
+}
+
+const facePredictWebcam = (timeout: number = 999999999): Promise<FaceFeature[]> => {
+  return new Promise(async (resolve) => {
+    // 退出页面进行销毁
+    const beforeUnloadListener = () => cleanup()
+    window.addEventListener('beforeunload', beforeUnloadListener)
+
+    // 变量区
+    let rows: FaceFeature[] = [
+      {
+        score: 0,
+        keypoints: [{ x: 0, y: 0 }],
+      },
+    ]
+    let video: HTMLVideoElement | null = null
+    let animationFrameId: number | null = null
+    let videoLoadedListener: (() => void) | null = null
+
+    // 清理
+    const cleanup = () => {
+      try {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId)
+          animationFrameId = null
+        }
+        if (video && videoLoadedListener) {
+          video.removeEventListener('loadeddata', videoLoadedListener)
+          videoLoadedListener = null
+        }
+        if (video) {
+          video.srcObject = null
+          video = null
+        }
+      } catch (e) {
+        console.error('Cleanup error:', e)
+      }
+    }
+
+    // 计时器
+    const timeoutId = setTimeout(() => {
+      cleanup()
+      resolve(rows)
+    }, timeout)
+
+    try {
+      // 检查初始化
+      if (!faceDetector) {
+        throw new Error('脸部识别器未加载完成')
+      }
+      if (runningMode.value !== 'VIDEO') {
+        runningMode.value = 'VIDEO'
+        await faceDetector.setOptions({ runningMode: runningMode.value })
+      }
+      await nextTick()
+
+      // 初始化video对象和canvas
+      video = document.getElementById('webcam') as HTMLVideoElement
+      const canvasElement = document.getElementById('output_canvas') as HTMLCanvasElement
+      while (video.videoWidth === 0 || video.videoHeight === 0) {
+        await delay(500)
+      }
+      canvasElement.width = video.videoWidth
+      canvasElement.height = video.videoHeight
+      const diff = video.videoWidth - video.clientWidth
+      const canvasCtx = canvasElement.getContext('2d') as CanvasRenderingContext2D
+      let lastVideoTime = -1
+
+      // 识别视频中的脸部
+      const facePredictWebcam = () => {
+        let nowInMs = Date.now()
+        let results: any = {}
+
+        if (video && video.currentTime !== lastVideoTime) {
+          // 替换上次识别视频脸部的时间
+          lastVideoTime = video.currentTime
+          results = faceDetector.detectForVideo(video, nowInMs)
+        }
+
+        // 保存当前的canvas状态
+        canvasCtx.save()
+        // 清除canvas的内容
+        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height)
+        // 添加水平翻转
+        canvasCtx.translate(canvasElement.width, 0)
+        canvasCtx.scale(-1, 1)
+
+        canvasCtx.beginPath()
+        canvasCtx.rect(diff / 2, 0, video?.clientWidth ?? 1000, canvasElement.height) // x, y, width, height
+        canvasCtx.clip() // 后续绘制只会在这个区域内生效
+
+        // 创建drawingUtils实例,用于可视化检测结果
+        const drawingUtils = new DrawingUtils(canvasCtx)
+
+        // 判断是否识别到人脸
+        const detections = results.detections
+        if (detections && detections.length > 0) {
+          // 收集数据
+          rows.push({
+            score: detections[0]?.categories[0]?.score,
+            keypoints: detections[0]?.keypoints,
+          })
+          const detectLeftHeadTurnResult = detectHeadPose(rows)
+          if (detectLeftHeadTurnResult !== 'front') {
+            emit('action', detectLeftHeadTurnResult)
+            rows = []
+          }
+          if (rows.length >= 20) {
+            rows = []
+          }
+          // 循环绘制每个检测到的人脸
+          for (const detection of detections) {
+            // 获取人脸边界框信息
+            const boundingBox = detection.boundingBox
+
+            // 绘制人脸边界框
+            drawingUtils.drawBoundingBox(boundingBox, {
+              color: '#00FF00', // 边界框颜色
+              lineWidth: 3, // 边界框线宽
+              fillColor: 'rgba(0, 255, 0, 0.1)', // 填充颜色和透明度
+            })
+
+            // 如果有面部关键点，绘制关键点
+            if (detection.keypoints && detection.keypoints.length > 0) {
+              drawingUtils.drawLandmarks(detection.keypoints, {
+                color: '#FF0000', // 关键点颜色
+                radius: 2.5, // 关键点半径
+              })
+            }
+          }
+        }
+        // 恢复canvas的状态
+        canvasCtx.restore()
+
+        // 继续识别视频中的脸部
+        animationFrameId = requestAnimationFrame(facePredictWebcam)
+      }
+
+      // 打开摄像头
+      if (!videoRef.value || !mediaStream) return
+      video.srcObject = videoRef.value.srcObject
+
+      // 添加事件监听器并保存引用以便后续移除
+      videoLoadedListener = facePredictWebcam
+      video.addEventListener('loadeddata', videoLoadedListener)
+    } catch (error) {
+      // 发生错误时清理资源并reject
+      cleanup()
+      clearTimeout(timeoutId)
+      throw error
+    }
+
+    // 添加一个finally处理，确保Promise resolve时清理资源
+    const originalResolve = resolve
+    resolve = (value) => {
+      window.removeEventListener('beforeunload', beforeUnloadListener) // 移除监听
       cleanup()
       clearTimeout(timeoutId)
       originalResolve(value)
@@ -330,6 +525,7 @@ defineExpose({
   stopCamera,
   capturePhoto,
   createGestureRecognizer,
+  createFaceDetector,
 })
 </script>
 
@@ -346,6 +542,7 @@ defineExpose({
   width: 100%; /* 父容器宽度 */
   height: 100%; /* 父容器高度（根据实际需求调整） */
   overflow: hidden; /* 超出部分隐藏 */
+  transform: scaleX(-1);
 }
 
 .video {
@@ -354,7 +551,7 @@ defineExpose({
   height: 100%; /* 固定高度 */
   top: 50%; /* 垂直居中 */
   left: 50%; /* 水平居中起始点 */
-  transform: translate(-50%, -50%); /* 同时处理水平和垂直居中 */
+  transform: translate(-50%, -50%) scaleX(-1); /* 同时处理水平和垂直居中 */
   object-fit: cover;
 }
 .canvas {

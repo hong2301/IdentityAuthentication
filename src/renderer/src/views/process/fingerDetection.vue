@@ -106,6 +106,7 @@ const check = async () => {
     reportData.value.seconds = 3
     reportData.value.btns = [backBtn, continueBtn]
     reportData.value.secondsLabel = '即将前往下一步'
+    reportData.value.path = projectStore.nowProject.process[projectStore.getStep() + 1].path
   } else {
     checkResultShow.value = '不合格'
     projectStore.setVlaueForNowProject('fingerCheck', 0)
@@ -113,6 +114,7 @@ const check = async () => {
     reportData.value.seconds = 10
     reportData.value.btns = [backBtn, reContinueBtn]
     reportData.value.secondsLabel = '点击继续可重试，否则即将结束进程'
+    reportData.value.path = '/'
   }
   checkResultText.value = result.reasons[0]
   reportData.value.btn = true

@@ -25,3 +25,8 @@ export interface identityType {
     gender: string
 }
 
+interface FaceFeature {
+    score: number;
+    keypoints: Array<{ x: number; y: number }>;
+}
+
