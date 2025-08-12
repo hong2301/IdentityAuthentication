@@ -164,8 +164,8 @@ const blockState = (state: boolean = true) => {
 }
 
 // 检测
-const checkLeft = async () => {
-  nowDir.value = 'left'
+const check = async (dir: string = 'left') => {
+  nowDir.value = dir
 
   // 测视力循环
   let run = true
@@ -193,10 +193,6 @@ const checkLeft = async () => {
     }
   }
 }
-const checkRight = async () => {
-  nowDir.value = 'left'
-  await delay(3000)
-}
 
 // 获取测试配置
 const getTestOption = () => {
@@ -211,8 +207,8 @@ onMounted(async () => {
   cmdStore.overBtn = 1
   getTestOption()
   checkBlock()
-  await checkLeft()
-  await checkRight()
+  await check('left')
+  await check('right')
 })
 </script>
 
@@ -230,6 +226,9 @@ onMounted(async () => {
       </div>
       <div class="frame-box">
         <div class="frame">
+          <div v-if="isBlock" class="frame-prompt1">
+            正在检测{{ nowDir === 'left' ? '左眼' : '右眼' }}视力
+          </div>
           <div v-if="!isBlock" class="frame-prompt">
             开始{{ nowDir === 'left' ? '左眼' : '右眼' }}视力检测
           </div>
@@ -238,6 +237,9 @@ onMounted(async () => {
 
       <div class="example1">
         <camera ref="cameraRef" @action="blockState" class="canvas" />
+        <div v-if="!isBlock" class="camera-prompt">
+          请遮挡{{ nowDir === 'left' ? '右眼' : '左眼' }}开始测试
+        </div>
       </div>
     </div>
   </div>
@@ -345,11 +347,26 @@ onMounted(async () => {
   justify-content: center;
   background-color: white;
 }
+.frame-prompt1 {
+  position: absolute;
+  font-size: 2.5rem;
+  color: rgba(85, 140, 202, 1);
+  top: 5%;
+}
 .frame-prompt {
   position: absolute;
   font-size: 2.5rem;
   color: brown;
   bottom: 10%;
+}
+.camera-prompt {
+  position: absolute;
+  font-size: 2rem;
+  color: brown;
+  bottom: 10%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 .prompt {
   position: absolute;
