@@ -69,9 +69,6 @@ app.on('window-all-closed', () => {
 
 // 应用退出时清理
 app.on('will-quit', () => {
-  if (backendProcess) {
-    backendProcess.kill()
-  }
 })
 
 // In this file you can include the rest of your app's specific main process
