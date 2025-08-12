@@ -122,7 +122,7 @@ const showPrompt = ref(prompt.front)
 // 颈部检测
 const check = async (num: number = 3) => {
   let bigWhileRun = true
-  cameraRef.value.createFaceDetector(15000).then((res: any) => {
+  cameraRef.value.createFaceDetector(15000, true).then((res: any) => {
     bigWhileRun = false
     whileBtn = false
   })

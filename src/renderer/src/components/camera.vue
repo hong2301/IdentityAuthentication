@@ -7,7 +7,7 @@ import {
   DrawingUtils,
 } from '@mediapipe/tasks-vision'
 import { delay } from '@/utils/delay'
-import { evaluateFingerFunction, detectHeadPose } from '@/utils/vision'
+import { evaluateFingerFunction, detectHeadPose, checkEyeBlock } from '@/utils/vision'
 import type { FaceFeature } from '@/types/project'
 
 const emit = defineEmits(['action'])
@@ -153,7 +153,13 @@ const createGestureRecognizer = async (timeout: number = 999999999) => {
 }
 
 // 创建脸部识别器
-const createFaceDetector = (timeout: number = 999999999): Promise<void> => {
+const createFaceDetector = (
+  timeout: number = 999999999,
+  option: {
+    isNeckCheck: boolean
+    isEyeBlock: boolean
+  } = { isNeckCheck: false, isEyeBlock: false },
+): Promise<void> => {
   return new Promise(async (resolve) => {
     const vision = await FilesetResolver.forVisionTasks(
       import.meta.env.MODE === 'development' ? '/wasm' : '../dist/wasm',
@@ -168,7 +174,7 @@ const createFaceDetector = (timeout: number = 999999999): Promise<void> => {
       },
     })
     console.log('脸部识别器加载完毕')
-    await facePredictWebcam(timeout)
+    await facePredictWebcam(timeout, option)
     resolve()
   })
 }
@@ -348,7 +354,13 @@ const predictWebcam = (timeout: number = 999999999): Promise<{ type: number; val
   })
 }
 
-const facePredictWebcam = (timeout: number = 999999999): Promise<FaceFeature[]> => {
+const facePredictWebcam = (
+  timeout: number = 999999999,
+  option: {
+    isNeckCheck: boolean
+    isEyeBlock: boolean
+  } = { isNeckCheck: false, isEyeBlock: false },
+): Promise<FaceFeature[]> => {
   return new Promise(async (resolve) => {
     // 退出页面进行销毁
     const beforeUnloadListener = () => cleanup()
@@ -448,14 +460,25 @@ const facePredictWebcam = (timeout: number = 999999999): Promise<FaceFeature[]> 
             score: detections[0]?.categories[0]?.score,
             keypoints: detections[0]?.keypoints,
           })
-          const detectLeftHeadTurnResult = detectHeadPose(rows)
-          if (detectLeftHeadTurnResult !== 'front') {
-            emit('action', detectLeftHeadTurnResult)
-            rows = []
+
+          // 颈部检测
+          if (option.isNeckCheck) {
+            const detectLeftHeadTurnResult = detectHeadPose(rows)
+            if (detectLeftHeadTurnResult !== 'front') {
+              emit('action', detectLeftHeadTurnResult)
+              rows = []
+            }
+            if (rows.length >= 20) {
+              rows = []
+            }
           }
-          if (rows.length >= 20) {
-            rows = []
+
+          // 眼部遮挡检测
+          if (option.isEyeBlock) {
+            const checkEyeBlockResult = checkEyeBlock(detections[0]?.categories[0]?.score)
+            emit('action', checkEyeBlockResult)
           }
+
           // 循环绘制每个检测到的人脸
           for (const detection of detections) {
             // 获取人脸边界框信息

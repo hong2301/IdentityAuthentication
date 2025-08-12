@@ -142,14 +142,17 @@ const cameraRef = ref()
 // 检测是否有遮挡
 const checkBlock = () => {
   // 启动识别器方法
+  cameraRef.value.createFaceDetector(30000, { isEyeBlock: true })
 }
 // 识别器检测回调
 const blockState = (state: boolean = true) => {
   isBlock.value = state
+  console.log(state)
 }
 
 // 检测
 const checkLeft = async () => {
+  checkBlock()
   await delay(3000)
 }
 const checkRight = async () => {
@@ -194,7 +197,7 @@ onMounted(async () => {
       </div>
 
       <div class="example1">
-        <camera ref="cameraRef" class="canvas" />
+        <camera ref="cameraRef" @action="blockState" class="canvas" />
       </div>
     </div>
   </div>

@@ -191,3 +191,11 @@ export function detectHeadPose(
     // 默认返回正视状态
     return 'front';
 }
+
+export function checkEyeBlock(score: number) {
+    if (score <= 0.92) {
+        return true
+    }
+    return false
+
+}
