@@ -10,6 +10,31 @@ import { useProjectStore } from '@/stores/project'
 import report from '@/components/report.vue'
 import camera from '@/components/camera.vue'
 
+const reportData = ref<{
+  btn: boolean
+  path: string
+  type: number
+  seconds: number
+  btns: btnType[]
+  secondsLabel: string
+  result: {
+    label: string
+    left: number
+    right: number
+  }
+}>({
+  btn: false,
+  path: '',
+  btns: [],
+  type: 1,
+  seconds: 3,
+  secondsLabel: '即将进行下一步',
+  result: {
+    label: '',
+    left: 0,
+    right: 0,
+  },
+})
 const projectStore = useProjectStore()
 const cmdStore = useCmdStore()
 const nextPageData = ref({
@@ -99,20 +124,10 @@ const overtimeBtns = ref<btnType[]>([
     },
   },
 ])
-let interval: number | undefined
 const btns = ref<btnType[]>([backBtn, leftBtn, rightBtn, upBtn, bottomBtn])
-const checkResult = ref(0)
 
-// 倒计时
-const runTime = () => {
-  clearInterval(interval)
-  interval = setInterval(() => {}, 1000)
-}
-
-// 颈部检测
-const check = () => {
-  checkResult.value = 1
-}
+// 检测
+const check = () => {}
 
 onMounted(() => {
   cmdStore.overBtn = 1
@@ -147,18 +162,18 @@ onMounted(() => {
     class="overtime"
   />
   <report
-    v-if="checkResult"
-    :type="1"
-    path="/process/colorVision"
-    :seconds="300"
-    secondsLabel="即将进行下一步: "
+    v-if="reportData.btn"
+    :type="reportData.type"
+    :path="reportData.path"
+    :seconds="reportData.seconds"
+    :secondsLabel="reportData.secondsLabel"
     :btns="[...btns, ContinueBtn]"
   >
     <div class="box">
       <div class="title1">视力检测完成</div>
-      <div class="result">检测结果: 合格</div>
-      <div class="des">左眼视力:</div>
-      <div class="des">右眼视力:</div>
+      <div class="result">检测结果: {{ reportData.result.label }}</div>
+      <div class="des">左眼视力: {{ reportData.result.left }}</div>
+      <div class="des">右眼视力: {{ reportData.result.right }}</div>
     </div>
   </report>
 </template>
