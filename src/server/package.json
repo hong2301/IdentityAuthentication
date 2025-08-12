@@ -5,7 +5,13 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "node app.js"
+    "dev": "node app.js",
+    "build": "pkg . --targets node18-win-x64 --output dist/backend.exe"
+    
+  },
+    "pkg": {
+    "assets": ["**/*"],
+    "scripts": ["src/**/*.js"]
   },
   "dependencies": {
     "@escook/express-joi": "^1.1.1",
@@ -16,5 +22,8 @@
     "joi": "^17.13.3",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1"
   }
 }
