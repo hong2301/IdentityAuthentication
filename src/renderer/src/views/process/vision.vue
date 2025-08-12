@@ -9,6 +9,7 @@ import BtnBox from '@/components/btnBox.vue'
 import { useProjectStore } from '@/stores/project'
 import report from '@/components/report.vue'
 import camera from '@/components/camera.vue'
+import { delay } from '@/utils/delay'
 
 const reportData = ref<{
   btn: boolean
@@ -125,12 +126,50 @@ const overtimeBtns = ref<btnType[]>([
   },
 ])
 const btns = ref<btnType[]>([backBtn, leftBtn, rightBtn, upBtn, bottomBtn])
+// 测试配置
+let testOption = {
+  minNum: 3,
+  maxLevel: 5,
+  minLevel: 3,
+}
+// 是否遮挡眼睛
+const isBlock = ref(false)
+// 当前测试模式
+const nowDir = ref('left')
+// 摄像头对象
+const cameraRef = ref()
+
+// 检测是否有遮挡
+const checkBlock = () => {
+  // 启动识别器方法
+}
+// 识别器检测回调
+const blockState = (state: boolean = true) => {
+  isBlock.value = state
+}
 
 // 检测
-const check = () => {}
+const checkLeft = async () => {
+  await delay(3000)
+}
+const checkRight = async () => {
+  await delay(3000)
+}
 
-onMounted(() => {
+// 获取测试配置
+const getTestOption = () => {
+  testOption = {
+    minNum: 3,
+    maxLevel: 5,
+    minLevel: 3,
+  }
+}
+
+onMounted(async () => {
   cmdStore.overBtn = 1
+  getTestOption()
+  await checkLeft()
+  await checkRight()
 })
 </script>
 
@@ -146,7 +185,14 @@ onMounted(() => {
         <div class="img"></div>
         <div class="label2">请按下右侧按钮</div>
       </div>
-      <div class="frame"></div>
+      <div class="frame-box">
+        <div class="frame">
+          <div v-if="!isBlock" class="frame-prompt">
+            开始{{ nowDir === 'left' ? '左眼' : '右眼' }}视力检测
+          </div>
+        </div>
+      </div>
+
       <div class="example1">
         <camera ref="cameraRef" class="canvas" />
       </div>
@@ -237,13 +283,30 @@ onMounted(() => {
   display: flex;
   align-items: center;
 }
-.frame {
-  position: relative;
+.frame-box {
   width: 40%;
   height: 80%;
   margin-inline: 4%;
+  border-radius: 2vw;
+  border: 0.2vh solid white;
+  padding: 2px;
+}
+.frame {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  height: 100%;
   border: 1vh solid white;
   border-radius: 2vw;
+  display: flex;
+  justify-content: center;
+  background-color: white;
+}
+.frame-prompt {
+  position: absolute;
+  font-size: 2.5rem;
+  color: brown;
+  bottom: 10%;
 }
 .prompt {
   position: absolute;
